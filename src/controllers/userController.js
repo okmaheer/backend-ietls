@@ -11,10 +11,7 @@ export const getUsers = async (req, res) => {
     success(res, users, "Users fetched successfully");
   } catch (err) {
     console.error(err);
-
-    res.status(500).json({ 
-      success: false,
-      error: {
+    error(res,{
         name: error.name,
         message: error.message,
         code: error.code,
@@ -22,8 +19,8 @@ export const getUsers = async (req, res) => {
         meta: error.meta,
         stack: error.stack,
         fullError: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error)))
-      },
-    });  }
+      });
+  }
 };
 
 // ➕ Create user
