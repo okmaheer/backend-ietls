@@ -1,0 +1,250 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model countries {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uid        String    @db.Char(36)
+  code       String    @db.VarChar(255)
+  name       String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+
+model fill_in_blanks {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  question_id BigInt    @db.UnsignedBigInt
+  fill_1      String?   @db.LongText
+  ans_first_1 String?   @db.LongText
+  ans_first_2 String?   @db.LongText
+  ans_first_3 String?   @db.LongText
+  fill_2      String?   @db.LongText
+  ans_sec_1   String?   @db.LongText
+  ans_sec_2   String?   @db.LongText
+  ans_sec_3   String?   @db.LongText
+  fill_3      String?   @db.LongText
+  ans_third_1 String?   @db.LongText
+  ans_third_2 String?   @db.LongText
+  ans_third_3 String?   @db.LongText
+  fill_4      String?   @db.LongText
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model finished_tests {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  test_id           Int?
+  fill_score        String?   @db.VarChar(255)
+  mcqs_score        String?   @db.VarChar(255)
+  five_choice_score String?   @db.VarChar(255)
+  total_score       String?   @db.VarChar(255)
+  test              String?   @db.LongText
+  user_id           BigInt?   @db.UnsignedBigInt
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}
+
+model m_c_q_s {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+
+model model_has_permissions {
+  permission_id BigInt      @db.UnsignedBigInt
+  model_type    String      @db.VarChar(255)
+  model_id      BigInt      @db.UnsignedBigInt
+  permissions   permissions @relation(fields: [permission_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "model_has_permissions_permission_id_foreign")
+
+  @@id([permission_id, model_id, model_type])
+  @@index([model_id, model_type], map: "model_has_permissions_model_id_model_type_index")
+}
+
+model model_has_roles {
+  role_id    BigInt @db.UnsignedBigInt
+  model_type String @db.VarChar(255)
+  model_id   BigInt @db.UnsignedBigInt
+  roles      roles  @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "model_has_roles_role_id_foreign")
+
+  @@id([role_id, model_id, model_type])
+  @@index([model_id, model_type], map: "model_has_roles_model_id_model_type_index")
+}
+
+model modules {
+  id          BigInt        @id @default(autoincrement()) @db.UnsignedBigInt
+  name        String        @db.VarChar(255)
+  description String?       @db.VarChar(255)
+  created_at  DateTime?     @db.Timestamp(0)
+  updated_at  DateTime?     @db.Timestamp(0)
+  permissions permissions[]
+}
+
+
+
+model options {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name        String    @db.LongText
+  question_id BigInt    @db.UnsignedBigInt
+  is_correct  Int
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+
+
+model permissions {
+  id                    BigInt                  @id @default(autoincrement()) @db.UnsignedBigInt
+  module_id             BigInt?                 @db.UnsignedBigInt
+  name                  String                  @db.VarChar(255)
+  guard_name            String                  @db.VarChar(255)
+  created_at            DateTime?               @db.Timestamp(0)
+  updated_at            DateTime?               @db.Timestamp(0)
+  model_has_permissions model_has_permissions[]
+  modules               modules?                @relation(fields: [module_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "permissions_module_id_foreign")
+  role_has_permissions  role_has_permissions[]
+
+  @@unique([name, guard_name], map: "permissions_name_guard_name_unique")
+  @@index([module_id], map: "permissions_module_id_foreign")
+}
+
+model question_groups {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  test_id     Int?
+  type        Int?
+  description String?   @db.LongText
+  heading     String?   @db.LongText
+  position    Int?
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model question_lists {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model questions {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name              String    @db.LongText
+  question_group_id Int?
+  test_id           BigInt    @db.UnsignedBigInt
+  part              Int?
+  category          Int
+  position          Int?
+  paragraph         Int?
+  type              Int
+  image_url         String?   @db.VarChar(255)
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+}
+
+model registeration_requests {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name       String?   @db.VarChar(255)
+  email      String?   @db.VarChar(255)
+  phone      String?   @db.VarChar(255)
+  country    String?   @db.VarChar(255)
+  type       String?   @db.VarChar(255)
+  plan       String?   @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model role_has_permissions {
+  permission_id BigInt      @db.UnsignedBigInt
+  role_id       BigInt      @db.UnsignedBigInt
+  permissions   permissions @relation(fields: [permission_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "role_has_permissions_permission_id_foreign")
+  roles         roles       @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "role_has_permissions_role_id_foreign")
+
+  @@id([permission_id, role_id])
+  @@index([role_id], map: "role_has_permissions_role_id_foreign")
+}
+
+model roles {
+  id                   BigInt                 @id @default(autoincrement()) @db.UnsignedBigInt
+  name                 String                 @db.VarChar(255)
+  guard_name           String                 @db.VarChar(255)
+  created_at           DateTime?              @db.Timestamp(0)
+  updated_at           DateTime?              @db.Timestamp(0)
+  model_has_roles      model_has_roles[]
+  role_has_permissions role_has_permissions[]
+
+  @@unique([name, guard_name], map: "roles_name_guard_name_unique")
+}
+
+
+model tests {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  name       String    @db.Text
+  type       Int
+  category   Int
+  status     Int
+  audio      String?   @db.VarChar(255)
+  paragraph1 String?   @db.LongText
+  paragraph2 String?   @db.LongText
+  paragraph3 String?   @db.LongText
+  paragraph4 String?   @db.LongText
+  paragraph5 String?   @db.LongText
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model user_details {
+  id                                  BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id                             BigInt    @db.UnsignedBigInt
+  contact_number                      String    @db.VarChar(255)
+  pan                                 String?   @db.VarChar(255)
+  ssn                                 String?   @db.VarChar(255)
+  passport_number                     String?   @db.VarChar(255)
+  medical_license_registration_number String?   @db.VarChar(255)
+  gender                              String?   @db.VarChar(255)
+  dental_council_name                 String?   @db.VarChar(255)
+  building_name                       String?   @db.VarChar(255)
+  locality_or_colony                  String?   @db.VarChar(255)
+  city                                String?   @db.VarChar(255)
+  state                               String?   @db.VarChar(255)
+  country                             String?   @db.VarChar(255)
+  postal_address                      String?   @db.Text
+  pin_code                            String?   @db.VarChar(255)
+  door_number                         String?   @db.VarChar(255)
+  plot_number                         String?   @db.VarChar(255)
+  road_number                         String?   @db.VarChar(255)
+  dob                                 DateTime? @db.Date
+  license_issue_date                  DateTime? @db.Date
+  start_date                          DateTime? @db.Date
+  created_at                          DateTime? @db.Timestamp(0)
+  updated_at                          DateTime? @db.Timestamp(0)
+  users                               users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "user_details_user_id_foreign")
+
+  @@index([user_id], map: "user_details_user_id_foreign")
+}
+
+model users {
+  id                BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  partner_id        BigInt?        @db.UnsignedBigInt
+  businessunit_id   BigInt?        @db.UnsignedBigInt
+  branch_id         BigInt?        @db.UnsignedBigInt
+  name              String         @db.VarChar(255)
+  email             String?        @db.VarChar(255)
+  phone             String?        @db.VarChar(255)
+  country           String?        @db.VarChar(255)
+  password          String?        @db.VarChar(255)
+  duration          String?        @db.VarChar(255)
+  status            String?        @db.VarChar(255)
+  email_verified_at DateTime?      @db.Timestamp(0)
+  remember_token    String?        @db.VarChar(100)
+  created_at        DateTime?      @db.Timestamp(0)
+  updated_at        DateTime?      @db.Timestamp(0)
+  user_details      user_details[]
+}
+
