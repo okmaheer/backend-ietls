@@ -11,7 +11,7 @@ export const getUsers = async (req, res) => {
     success(res, users, "Users fetched successfully");
   } catch (err) {
     console.error(err);
-    error(res, "Failed to fetch users");
+    error(err, "Failed to fetch users");
   }
 };
 
