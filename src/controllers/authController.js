@@ -1,3 +1,4 @@
+// controllers/authController.js
 import { prisma } from "../config/prismaClient.js";
 import { success, error } from "../utils/response.js";
 import jwt from "jsonwebtoken";
@@ -7,6 +8,15 @@ export const googleAuthCallback = async (req, res) => {
   try {
     // Validate required user data from passport
     if (!req.user || !req.user.email || !req.user.googleId) {
+      // Log validation failure (won't show to user since it's a redirect)
+      const validationError = new Error('Invalid user data from Google OAuth');
+      validationError.details = {
+        hasUser: !!req.user,
+        hasEmail: !!req.user?.email,
+        hasGoogleId: !!req.user?.googleId,
+      };
+      error(res, validationError, 400); // This logs to file
+      
       return res.redirect(
         `${process.env.FRONTEND_URL}/signin?error=invalid_user_data`
       );
@@ -47,7 +57,7 @@ export const googleAuthCallback = async (req, res) => {
         // Create new Google user
         user = await prisma.users.create({
           data: {
-            name: name || email.split('@')[0], // Fallback if name is missing
+            name: name || email.split('@')[0],
             email,
             google_id: googleId,
             auth_provider: 'google',
@@ -88,18 +98,22 @@ export const googleAuthCallback = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    // Redirect to frontend with token
-    res.redirect(
-      `${process.env.FRONTEND_URL}/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify({
-        id: user.id.toString(),
-        name: user.name,
-        email: user.email,
-        authProvider: user.auth_provider,
-        profilePicture: user.profile_picture,
-      }))}`
-    );
+    // Build redirect URL safely
+    const redirectUrl = new URL('/auth/callback', process.env.FRONTEND_URL);
+    redirectUrl.searchParams.set('token', token);
+    redirectUrl.searchParams.set('user', JSON.stringify({
+      id: user.id.toString(),
+      name: user.name,
+      email: user.email,
+      authProvider: user.auth_provider,
+      profilePicture: user.profile_picture,
+    }));
+
+    res.redirect(redirectUrl.toString());
+    
   } catch (err) {
-    console.error("❌ Google Auth Error:", err);
+    // ✅ Automatically logs to file with full error details
+    error(res, err, 500); // Logs error with stack trace
     
     // Redirect with specific error messages
     const errorMessage = err.code === 'P2002' 
@@ -114,6 +128,10 @@ export const googleAuthCallback = async (req, res) => {
 
 // ❌ Google Auth Failure Handler
 export const googleAuthFailure = (req, res) => {
+  // Log the failure
+  const failureError = new Error('Google OAuth authentication failed');
+  error(res, failureError, 401); // ✅ Automatically logs to file
+  
   res.redirect(
     `${process.env.FRONTEND_URL}/signin?error=authentication_failed`
   );
