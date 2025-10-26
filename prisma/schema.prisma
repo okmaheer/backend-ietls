@@ -244,7 +244,6 @@ model users {
   status            String?        @db.VarChar(255)
   email_verified_at DateTime?      @db.Timestamp(0)
   remember_token    String?        @db.VarChar(100)
-  auth_provider     String?        @default("email") @db.VarChar(50)
   google_id         String?        @unique(map: "google_id") @db.VarChar(255)
   profile_picture   String?        @db.Text
   created_at        DateTime?      @db.Timestamp(0)
