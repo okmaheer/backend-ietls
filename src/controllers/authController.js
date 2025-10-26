@@ -5,6 +5,13 @@ import jwt from "jsonwebtoken";
 // 🔐 Google OAuth Callback Handler
 export const googleAuthCallback = async (req, res) => {
   try {
+    // Validate required user data from passport
+    if (!req.user || !req.user.email || !req.user.googleId) {
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/signin?error=invalid_user_data`
+      );
+    }
+
     const { email, name, googleId, picture } = req.user;
 
     // Check if user exists with this Google ID
@@ -25,7 +32,6 @@ export const googleAuthCallback = async (req, res) => {
       });
 
       if (existingEmailUser) {
-        // User already has an account with email/password
         // Link the Google account to existing user
         user = await prisma.users.update({
           where: { id: existingEmailUser.id },
@@ -41,12 +47,12 @@ export const googleAuthCallback = async (req, res) => {
         // Create new Google user
         user = await prisma.users.create({
           data: {
-            name,
+            name: name || email.split('@')[0], // Fallback if name is missing
             email,
             google_id: googleId,
             auth_provider: 'google',
             profile_picture: picture,
-            password: null, // No password for OAuth users
+            password: null,
             status: "1",
             email_verified_at: new Date(),
             created_at: new Date(),
@@ -55,14 +61,19 @@ export const googleAuthCallback = async (req, res) => {
         });
       }
     } else {
-      // Update existing Google user's last login and profile picture
+      // Update existing Google user
       user = await prisma.users.update({
         where: { id: user.id },
         data: { 
-          profile_picture: picture, // Update in case it changed
+          profile_picture: picture,
           updated_at: new Date() 
         },
       });
+    }
+
+    // Validate JWT_SECRET exists
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET is not configured');
     }
 
     // Generate JWT token
@@ -88,12 +99,22 @@ export const googleAuthCallback = async (req, res) => {
       }))}`
     );
   } catch (err) {
-    console.error("Google Auth Error:", err);
-    res.redirect(`${process.env.FRONTEND_URL}/signin?error=authentication_failed`);
+    console.error("❌ Google Auth Error:", err);
+    
+    // Redirect with specific error messages
+    const errorMessage = err.code === 'P2002' 
+      ? 'duplicate_account' 
+      : 'authentication_failed';
+    
+    res.redirect(
+      `${process.env.FRONTEND_URL}/signin?error=${errorMessage}`
+    );
   }
 };
 
 // ❌ Google Auth Failure Handler
 export const googleAuthFailure = (req, res) => {
-  res.redirect(`${process.env.FRONTEND_URL}/signin?error=authentication_failed`);
+  res.redirect(
+    `${process.env.FRONTEND_URL}/signin?error=authentication_failed`
+  );
 };
