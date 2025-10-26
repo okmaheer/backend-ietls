@@ -18984,6 +18984,7 @@ export namespace Prisma {
     status: string | null
     email_verified_at: Date | null
     remember_token: string | null
+    auth_provider: string | null
     google_id: string | null
     profile_picture: string | null
     created_at: Date | null
@@ -19004,6 +19005,7 @@ export namespace Prisma {
     status: string | null
     email_verified_at: Date | null
     remember_token: string | null
+    auth_provider: string | null
     google_id: string | null
     profile_picture: string | null
     created_at: Date | null
@@ -19024,6 +19026,7 @@ export namespace Prisma {
     status: number
     email_verified_at: number
     remember_token: number
+    auth_provider: number
     google_id: number
     profile_picture: number
     created_at: number
@@ -19060,6 +19063,7 @@ export namespace Prisma {
     status?: true
     email_verified_at?: true
     remember_token?: true
+    auth_provider?: true
     google_id?: true
     profile_picture?: true
     created_at?: true
@@ -19080,6 +19084,7 @@ export namespace Prisma {
     status?: true
     email_verified_at?: true
     remember_token?: true
+    auth_provider?: true
     google_id?: true
     profile_picture?: true
     created_at?: true
@@ -19100,6 +19105,7 @@ export namespace Prisma {
     status?: true
     email_verified_at?: true
     remember_token?: true
+    auth_provider?: true
     google_id?: true
     profile_picture?: true
     created_at?: true
@@ -19207,6 +19213,7 @@ export namespace Prisma {
     status: string | null
     email_verified_at: Date | null
     remember_token: string | null
+    auth_provider: string | null
     google_id: string | null
     profile_picture: string | null
     created_at: Date | null
@@ -19246,6 +19253,7 @@ export namespace Prisma {
     status?: boolean
     email_verified_at?: boolean
     remember_token?: boolean
+    auth_provider?: boolean
     google_id?: boolean
     profile_picture?: boolean
     created_at?: boolean
@@ -19269,6 +19277,7 @@ export namespace Prisma {
     status?: boolean
     email_verified_at?: boolean
     remember_token?: boolean
+    auth_provider?: boolean
     google_id?: boolean
     profile_picture?: boolean
     created_at?: boolean
@@ -19299,6 +19308,7 @@ export namespace Prisma {
       status: string | null
       email_verified_at: Date | null
       remember_token: string | null
+      auth_provider: string | null
       google_id: string | null
       profile_picture: string | null
       created_at: Date | null
@@ -19686,6 +19696,7 @@ export namespace Prisma {
     readonly status: FieldRef<"users", 'String'>
     readonly email_verified_at: FieldRef<"users", 'DateTime'>
     readonly remember_token: FieldRef<"users", 'String'>
+    readonly auth_provider: FieldRef<"users", 'String'>
     readonly google_id: FieldRef<"users", 'String'>
     readonly profile_picture: FieldRef<"users", 'String'>
     readonly created_at: FieldRef<"users", 'DateTime'>
@@ -26703,6 +26714,7 @@ export namespace Prisma {
     status: 'status',
     email_verified_at: 'email_verified_at',
     remember_token: 'remember_token',
+    auth_provider: 'auth_provider',
     google_id: 'google_id',
     profile_picture: 'profile_picture',
     created_at: 'created_at',
@@ -28128,6 +28140,7 @@ export namespace Prisma {
     status?: StringNullableFilter<"users"> | string | null
     email_verified_at?: DateTimeNullableFilter<"users"> | Date | string | null
     remember_token?: StringNullableFilter<"users"> | string | null
+    auth_provider?: StringNullableFilter<"users"> | string | null
     google_id?: StringNullableFilter<"users"> | string | null
     profile_picture?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
@@ -28149,6 +28162,7 @@ export namespace Prisma {
     status?: SortOrderInput | SortOrder
     email_verified_at?: SortOrderInput | SortOrder
     remember_token?: SortOrderInput | SortOrder
+    auth_provider?: SortOrderInput | SortOrder
     google_id?: SortOrderInput | SortOrder
     profile_picture?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
@@ -28174,6 +28188,7 @@ export namespace Prisma {
     status?: StringNullableFilter<"users"> | string | null
     email_verified_at?: DateTimeNullableFilter<"users"> | Date | string | null
     remember_token?: StringNullableFilter<"users"> | string | null
+    auth_provider?: StringNullableFilter<"users"> | string | null
     profile_picture?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"users"> | Date | string | null
@@ -28194,6 +28209,7 @@ export namespace Prisma {
     status?: SortOrderInput | SortOrder
     email_verified_at?: SortOrderInput | SortOrder
     remember_token?: SortOrderInput | SortOrder
+    auth_provider?: SortOrderInput | SortOrder
     google_id?: SortOrderInput | SortOrder
     profile_picture?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
@@ -28222,6 +28238,7 @@ export namespace Prisma {
     status?: StringNullableWithAggregatesFilter<"users"> | string | null
     email_verified_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     remember_token?: StringNullableWithAggregatesFilter<"users"> | string | null
+    auth_provider?: StringNullableWithAggregatesFilter<"users"> | string | null
     google_id?: StringNullableWithAggregatesFilter<"users"> | string | null
     profile_picture?: StringNullableWithAggregatesFilter<"users"> | string | null
     created_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
@@ -30106,6 +30123,7 @@ export namespace Prisma {
     status?: string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
+    auth_provider?: string | null
     google_id?: string | null
     profile_picture?: string | null
     created_at?: Date | string | null
@@ -30127,6 +30145,7 @@ export namespace Prisma {
     status?: string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
+    auth_provider?: string | null
     google_id?: string | null
     profile_picture?: string | null
     created_at?: Date | string | null
@@ -30148,6 +30167,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
+    auth_provider?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -30169,6 +30189,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
+    auth_provider?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -30190,6 +30211,7 @@ export namespace Prisma {
     status?: string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
+    auth_provider?: string | null
     google_id?: string | null
     profile_picture?: string | null
     created_at?: Date | string | null
@@ -30210,6 +30232,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
+    auth_provider?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -30230,6 +30253,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
+    auth_provider?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31871,6 +31895,7 @@ export namespace Prisma {
     status?: SortOrder
     email_verified_at?: SortOrder
     remember_token?: SortOrder
+    auth_provider?: SortOrder
     google_id?: SortOrder
     profile_picture?: SortOrder
     created_at?: SortOrder
@@ -31898,6 +31923,7 @@ export namespace Prisma {
     status?: SortOrder
     email_verified_at?: SortOrder
     remember_token?: SortOrder
+    auth_provider?: SortOrder
     google_id?: SortOrder
     profile_picture?: SortOrder
     created_at?: SortOrder
@@ -31918,6 +31944,7 @@ export namespace Prisma {
     status?: SortOrder
     email_verified_at?: SortOrder
     remember_token?: SortOrder
+    auth_provider?: SortOrder
     google_id?: SortOrder
     profile_picture?: SortOrder
     created_at?: SortOrder
@@ -33521,6 +33548,7 @@ export namespace Prisma {
     status?: string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
+    auth_provider?: string | null
     google_id?: string | null
     profile_picture?: string | null
     created_at?: Date | string | null
@@ -33541,6 +33569,7 @@ export namespace Prisma {
     status?: string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
+    auth_provider?: string | null
     google_id?: string | null
     profile_picture?: string | null
     created_at?: Date | string | null
@@ -33577,6 +33606,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
+    auth_provider?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33597,6 +33627,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
+    auth_provider?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

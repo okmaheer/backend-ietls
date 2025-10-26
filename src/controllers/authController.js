@@ -3,12 +3,19 @@ import { prisma } from "../config/prismaClient.js";
 import { success, error } from "../utils/response.js";
 import jwt from "jsonwebtoken";
 
+// 🔐 Google OAuth Callback Handler
 export const googleAuthCallback = async (req, res) => {
   try {
     // Validate required user data from passport
     if (!req.user || !req.user.email || !req.user.googleId) {
+      // Log validation failure (won't show to user since it's a redirect)
       const validationError = new Error('Invalid user data from Google OAuth');
-      error(res, validationError, 400);
+      validationError.details = {
+        hasUser: !!req.user,
+        hasEmail: !!req.user?.email,
+        hasGoogleId: !!req.user?.googleId,
+      };
+      error(res, validationError, 400); // This logs to file
       
       return res.redirect(
         `${process.env.FRONTEND_URL}/signin?error=invalid_user_data`
@@ -23,11 +30,14 @@ export const googleAuthCallback = async (req, res) => {
     });
 
     if (!user) {
-      // Check if user exists with this email
+      // Check if user exists with this email but different auth provider
       const existingEmailUser = await prisma.users.findFirst({
         where: { 
           email,
-          google_id: null // Only find users without Google ID
+          OR: [
+            { auth_provider: { not: 'google' } },
+            { auth_provider: null }
+          ]
         },
       });
 
@@ -37,6 +47,7 @@ export const googleAuthCallback = async (req, res) => {
           where: { id: existingEmailUser.id },
           data: {
             google_id: googleId,
+            auth_provider: 'google',
             profile_picture: picture,
             email_verified_at: new Date(),
             updated_at: new Date(),
@@ -49,6 +60,7 @@ export const googleAuthCallback = async (req, res) => {
             name: name || email.split('@')[0],
             email,
             google_id: googleId,
+            auth_provider: 'google',
             profile_picture: picture,
             password: null,
             status: "1",
@@ -59,7 +71,7 @@ export const googleAuthCallback = async (req, res) => {
         });
       }
     } else {
-      // Update existing Google user's profile picture
+      // Update existing Google user
       user = await prisma.users.update({
         where: { id: user.id },
         data: { 
@@ -79,7 +91,8 @@ export const googleAuthCallback = async (req, res) => {
       { 
         id: user.id.toString(), 
         email: user.email, 
-        name: user.name
+        name: user.name,
+        authProvider: user.auth_provider 
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
@@ -92,27 +105,20 @@ export const googleAuthCallback = async (req, res) => {
       id: user.id.toString(),
       name: user.name,
       email: user.email,
+      authProvider: user.auth_provider,
       profilePicture: user.profile_picture,
-      isGoogleUser: !!user.google_id // Frontend can use this if needed
     }));
 
     res.redirect(redirectUrl.toString());
     
   } catch (err) {
-    console.error("=== Google Auth Error ===");
-    console.error("Error:", err);
+    // ✅ Automatically logs to file with full error details
+    error(res, err, 500); // Logs error with stack trace
     
-    // This will automatically log to file
-    error(res, err, 500);
-    
-    // Determine specific error message
-    let errorMessage = 'authentication_failed';
-    
-    if (err.code === 'P2002') {
-      errorMessage = 'duplicate_account';
-    } else if (err.message?.includes('JWT_SECRET')) {
-      errorMessage = 'server_configuration_error';
-    }
+    // Redirect with specific error messages
+    const errorMessage = err.code === 'P2002' 
+      ? 'duplicate_account' 
+      : 'authentication_failed';
     
     res.redirect(
       `${process.env.FRONTEND_URL}/signin?error=${errorMessage}`
@@ -120,9 +126,11 @@ export const googleAuthCallback = async (req, res) => {
   }
 };
 
+// ❌ Google Auth Failure Handler
 export const googleAuthFailure = (req, res) => {
+  // Log the failure
   const failureError = new Error('Google OAuth authentication failed');
-  error(res, failureError, 401);
+  error(res, failureError, 401); // ✅ Automatically logs to file
   
   res.redirect(
     `${process.env.FRONTEND_URL}/signin?error=authentication_failed`

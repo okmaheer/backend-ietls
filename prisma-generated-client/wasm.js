@@ -328,6 +328,7 @@ exports.Prisma.UsersScalarFieldEnum = {
   status: 'status',
   email_verified_at: 'email_verified_at',
   remember_token: 'remember_token',
+  auth_provider: 'auth_provider',
   google_id: 'google_id',
   profile_picture: 'profile_picture',
   created_at: 'created_at',
