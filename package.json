@@ -8,15 +8,25 @@
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
-  "keywords": ["node", "express", "prisma", "mysql"],
+  "keywords": [
+    "node",
+    "express",
+    "prisma",
+    "mysql"
+  ],
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
     "@prisma/client": "^5.19.0",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^5.1.0",
-    "mysql2": "^3.15.2"
+    "express-session": "^1.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.15.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",

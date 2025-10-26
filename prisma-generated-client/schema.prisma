@@ -178,19 +178,26 @@ model roles {
 }
 
 model tests {
-  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  name       String    @db.Text
-  type       Int
-  category   Int
-  status     Int
-  audio      String?   @db.VarChar(255)
-  paragraph1 String?   @db.LongText
-  paragraph2 String?   @db.LongText
-  paragraph3 String?   @db.LongText
-  paragraph4 String?   @db.LongText
-  paragraph5 String?   @db.LongText
-  created_at DateTime? @db.Timestamp(0)
-  updated_at DateTime? @db.Timestamp(0)
+  id                         BigInt              @id @default(autoincrement()) @db.UnsignedBigInt
+  name                       String              @db.Text
+  type                       Int
+  category                   Int
+  status                     Int
+  audio                      String?             @db.VarChar(255)
+  paragraph1                 String?             @db.LongText
+  paragraph2                 String?             @db.LongText
+  paragraph3                 String?             @db.LongText
+  paragraph4                 String?             @db.LongText
+  paragraph5                 String?             @db.LongText
+  reading_meta_title         String?             @db.VarChar(255)
+  reading_meta_description   String?             @db.Text
+  reading_focus_keywords     String?             @db.VarChar(255)
+  listening_meta_title       String?             @db.VarChar(255)
+  listening_meta_description String?             @db.Text
+  listening_focus_keywords   String?             @db.VarChar(255)
+  created_at                 DateTime?           @db.Timestamp(0)
+  updated_at                 DateTime?           @db.Timestamp(0)
+  writing_questions          writing_questions[]
 }
 
 model user_details {
@@ -237,7 +244,103 @@ model users {
   status            String?        @db.VarChar(255)
   email_verified_at DateTime?      @db.Timestamp(0)
   remember_token    String?        @db.VarChar(100)
+  auth_provider     String?        @default("email") @db.VarChar(50)
+  google_id         String?        @unique(map: "google_id") @db.VarChar(255)
+  profile_picture   String?        @db.Text
   created_at        DateTime?      @db.Timestamp(0)
   updated_at        DateTime?      @db.Timestamp(0)
   user_details      user_details[]
+}
+
+model branches {
+  id                     BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  partner_id             BigInt?   @db.UnsignedBigInt
+  businessunit_id        BigInt?   @db.UnsignedBigInt
+  city_id                BigInt?   @db.UnsignedBigInt
+  country_id             BigInt?   @db.UnsignedBigInt
+  uid                    String    @db.Char(36)
+  ssn                    String    @db.VarChar(255)
+  pan                    String    @db.VarChar(255)
+  name                   String    @db.VarChar(255)
+  name_per_incorporation String    @db.VarChar(255)
+  chief                  String    @db.VarChar(255)
+  email                  String    @db.VarChar(255)
+  postal_address         String    @db.VarChar(255)
+  building_name          String?   @db.VarChar(255)
+  locality_or_colony     String?   @db.VarChar(255)
+  state                  String?   @db.VarChar(255)
+  cin_number             String    @db.VarChar(255)
+  contact_number         String    @db.VarChar(255)
+  pin_code               String    @db.VarChar(255)
+  door_number            String    @db.VarChar(255)
+  plot_number            String    @db.VarChar(255)
+  road_number            String    @db.VarChar(255)
+  created_at             DateTime? @db.Timestamp(0)
+  updated_at             DateTime? @db.Timestamp(0)
+}
+
+model cities {
+  id         BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uid        String    @db.Char(36)
+  name       String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+  updated_at DateTime? @db.Timestamp(0)
+}
+
+model complaint_types {
+  id          BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  uid         String    @db.Char(36)
+  name        String    @db.VarChar(255)
+  description String?   @db.VarChar(255)
+  created_at  DateTime? @db.Timestamp(0)
+  updated_at  DateTime? @db.Timestamp(0)
+}
+
+model failed_jobs {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String   @unique(map: "failed_jobs_uuid_unique") @db.VarChar(255)
+  connection String   @db.Text
+  queue      String   @db.Text
+  payload    String   @db.LongText
+  exception  String   @db.LongText
+  failed_at  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model migrations {
+  id        Int    @id @default(autoincrement()) @db.UnsignedInt
+  migration String @db.VarChar(255)
+  batch     Int
+}
+
+model notes {
+  id           BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  notable_id   BigInt    @db.UnsignedBigInt
+  notable_type String    @db.VarChar(255)
+  body         String?   @db.Text
+  created_at   DateTime? @db.Timestamp(0)
+  updated_at   DateTime? @db.Timestamp(0)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model password_resets {
+  email      String    @db.VarChar(255)
+  token      String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+
+  @@index([email], map: "password_resets_email_index")
+  @@ignore
+}
+
+model writing_questions {
+  id            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  test_id       BigInt    @db.UnsignedBigInt
+  task_number   Int
+  question_text String    @db.Text
+  image_url     String?   @db.VarChar(255)
+  word_limit    Int       @default(150)
+  created_at    DateTime? @db.Timestamp(0)
+  updated_at    DateTime? @db.Timestamp(0)
+  tests         tests     @relation(fields: [test_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "writing_questions_test_id_foreign")
+
+  @@index([test_id], map: "writing_questions_test_id_foreign")
 }

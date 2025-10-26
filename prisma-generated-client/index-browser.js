@@ -277,6 +277,12 @@ exports.Prisma.TestsScalarFieldEnum = {
   paragraph3: 'paragraph3',
   paragraph4: 'paragraph4',
   paragraph5: 'paragraph5',
+  reading_meta_title: 'reading_meta_title',
+  reading_meta_description: 'reading_meta_description',
+  reading_focus_keywords: 'reading_focus_keywords',
+  listening_meta_title: 'listening_meta_title',
+  listening_meta_description: 'listening_meta_description',
+  listening_focus_keywords: 'listening_focus_keywords',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -322,6 +328,89 @@ exports.Prisma.UsersScalarFieldEnum = {
   status: 'status',
   email_verified_at: 'email_verified_at',
   remember_token: 'remember_token',
+  auth_provider: 'auth_provider',
+  google_id: 'google_id',
+  profile_picture: 'profile_picture',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.BranchesScalarFieldEnum = {
+  id: 'id',
+  partner_id: 'partner_id',
+  businessunit_id: 'businessunit_id',
+  city_id: 'city_id',
+  country_id: 'country_id',
+  uid: 'uid',
+  ssn: 'ssn',
+  pan: 'pan',
+  name: 'name',
+  name_per_incorporation: 'name_per_incorporation',
+  chief: 'chief',
+  email: 'email',
+  postal_address: 'postal_address',
+  building_name: 'building_name',
+  locality_or_colony: 'locality_or_colony',
+  state: 'state',
+  cin_number: 'cin_number',
+  contact_number: 'contact_number',
+  pin_code: 'pin_code',
+  door_number: 'door_number',
+  plot_number: 'plot_number',
+  road_number: 'road_number',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.CitiesScalarFieldEnum = {
+  id: 'id',
+  uid: 'uid',
+  name: 'name',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Complaint_typesScalarFieldEnum = {
+  id: 'id',
+  uid: 'uid',
+  name: 'name',
+  description: 'description',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Failed_jobsScalarFieldEnum = {
+  id: 'id',
+  uuid: 'uuid',
+  connection: 'connection',
+  queue: 'queue',
+  payload: 'payload',
+  exception: 'exception',
+  failed_at: 'failed_at'
+};
+
+exports.Prisma.MigrationsScalarFieldEnum = {
+  id: 'id',
+  migration: 'migration',
+  batch: 'batch'
+};
+
+exports.Prisma.NotesScalarFieldEnum = {
+  id: 'id',
+  notable_id: 'notable_id',
+  notable_type: 'notable_type',
+  body: 'body',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Writing_questionsScalarFieldEnum = {
+  id: 'id',
+  test_id: 'test_id',
+  task_number: 'task_number',
+  question_text: 'question_text',
+  image_url: 'image_url',
+  word_limit: 'word_limit',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -355,7 +444,14 @@ exports.Prisma.ModelName = {
   roles: 'roles',
   tests: 'tests',
   user_details: 'user_details',
-  users: 'users'
+  users: 'users',
+  branches: 'branches',
+  cities: 'cities',
+  complaint_types: 'complaint_types',
+  failed_jobs: 'failed_jobs',
+  migrations: 'migrations',
+  notes: 'notes',
+  writing_questions: 'writing_questions'
 };
 
 /**
