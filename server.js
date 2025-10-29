@@ -1,3 +1,4 @@
+// server.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -6,23 +7,32 @@ import passport from "./src/config/passport.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import testRoutes from "./src/routes/testRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
+import takeWritingTestRoutes from "./src/routes/takeTest/takeWritingTestRoutes.js";
 
 dotenv.config();
 
+// BigInt serialization fix
 BigInt.prototype.toJSON = function () {
-  return Number(this);
+  return this.toString();
 };
 
 const app = express();
 
-// Middleware
+// ==========================================
+// MIDDLEWARE
+// ==========================================
+
+// CORS configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL || "http://localhost:3000",
   credentials: true
 }));
-app.use(express.json());
 
-// Session configuration
+// Body parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Session configurationx
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -39,16 +49,75 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Routes
-app.use("/api/user", userRoutes);
-app.use("/api/tests", testRoutes);
+// ==========================================
+// ROUTES
+// ==========================================
+
+// Authentication routes (Google OAuth)
 app.use("/api/auth", authRoutes);
 
+// User routes (with role protection)
+app.use("/api/user", userRoutes);
+
+// Test routes (with role protection)
+app.use("/api/tests", testRoutes);
+
+// Writing Test routes
+app.use("/api/take-test/writing", takeWritingTestRoutes);
 // Health check
 app.get("/", (req, res) => {
   console.log("✅ Received GET / request");
-  res.json({ message: "API is running 🚀" });
+  res.json({ 
+    message: "API is running 🚀",
+    timestamp: new Date().toISOString()
+  });
 });
 
+// API info endpoint
+app.get("/api", (req, res) => {
+  res.json({
+    message: "IELTS Test API",
+    version: "1.0.0",
+    endpoints: {
+      auth: "/api/auth",
+      users: "/api/user",
+      tests: "/api/tests",
+    },
+  });
+});
+
+// ==========================================
+// ERROR HANDLING
+// ==========================================
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+    path: req.path,
+  });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error("❌ Global Error:", err);
+  
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal server error",
+    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+  });
+});
+
+// ==========================================
+// START SERVER
+// ==========================================
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(`🌐 Frontend URL: ${process.env.FRONTEND_URL}`);
+});
