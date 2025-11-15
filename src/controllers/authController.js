@@ -74,7 +74,8 @@ export const adminLogin = async (req, res) => {
 
     // Validate JWT_SECRET
     if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET is not configured");
+      const jwtError = new Error("JWT_SECRET is not configured");
+      return error(res, jwtError, 500);
     }
 
     const isAdmin = roles.includes(ROLES.ADMIN);
@@ -211,15 +212,35 @@ export const googleAuthCallback = async (req, res) => {
       // Update existing Google user's profile picture
       user = await prisma.users.update({
         where: { id: user.id },
-        data: { 
+        data: {
           profile_picture: picture,
-          updated_at: new Date() 
+          updated_at: new Date()
         },
       });
     }
 
-    // ✅ Fetch user roles separately
-    const roles = await getUserRoles(user.id);
+    let roles = await getUserRoles(user.id);
+
+    if (roles.length === 0) {
+      const userRole = await prisma.roles.findFirst({
+        where: { name: ROLES.USER }
+      });
+
+      if (!userRole) {
+        throw new Error('User role not found in database. Please ensure roles are seeded.');
+      }
+
+      await prisma.model_has_roles.create({
+        data: {
+          role_id: userRole.id,
+          model_type: USER_MODEL_TYPE,
+          model_id: user.id,
+        },
+      });
+
+      // Refetch roles
+      roles = await getUserRoles(user.id);
+    }
 
     // Validate JWT_SECRET exists
     if (!process.env.JWT_SECRET) {
@@ -228,7 +249,6 @@ export const googleAuthCallback = async (req, res) => {
 
     const isAdmin = roles.includes(ROLES.ADMIN);
 
-    // ✅ Generate JWT token with roles
     const token = jwt.sign(
       { 
         id: user.id.toString(), 

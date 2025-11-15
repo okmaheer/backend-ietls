@@ -321,16 +321,17 @@ exports.Prisma.UsersScalarFieldEnum = {
   branch_id: 'branch_id',
   name: 'name',
   email: 'email',
+  google_id: 'google_id',
+  auth_provider: 'auth_provider',
+  profile_picture: 'profile_picture',
   phone: 'phone',
   country: 'country',
   password: 'password',
   duration: 'duration',
+  is_user_paid: 'is_user_paid',
   status: 'status',
   email_verified_at: 'email_verified_at',
   remember_token: 'remember_token',
-  auth_provider: 'auth_provider',
-  google_id: 'google_id',
-  profile_picture: 'profile_picture',
   created_at: 'created_at',
   updated_at: 'updated_at'
 };
@@ -370,15 +371,6 @@ exports.Prisma.CitiesScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
-exports.Prisma.Complaint_typesScalarFieldEnum = {
-  id: 'id',
-  uid: 'uid',
-  name: 'name',
-  description: 'description',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-};
-
 exports.Prisma.Failed_jobsScalarFieldEnum = {
   id: 'id',
   uuid: 'uuid',
@@ -393,15 +385,6 @@ exports.Prisma.MigrationsScalarFieldEnum = {
   id: 'id',
   migration: 'migration',
   batch: 'batch'
-};
-
-exports.Prisma.NotesScalarFieldEnum = {
-  id: 'id',
-  notable_id: 'notable_id',
-  notable_type: 'notable_type',
-  body: 'body',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
 };
 
 exports.Prisma.Writing_questionsScalarFieldEnum = {
@@ -447,10 +430,8 @@ exports.Prisma.ModelName = {
   users: 'users',
   branches: 'branches',
   cities: 'cities',
-  complaint_types: 'complaint_types',
   failed_jobs: 'failed_jobs',
   migrations: 'migrations',
-  notes: 'notes',
   writing_questions: 'writing_questions'
 };
 
