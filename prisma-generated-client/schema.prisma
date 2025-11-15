@@ -327,7 +327,7 @@ model password_resets {
   token      String    @db.VarChar(255)
   created_at DateTime? @db.Timestamp(0)
 
-  @@index([email], map: "password_resets_email_index")
+  @@index([email], map: "password_resets_email_index")x
   @@ignore
 }
 

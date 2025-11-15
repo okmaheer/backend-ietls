@@ -51,10 +51,7 @@ export const adminLogin = async (req, res) => {
       console.log("❌ User has no password (OAuth user)");
       return error(res, new Error("This account uses OAuth login. Please use Google sign-in"), 401);
     }
-
-    console.log("🔐 Comparing password...");
     
-    // ✅ FIX: Convert Laravel's $2y$ to Node.js compatible $2a$ or $2b$
     let passwordHash = user.password;
     if (passwordHash.startsWith('$2y$')) {
       console.log("🔄 Converting Laravel $2y$ hash to $2a$ for compatibility");
@@ -64,25 +61,16 @@ export const adminLogin = async (req, res) => {
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, passwordHash);
 
-    console.log("✅ Password valid:", isPasswordValid);
-
     if (!isPasswordValid) {
-      console.log("❌ Password comparison failed");
       return error(res, new Error("Invalid email or password"), 401);
     }
 
-    // ✅ Fetch user roles
-    console.log("🔍 Fetching user roles...");
     const roles = await getUserRoles(user.id);
-    console.log("📋 User roles:", roles);
 
     // ✅ Check if user is admin
     if (!roles.includes(ROLES.ADMIN)) {
-      console.log("❌ User is not an admin. Roles:", roles);
       return error(res, new Error("Access denied. Admin privileges required"), 403);
     }
-
-    console.log("✅ User is admin, generating token...");
 
     // Validate JWT_SECRET
     if (!process.env.JWT_SECRET) {
@@ -100,12 +88,12 @@ export const adminLogin = async (req, res) => {
         authProvider: user.auth_provider,
         roles,
         isAdmin,
+        duration: user.duration,
+        status: user.status
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
-
-    console.log("✅ Login successful for:", email);
 
     // Return success response
     return success(
