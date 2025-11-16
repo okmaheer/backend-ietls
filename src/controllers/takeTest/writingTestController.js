@@ -20,9 +20,6 @@ export const getAcademicWritingTests = async (req, res) => {
       select: {
         id: true,
         name: true,
-        description: true,
-        duration: true,
-        total_marks: true,
         category: true,
         type: true,
         created_at: true,
@@ -100,9 +97,7 @@ export const getAcademicWritingTests = async (req, res) => {
       return {
         id: test.id.toString(),
         name: test.name,
-        description: test.description,
-        duration: test.duration,
-        total_marks: test.total_marks,
+        title: test.name, // Alias for frontend compatibility
         category: test.category,
         type: test.type,
         created_at: test.created_at,
@@ -140,9 +135,6 @@ export const getGeneralTrainingWritingTests = async (req, res) => {
       select: {
         id: true,
         name: true,
-        description: true,
-        duration: true,
-        total_marks: true,
         category: true,
         type: true,
         created_at: true,
@@ -220,9 +212,7 @@ export const getGeneralTrainingWritingTests = async (req, res) => {
       return {
         id: test.id.toString(),
         name: test.name,
-        description: test.description,
-        duration: test.duration,
-        total_marks: test.total_marks,
+        title: test.name, // Alias for frontend compatibility
         category: test.category,
         type: test.type,
         created_at: test.created_at,
