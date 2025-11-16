@@ -3,6 +3,15 @@
  * Provides detailed error logging with stack traces, request context, and formatted output
  */
 
+import fs from 'fs';
+import path from 'path';
+
+// Ensure logs directory exists
+const logsDir = path.join(process.cwd(), 'storage', 'logs');
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
+
 // Log levels
 const LogLevel = {
   ERROR: 'ERROR',
@@ -34,6 +43,46 @@ const levelColors = {
  */
 const getTimestamp = () => {
   return new Date().toISOString().replace('T', ' ').slice(0, 19);
+};
+
+/**
+ * Get current date for log file name
+ */
+const getDateString = () => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+/**
+ * Write log to file
+ */
+const writeToFile = (level, message, context = {}) => {
+  try {
+    const timestamp = getTimestamp();
+    const dateString = getDateString();
+
+    // Create log entry without colors for file
+    let logEntry = `[${timestamp}] ${level}: ${message}\n`;
+
+    if (Object.keys(context).length > 0) {
+      logEntry += `Context: ${JSON.stringify(context, null, 2)}\n`;
+    }
+
+    logEntry += '-'.repeat(80) + '\n';
+
+    // Write to appropriate log file based on level
+    const logFileName = level === 'ERROR'
+      ? path.join(logsDir, `error-${dateString}.log`)
+      : path.join(logsDir, `laravel-${dateString}.log`);
+
+    fs.appendFileSync(logFileName, logEntry, 'utf8');
+  } catch (err) {
+    // Silently fail if file writing fails - don't break the application
+    console.error('Failed to write to log file:', err.message);
+  }
 };
 
 /**
@@ -70,8 +119,8 @@ export const logError = (message, error, context = {}) => {
 
   console.error(formatLog(LogLevel.ERROR, message, errorContext));
 
-  // Also log to file or external service in production
-  // TODO: Implement file logging or service like Sentry
+  // Write to file
+  writeToFile(LogLevel.ERROR, message, errorContext);
 };
 
 /**
@@ -79,6 +128,7 @@ export const logError = (message, error, context = {}) => {
  */
 export const logWarn = (message, context = {}) => {
   console.warn(formatLog(LogLevel.WARN, message, context));
+  writeToFile(LogLevel.WARN, message, context);
 };
 
 /**
@@ -86,6 +136,7 @@ export const logWarn = (message, context = {}) => {
  */
 export const logInfo = (message, context = {}) => {
   console.log(formatLog(LogLevel.INFO, message, context));
+  writeToFile(LogLevel.INFO, message, context);
 };
 
 /**
@@ -94,6 +145,7 @@ export const logInfo = (message, context = {}) => {
 export const logDebug = (message, context = {}) => {
   if (process.env.NODE_ENV === 'development') {
     console.log(formatLog(LogLevel.DEBUG, message, context));
+    writeToFile(LogLevel.DEBUG, message, context);
   }
 };
 
