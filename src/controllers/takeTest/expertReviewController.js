@@ -1,6 +1,7 @@
 import { prisma } from "../../config/prismaClient.js";
 import { success, error } from "../../utils/response.js";
 import { evaluateWritingTest } from "../../services/openaiService.js";
+import { logError, logInfo, logDebug } from "../../utils/logger.js";
 
 // 📝 Request expert review for a submission
 export const requestExpertReview = async (req, res) => {
@@ -50,6 +51,12 @@ export const requestExpertReview = async (req, res) => {
       }
     });
 
+    logInfo('Expert review requested successfully', {
+      userId,
+      submissionId: submission_id,
+      reviewRequestId: reviewRequest.id.toString()
+    });
+
     success(res, {
       id: reviewRequest.id.toString(),
       submission_id: reviewRequest.submission_id.toString(),
@@ -59,7 +66,12 @@ export const requestExpertReview = async (req, res) => {
     }, "Expert review requested successfully");
 
   } catch (err) {
-    console.error("❌ Error requesting expert review:", err);
+    logError("Failed to request expert review", err, {
+      userId: req.user?.id,
+      submissionId: req.body.submission_id,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to request expert review", 500);
   }
 };
@@ -115,10 +127,19 @@ export const getUserReviewRequests = async (req, res) => {
       }
     }));
 
+    logInfo('User review requests fetched successfully', {
+      userId,
+      count: formattedRequests.length
+    });
+
     success(res, formattedRequests, "Review requests fetched successfully");
 
   } catch (err) {
-    console.error("❌ Error fetching review requests:", err);
+    logError("Failed to fetch review requests", err, {
+      userId: req.user?.id,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to fetch review requests", 500);
   }
 };
@@ -167,10 +188,20 @@ export const getReviewRequestDetails = async (req, res) => {
       }
     };
 
+    logInfo('Review request details fetched successfully', {
+      userId,
+      requestId
+    });
+
     success(res, formattedRequest, "Review request details fetched successfully");
 
   } catch (err) {
-    console.error("❌ Error fetching review request details:", err);
+    logError("Failed to fetch review request details", err, {
+      userId: req.user?.id,
+      requestId: req.params.requestId,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to fetch review request details", 500);
   }
 };
@@ -218,7 +249,12 @@ export const checkExpertReviewStatus = async (req, res) => {
     }
 
   } catch (err) {
-    console.error("❌ Error checking review status:", err);
+    logError("Failed to check review status", err, {
+      userId: req.user?.id,
+      submissionId: req.params.submissionId,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to check review status", 500);
   }
 };
@@ -291,10 +327,19 @@ export const getAllReviewRequests = async (req, res) => {
       }
     }));
 
+    logInfo('All review requests fetched successfully (admin)', {
+      count: formattedRequests.length,
+      status: status || 'all'
+    });
+
     success(res, formattedRequests, "Review requests fetched successfully");
 
   } catch (err) {
-    console.error("❌ Error fetching all review requests:", err);
+    logError("Failed to fetch all review requests (admin)", err, {
+      status: req.query.status,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to fetch review requests", 500);
   }
 };
@@ -362,10 +407,18 @@ export const getReviewRequestDetailsAdmin = async (req, res) => {
       }
     };
 
+    logInfo('Review request details fetched successfully (admin)', {
+      requestId
+    });
+
     success(res, formattedRequest, "Review request details fetched successfully");
 
   } catch (err) {
-    console.error("❌ Error fetching review request details:", err);
+    logError("Failed to fetch review request details (admin)", err, {
+      requestId: req.params.requestId,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to fetch review request details", 500);
   }
 };
@@ -417,6 +470,11 @@ export const submitExpertReview = async (req, res) => {
       }
     });
 
+    logInfo('Expert review submitted successfully', {
+      requestId,
+      status: status || 'completed'
+    });
+
     success(res, {
       request_id: requestId,
       status: status || 'completed',
@@ -424,7 +482,11 @@ export const submitExpertReview = async (req, res) => {
     }, "Expert review submitted successfully");
 
   } catch (err) {
-    console.error("❌ Error submitting expert review:", err);
+    logError("Failed to submit expert review", err, {
+      requestId: req.params.requestId,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to submit expert review", 500);
   }
 };
@@ -468,6 +530,11 @@ export const updateReviewRequestStatus = async (req, res) => {
       data: updateData
     });
 
+    logInfo('Review request status updated successfully', {
+      requestId,
+      status: updatedRequest.status
+    });
+
     success(res, {
       id: updatedRequest.id.toString(),
       status: updatedRequest.status,
@@ -476,7 +543,12 @@ export const updateReviewRequestStatus = async (req, res) => {
     }, "Review request status updated successfully");
 
   } catch (err) {
-    console.error("❌ Error updating review request status:", err);
+    logError("Failed to update review request status", err, {
+      requestId: req.params.requestId,
+      status: req.body.status,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to update review request status", 500);
   }
 };

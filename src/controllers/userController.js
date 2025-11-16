@@ -1,6 +1,7 @@
 import { prisma } from "../config/prismaClient.js";
 import { success, error } from "../utils/response.js";
 import bcrypt from "bcrypt";
+import { logError, logInfo, logDebug } from "../utils/logger.js";
 
 // 📄 Index - Get all users with pagination
 export const index = async (req, res) => {
@@ -11,6 +12,8 @@ export const index = async (req, res) => {
     const search = req.query.search || "";
     const sortBy = req.query.sort_by || "id";
     const sortOrder = req.query.sort_order || "desc";
+
+    logDebug('Fetching users with pagination', { page, perPage, search, sortBy, sortOrder });
 
     // Calculate skip value for pagination
     const skip = (page - 1) * perPage;
@@ -46,6 +49,8 @@ export const index = async (req, res) => {
     const from = total > 0 ? skip + 1 : 0;
     const to = Math.min(skip + perPage, total);
 
+    logInfo('Users fetched successfully', { total, page, perPage });
+
     // Return paginated response (Laravel-style)
     success(res, {
       data: users,
@@ -59,7 +64,11 @@ export const index = async (req, res) => {
       prev_page: page > 1 ? page - 1 : null,
     }, "Users fetched successfully");
   } catch (err) {
-    console.error(err);
+    logError("Failed to fetch users", err, {
+      method: req.method,
+      url: req.originalUrl,
+      query: req.query
+    });
     error(res, "Failed to fetch users");
   }
 };
@@ -68,9 +77,13 @@ export const index = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const countries = getCountries();
+    logDebug('Create user form data retrieved');
     success(res, { countries }, "Create user form data");
   } catch (err) {
-    console.error(err);
+    logError("Failed to load create form", err, {
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, "Failed to load create form");
   }
 };
@@ -79,10 +92,12 @@ export const create = async (req, res) => {
 export const store = async (req, res) => {
   try {
     const { name, email, password, phone, country, duration, status } = req.body;
-    
+
+    logDebug('Creating new user', { name, email, phone, country });
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     const user = await prisma.users.create({
       data: {
         name,
@@ -100,9 +115,14 @@ export const store = async (req, res) => {
     // TODO: Assign role "User" - implement role assignment based on your role system
     // await assignRole(user.id, "User");
 
+    logInfo('User created successfully', { userId: user.id.toString(), email });
     success(res, user, "User created successfully");
   } catch (err) {
-    console.error(err);
+    logError("Failed to create user", err, {
+      email: req.body.email,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, "Failed to create user");
   }
 };
@@ -111,17 +131,26 @@ export const store = async (req, res) => {
 export const edit = async (req, res) => {
   try {
     const id = BigInt(req.params.id);
+    logDebug('Fetching user for editing', { userId: id.toString() });
     const user = await prisma.users.findUnique({
       where: { id },
       include: { user_details: true },
     });
-    
-    if (!user) return error(res, "User not found", 404);
-    
+
+    if (!user) {
+      logDebug('User not found for editing', { userId: id.toString() });
+      return error(res, "User not found", 404);
+    }
+
     const countries = getCountries();
+    logInfo('User fetched for editing', { userId: id.toString() });
     success(res, { user, countries }, "User fetched for editing");
   } catch (err) {
-    console.error(err);
+    logError("Failed to fetch user", err, {
+      userId: req.params.id,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, "Failed to fetch user");
   }
 };
@@ -131,7 +160,9 @@ export const update = async (req, res) => {
   try {
     const { user_id, name, email, password, phone, country, duration, status } = req.body;
     const id = BigInt(user_id);
-    
+
+    logDebug('Updating user', { userId: id.toString(), email });
+
     // Prepare update data
     const updateData = {
       name,
@@ -156,9 +187,14 @@ export const update = async (req, res) => {
     // TODO: Update role if needed
     // await assignRole(user_id, "User");
 
+    logInfo('User updated successfully', { userId: id.toString(), email });
     success(res, user, "User updated successfully");
   } catch (err) {
-    console.error(err);
+    logError("Failed to update user", err, {
+      userId: req.body.user_id,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, "Failed to update user");
   }
 };
@@ -167,14 +203,21 @@ export const update = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const id = BigInt(req.params.id);
-    
-    await prisma.users.delete({ 
-      where: { id } 
+
+    logDebug('Deleting user', { userId: id.toString() });
+
+    await prisma.users.delete({
+      where: { id }
     });
-    
+
+    logInfo('User deleted successfully', { userId: id.toString() });
     success(res, null, "User deleted successfully");
   } catch (err) {
-    console.error(err);
+    logError("Failed to delete user", err, {
+      userId: req.params.id,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, "Failed to delete user");
   }
 };

@@ -1,13 +1,14 @@
 import { prisma } from "../../config/prismaClient.js";
 import { success, error } from "../../utils/response.js";
 import { evaluateWritingTest, calculateAverageBand } from "../../services/openaiService.js";
+import { logError, logInfo, logDebug } from "../../utils/logger.js";
 
 // 🧾 Get all active academic writing tests
 export const getAcademicWritingTests = async (req, res) => {
   try {
     // Check if user is authenticated
     const userId = req.user?.id;
-   console.log(userId,'dssd')
+    logDebug('Fetching academic writing tests', { userId });
     const tests = await prisma.tests.findMany({
       where: {
         status: 1,
@@ -19,6 +20,9 @@ export const getAcademicWritingTests = async (req, res) => {
       select: {
         id: true,
         name: true,
+        description: true,
+        duration: true,
+        total_marks: true,
         category: true,
         type: true,
         created_at: true,
@@ -96,6 +100,9 @@ export const getAcademicWritingTests = async (req, res) => {
       return {
         id: test.id.toString(),
         name: test.name,
+        description: test.description,
+        duration: test.duration,
+        total_marks: test.total_marks,
         category: test.category,
         type: test.type,
         created_at: test.created_at,
@@ -104,9 +111,14 @@ export const getAcademicWritingTests = async (req, res) => {
       };
     });
 
+    logInfo('Academic writing tests fetched successfully', { count: formattedTests.length, userId });
     success(res, formattedTests, "Active tests fetched successfully");
   } catch (err) {
-    console.error("❌ Error fetching tests:", err);
+    logError("Failed to fetch academic writing tests", err, {
+      userId: req.user?.id,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, "Failed to fetch tests", 500);
   }
 };
@@ -128,6 +140,9 @@ export const getGeneralTrainingWritingTests = async (req, res) => {
       select: {
         id: true,
         name: true,
+        description: true,
+        duration: true,
+        total_marks: true,
         category: true,
         type: true,
         created_at: true,
@@ -205,6 +220,9 @@ export const getGeneralTrainingWritingTests = async (req, res) => {
       return {
         id: test.id.toString(),
         name: test.name,
+        description: test.description,
+        duration: test.duration,
+        total_marks: test.total_marks,
         category: test.category,
         type: test.type,
         created_at: test.created_at,
@@ -213,9 +231,14 @@ export const getGeneralTrainingWritingTests = async (req, res) => {
       };
     });
 
+    logInfo('General training writing tests fetched successfully', { count: formattedTests.length, userId });
     success(res, formattedTests, "Active tests fetched successfully");
   } catch (err) {
-    console.error("❌ Error fetching tests:", err);
+    logError("Failed to fetch general training writing tests", err, {
+      userId: req.user?.id,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, "Failed to fetch tests", 500);
   }
 };
@@ -283,9 +306,14 @@ export const getWritingTestDetails = async (req, res) => {
       questions
     };
 
+    logInfo('Test details fetched successfully', { testId });
     success(res, testDetails, "Test details fetched successfully");
   } catch (err) {
-    console.error("❌ Error fetching test details:", err);
+    logError("Failed to fetch test details", err, {
+      testId: req.params.testId,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, "Failed to fetch test details", 500);
   }
 };
@@ -396,6 +424,12 @@ export const submitWritingTest = async (req, res) => {
     });
 
     // Return submission ID and results
+    logInfo('Writing test submitted successfully', {
+      userId,
+      testId: test_id,
+      submissionId: submission.id.toString(),
+      overallBand
+    });
     success(res, {
       submission_id: submission.id.toString(),
       overall_band: overallBand,
@@ -404,7 +438,12 @@ export const submitWritingTest = async (req, res) => {
     }, "Test submitted successfully");
 
   } catch (err) {
-    console.error("❌ Error submitting test:", err);
+    logError("Failed to submit writing test", err, {
+      userId: req.user?.id,
+      testId: req.body.test_id,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to submit test", 500);
   }
 };
@@ -454,9 +493,14 @@ export const getUserSubmissions = async (req, res) => {
       };
     });
 
+    logInfo('User submissions fetched successfully', { userId, count: formattedSubmissions.length });
     success(res, formattedSubmissions, "Submissions fetched successfully");
   } catch (err) {
-    console.error("❌ Error fetching submissions:", err);
+    logError("Failed to fetch user submissions", err, {
+      userId: req.user?.id,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to fetch submissions", 500);
   }
 };
@@ -511,9 +555,15 @@ export const getSubmissionDetails = async (req, res) => {
       updated_at: submission.updated_at
     };
 
+    logInfo('Submission details fetched successfully', { userId, submissionId });
     success(res, formattedSubmission, "Submission details fetched successfully");
   } catch (err) {
-    console.error("❌ Error fetching submission details:", err);
+    logError("Failed to fetch submission details", err, {
+      userId: req.user?.id,
+      submissionId: req.params.submissionId,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err.message || "Failed to fetch submission details", 500);
   }
 };

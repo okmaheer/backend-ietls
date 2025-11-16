@@ -5,17 +5,18 @@ import { success, error } from "../utils/response.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { ROLES, USER_MODEL_TYPE, getUserRoles } from "../utils/roleHelper.js";
+import { logError, logInfo, logDebug } from "../utils/logger.js";
 
 // 🔐 Admin Login with Email & Password
 export const adminLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    console.log("🔍 Login attempt for email:", email);
+    logDebug('Admin login attempt', { email });
 
     // Validate input
     if (!email || !password) {
-      console.log("❌ Missing email or password");
+      logDebug('Admin login failed - missing credentials');
       return error(res, new Error("Email and password are required"), 400);
     }
 
@@ -24,44 +25,44 @@ export const adminLogin = async (req, res) => {
       where: { email },
     });
 
-    console.log("👤 User found:", user ? "YES" : "NO");
-    
+    logDebug('User lookup result', { email, found: !!user });
+
     if (!user) {
-      console.log("❌ User not found in database");
+      logDebug('Admin login failed - user not found');
       return error(res, new Error("Invalid email or password"), 401);
     }
 
-    console.log("📋 User details:", {
+    logDebug('User login details', {
       id: user.id.toString(),
       email: user.email,
       status: user.status,
       auth_provider: user.auth_provider,
       has_password: !!user.password,
-      password_format: user.password?.substring(0, 4), // Show hash format
     });
 
     // Check if user is active
     if (user.status !== "1") {
-      console.log("❌ User account is inactive, status:", user.status);
+      logDebug('Admin login failed - account inactive', { status: user.status });
       return error(res, new Error("Account is inactive"), 403);
     }
 
     // Verify password exists
     if (!user.password) {
-      console.log("❌ User has no password (OAuth user)");
+      logDebug('Admin login failed - OAuth user attempted password login');
       return error(res, new Error("This account uses OAuth login. Please use Google sign-in"), 401);
     }
-    
+
     let passwordHash = user.password;
     if (passwordHash.startsWith('$2y$')) {
-      console.log("🔄 Converting Laravel $2y$ hash to $2a$ for compatibility");
+      logDebug('Converting Laravel hash format for compatibility');
       passwordHash = passwordHash.replace(/^\$2y\$/, '$2a$');
     }
-    
+
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, passwordHash);
 
     if (!isPasswordValid) {
+      logDebug('Admin login failed - invalid password', { email });
       return error(res, new Error("Invalid email or password"), 401);
     }
 
@@ -69,12 +70,14 @@ export const adminLogin = async (req, res) => {
 
     // ✅ Check if user is admin
     if (!roles.includes(ROLES.ADMIN)) {
+      logDebug('Login failed - user lacks admin privileges', { email, roles });
       return error(res, new Error("Access denied. Admin privileges required"), 403);
     }
 
     // Validate JWT_SECRET
     if (!process.env.JWT_SECRET) {
       const jwtError = new Error("JWT_SECRET is not configured");
+      logError('JWT_SECRET not configured', jwtError);
       return error(res, jwtError, 500);
     }
 
@@ -96,6 +99,12 @@ export const adminLogin = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    logInfo('Admin login successful', {
+      userId: user.id.toString(),
+      email: user.email,
+      roles
+    });
+
     // Return success response
     return success(
       res,
@@ -114,7 +123,11 @@ export const adminLogin = async (req, res) => {
       "Login successful"
     );
   } catch (err) {
-    console.error("❌ Login error:", err);
+    logError("Admin login failed", err, {
+      email: req.body.email,
+      method: req.method,
+      url: req.originalUrl
+    });
     return error(res, err, 500);
   }
 };
@@ -122,6 +135,8 @@ export const adminLogin = async (req, res) => {
 // 🔐 Google OAuth Callback Handler
 export const googleAuthCallback = async (req, res) => {
   try {
+    logDebug('Google OAuth callback initiated', { hasUser: !!req.user });
+
     // Validate required user data from passport
     if (!req.user || !req.user.email || !req.user.googleId) {
       const validationError = new Error('Invalid user data from Google OAuth');
@@ -130,14 +145,17 @@ export const googleAuthCallback = async (req, res) => {
         hasEmail: !!req.user?.email,
         hasGoogleId: !!req.user?.googleId,
       };
+      logError('Google OAuth validation failed', validationError, validationError.details);
       error(res, validationError, 400);
-      
+
       return res.redirect(
         `${process.env.FRONTEND_URL}/signin?error=invalid_user_data`
       );
     }
 
     const { email, name, googleId, picture } = req.user;
+
+    logDebug('Google OAuth user data received', { email, name, googleId });
 
     // Check if user exists with this Google ID
     let user = await prisma.users.findFirst({
@@ -154,6 +172,7 @@ export const googleAuthCallback = async (req, res) => {
       });
 
       if (existingEmailUser) {
+        logInfo('Linking Google account to existing user', { userId: existingEmailUser.id.toString(), email });
         // Link the Google account to existing user
         user = await prisma.users.update({
           where: { id: existingEmailUser.id },
@@ -166,6 +185,7 @@ export const googleAuthCallback = async (req, res) => {
           },
         });
       } else {
+        logInfo('Creating new Google user', { email });
         // ✅ Create new Google user with 'user' role assignment
         user = await prisma.$transaction(async (tx) => {
           // Create user
@@ -204,8 +224,10 @@ export const googleAuthCallback = async (req, res) => {
 
           return newUser;
         });
+        logInfo('New Google user created successfully', { userId: user.id.toString(), email });
       }
     } else {
+      logDebug('Updating existing Google user profile', { userId: user.id.toString() });
       // Update existing Google user's profile picture
       user = await prisma.users.update({
         where: { id: user.id },
@@ -219,6 +241,7 @@ export const googleAuthCallback = async (req, res) => {
     let roles = await getUserRoles(user.id);
 
     if (roles.length === 0) {
+      logDebug('Assigning default user role', { userId: user.id.toString() });
       const userRole = await prisma.roles.findFirst({
         where: { name: ROLES.USER }
       });
@@ -247,9 +270,9 @@ export const googleAuthCallback = async (req, res) => {
     const isAdmin = roles.includes(ROLES.ADMIN);
 
     const token = jwt.sign(
-      { 
-        id: user.id.toString(), 
-        email: user.email, 
+      {
+        id: user.id.toString(),
+        email: user.email,
         name: user.name,
         authProvider: user.auth_provider,
         roles,
@@ -258,6 +281,12 @@ export const googleAuthCallback = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
+
+    logInfo('Google OAuth login successful', {
+      userId: user.id.toString(),
+      email: user.email,
+      roles
+    });
 
     // Build redirect URL safely
     const redirectUrl = new URL('/auth/callback', process.env.FRONTEND_URL);
@@ -273,16 +302,20 @@ export const googleAuthCallback = async (req, res) => {
     }));
 
     res.redirect(redirectUrl.toString());
-    
+
   } catch (err) {
-    // ✅ Automatically logs to file with full error details
+    logError('Google OAuth authentication failed', err, {
+      email: req.user?.email,
+      method: req.method,
+      url: req.originalUrl
+    });
     error(res, err, 500);
-    
+
     // Redirect with specific error messages
-    const errorMessage = err.code === 'P2002' 
-      ? 'duplicate_account' 
+    const errorMessage = err.code === 'P2002'
+      ? 'duplicate_account'
       : 'authentication_failed';
-    
+
     res.redirect(
       `${process.env.FRONTEND_URL}/signin?error=${errorMessage}`
     );
@@ -292,8 +325,9 @@ export const googleAuthCallback = async (req, res) => {
 // ❌ Google Auth Failure Handler
 export const googleAuthFailure = (req, res) => {
   const failureError = new Error('Google OAuth authentication failed');
+  logError('Google OAuth failure handler triggered', failureError);
   error(res, failureError, 401);
-  
+
   res.redirect(
     `${process.env.FRONTEND_URL}/signin?error=authentication_failed`
   );
