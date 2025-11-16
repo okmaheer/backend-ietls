@@ -2919,10 +2919,12 @@ export namespace Prisma {
 
   export type TestsCountOutputType = {
     writing_questions: number
+    writing_submissions: number
   }
 
   export type TestsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     writing_questions?: boolean | TestsCountOutputTypeCountWriting_questionsArgs
+    writing_submissions?: boolean | TestsCountOutputTypeCountWriting_submissionsArgs
   }
 
   // Custom InputTypes
@@ -2941,6 +2943,13 @@ export namespace Prisma {
    */
   export type TestsCountOutputTypeCountWriting_questionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: writing_questionsWhereInput
+  }
+
+  /**
+   * TestsCountOutputType without action
+   */
+  export type TestsCountOutputTypeCountWriting_submissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: writing_submissionsWhereInput
   }
 
 
@@ -17040,6 +17049,7 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     writing_questions?: boolean | tests$writing_questionsArgs<ExtArgs>
+    writing_submissions?: boolean | tests$writing_submissionsArgs<ExtArgs>
     _count?: boolean | TestsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tests"]>
 
@@ -17068,6 +17078,7 @@ export namespace Prisma {
 
   export type testsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     writing_questions?: boolean | tests$writing_questionsArgs<ExtArgs>
+    writing_submissions?: boolean | tests$writing_submissionsArgs<ExtArgs>
     _count?: boolean | TestsCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -17075,6 +17086,7 @@ export namespace Prisma {
     name: "tests"
     objects: {
       writing_questions: Prisma.$writing_questionsPayload<ExtArgs>[]
+      writing_submissions: Prisma.$writing_submissionsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: bigint
@@ -17437,6 +17449,7 @@ export namespace Prisma {
   export interface Prisma__testsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     writing_questions<T extends tests$writing_questionsArgs<ExtArgs> = {}>(args?: Subset<T, tests$writing_questionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$writing_questionsPayload<ExtArgs>, T, "findMany"> | Null>
+    writing_submissions<T extends tests$writing_submissionsArgs<ExtArgs> = {}>(args?: Subset<T, tests$writing_submissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "findMany"> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17801,6 +17814,26 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Writing_questionsScalarFieldEnum | Writing_questionsScalarFieldEnum[]
+  }
+
+  /**
+   * tests.writing_submissions
+   */
+  export type tests$writing_submissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    where?: writing_submissionsWhereInput
+    orderBy?: writing_submissionsOrderByWithRelationInput | writing_submissionsOrderByWithRelationInput[]
+    cursor?: writing_submissionsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Writing_submissionsScalarFieldEnum | Writing_submissionsScalarFieldEnum[]
   }
 
   /**
@@ -25010,6 +25043,7 @@ export namespace Prisma {
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
+    tests?: boolean | testsDefaultArgs<ExtArgs>
     expert_review_requests?: boolean | writing_submissions$expert_review_requestsArgs<ExtArgs>
   }, ExtArgs["result"]["writing_submissions"]>
 
@@ -25034,12 +25068,14 @@ export namespace Prisma {
   }
 
   export type writing_submissionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tests?: boolean | testsDefaultArgs<ExtArgs>
     expert_review_requests?: boolean | writing_submissions$expert_review_requestsArgs<ExtArgs>
   }
 
   export type $writing_submissionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "writing_submissions"
     objects: {
+      tests: Prisma.$testsPayload<ExtArgs>
       expert_review_requests: Prisma.$expert_review_requestsPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -25399,6 +25435,7 @@ export namespace Prisma {
    */
   export interface Prisma__writing_submissionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    tests<T extends testsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, testsDefaultArgs<ExtArgs>>): Prisma__testsClient<$Result.GetResult<Prisma.$testsPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
     expert_review_requests<T extends writing_submissions$expert_review_requestsArgs<ExtArgs> = {}>(args?: Subset<T, writing_submissions$expert_review_requestsArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -28184,6 +28221,7 @@ export namespace Prisma {
     created_at?: DateTimeNullableFilter<"tests"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"tests"> | Date | string | null
     writing_questions?: Writing_questionsListRelationFilter
+    writing_submissions?: Writing_submissionsListRelationFilter
   }
 
   export type testsOrderByWithRelationInput = {
@@ -28207,6 +28245,7 @@ export namespace Prisma {
     created_at?: SortOrderInput | SortOrder
     updated_at?: SortOrderInput | SortOrder
     writing_questions?: writing_questionsOrderByRelationAggregateInput
+    writing_submissions?: writing_submissionsOrderByRelationAggregateInput
   }
 
   export type testsWhereUniqueInput = Prisma.AtLeast<{
@@ -28233,6 +28272,7 @@ export namespace Prisma {
     created_at?: DateTimeNullableFilter<"tests"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"tests"> | Date | string | null
     writing_questions?: Writing_questionsListRelationFilter
+    writing_submissions?: Writing_submissionsListRelationFilter
   }, "id">
 
   export type testsOrderByWithAggregationInput = {
@@ -28969,6 +29009,7 @@ export namespace Prisma {
     status?: StringFilter<"writing_submissions"> | string
     created_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
+    tests?: XOR<TestsRelationFilter, testsWhereInput>
     expert_review_requests?: XOR<Expert_review_requestsNullableRelationFilter, expert_review_requestsWhereInput> | null
   }
 
@@ -28989,6 +29030,7 @@ export namespace Prisma {
     status?: SortOrder
     created_at?: SortOrderInput | SortOrder
     updated_at?: SortOrderInput | SortOrder
+    tests?: testsOrderByWithRelationInput
     expert_review_requests?: expert_review_requestsOrderByWithRelationInput
   }
 
@@ -29012,6 +29054,7 @@ export namespace Prisma {
     status?: StringFilter<"writing_submissions"> | string
     created_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
+    tests?: XOR<TestsRelationFilter, testsWhereInput>
     expert_review_requests?: XOR<Expert_review_requestsNullableRelationFilter, expert_review_requestsWhereInput> | null
   }, "id">
 
@@ -30176,6 +30219,7 @@ export namespace Prisma {
     created_at?: Date | string | null
     updated_at?: Date | string | null
     writing_questions?: writing_questionsCreateNestedManyWithoutTestsInput
+    writing_submissions?: writing_submissionsCreateNestedManyWithoutTestsInput
   }
 
   export type testsUncheckedCreateInput = {
@@ -30199,6 +30243,7 @@ export namespace Prisma {
     created_at?: Date | string | null
     updated_at?: Date | string | null
     writing_questions?: writing_questionsUncheckedCreateNestedManyWithoutTestsInput
+    writing_submissions?: writing_submissionsUncheckedCreateNestedManyWithoutTestsInput
   }
 
   export type testsUpdateInput = {
@@ -30222,6 +30267,7 @@ export namespace Prisma {
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     writing_questions?: writing_questionsUpdateManyWithoutTestsNestedInput
+    writing_submissions?: writing_submissionsUpdateManyWithoutTestsNestedInput
   }
 
   export type testsUncheckedUpdateInput = {
@@ -30245,6 +30291,7 @@ export namespace Prisma {
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     writing_questions?: writing_questionsUncheckedUpdateManyWithoutTestsNestedInput
+    writing_submissions?: writing_submissionsUncheckedUpdateManyWithoutTestsNestedInput
   }
 
   export type testsCreateManyInput = {
@@ -31092,7 +31139,6 @@ export namespace Prisma {
   export type writing_submissionsCreateInput = {
     id?: bigint | number
     user_id: bigint | number
-    test_id: bigint | number
     task1_answer?: string | null
     task1_word_count?: number | null
     task2_answer?: string | null
@@ -31106,6 +31152,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    tests: testsCreateNestedOneWithoutWriting_submissionsInput
     expert_review_requests?: expert_review_requestsCreateNestedOneWithoutWriting_submissionsInput
   }
 
@@ -31132,7 +31179,6 @@ export namespace Prisma {
   export type writing_submissionsUpdateInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     user_id?: BigIntFieldUpdateOperationsInput | bigint | number
-    test_id?: BigIntFieldUpdateOperationsInput | bigint | number
     task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
     task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31146,6 +31192,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tests?: testsUpdateOneRequiredWithoutWriting_submissionsNestedInput
     expert_review_requests?: expert_review_requestsUpdateOneWithoutWriting_submissionsNestedInput
   }
 
@@ -31191,7 +31238,6 @@ export namespace Prisma {
   export type writing_submissionsUpdateManyMutationInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     user_id?: BigIntFieldUpdateOperationsInput | bigint | number
-    test_id?: BigIntFieldUpdateOperationsInput | bigint | number
     task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
     task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32184,7 +32230,17 @@ export namespace Prisma {
     none?: writing_questionsWhereInput
   }
 
+  export type Writing_submissionsListRelationFilter = {
+    every?: writing_submissionsWhereInput
+    some?: writing_submissionsWhereInput
+    none?: writing_submissionsWhereInput
+  }
+
   export type writing_questionsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type writing_submissionsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -33236,11 +33292,25 @@ export namespace Prisma {
     connect?: writing_questionsWhereUniqueInput | writing_questionsWhereUniqueInput[]
   }
 
+  export type writing_submissionsCreateNestedManyWithoutTestsInput = {
+    create?: XOR<writing_submissionsCreateWithoutTestsInput, writing_submissionsUncheckedCreateWithoutTestsInput> | writing_submissionsCreateWithoutTestsInput[] | writing_submissionsUncheckedCreateWithoutTestsInput[]
+    connectOrCreate?: writing_submissionsCreateOrConnectWithoutTestsInput | writing_submissionsCreateOrConnectWithoutTestsInput[]
+    createMany?: writing_submissionsCreateManyTestsInputEnvelope
+    connect?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
+  }
+
   export type writing_questionsUncheckedCreateNestedManyWithoutTestsInput = {
     create?: XOR<writing_questionsCreateWithoutTestsInput, writing_questionsUncheckedCreateWithoutTestsInput> | writing_questionsCreateWithoutTestsInput[] | writing_questionsUncheckedCreateWithoutTestsInput[]
     connectOrCreate?: writing_questionsCreateOrConnectWithoutTestsInput | writing_questionsCreateOrConnectWithoutTestsInput[]
     createMany?: writing_questionsCreateManyTestsInputEnvelope
     connect?: writing_questionsWhereUniqueInput | writing_questionsWhereUniqueInput[]
+  }
+
+  export type writing_submissionsUncheckedCreateNestedManyWithoutTestsInput = {
+    create?: XOR<writing_submissionsCreateWithoutTestsInput, writing_submissionsUncheckedCreateWithoutTestsInput> | writing_submissionsCreateWithoutTestsInput[] | writing_submissionsUncheckedCreateWithoutTestsInput[]
+    connectOrCreate?: writing_submissionsCreateOrConnectWithoutTestsInput | writing_submissionsCreateOrConnectWithoutTestsInput[]
+    createMany?: writing_submissionsCreateManyTestsInputEnvelope
+    connect?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
   }
 
   export type writing_questionsUpdateManyWithoutTestsNestedInput = {
@@ -33257,6 +33327,20 @@ export namespace Prisma {
     deleteMany?: writing_questionsScalarWhereInput | writing_questionsScalarWhereInput[]
   }
 
+  export type writing_submissionsUpdateManyWithoutTestsNestedInput = {
+    create?: XOR<writing_submissionsCreateWithoutTestsInput, writing_submissionsUncheckedCreateWithoutTestsInput> | writing_submissionsCreateWithoutTestsInput[] | writing_submissionsUncheckedCreateWithoutTestsInput[]
+    connectOrCreate?: writing_submissionsCreateOrConnectWithoutTestsInput | writing_submissionsCreateOrConnectWithoutTestsInput[]
+    upsert?: writing_submissionsUpsertWithWhereUniqueWithoutTestsInput | writing_submissionsUpsertWithWhereUniqueWithoutTestsInput[]
+    createMany?: writing_submissionsCreateManyTestsInputEnvelope
+    set?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
+    disconnect?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
+    delete?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
+    connect?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
+    update?: writing_submissionsUpdateWithWhereUniqueWithoutTestsInput | writing_submissionsUpdateWithWhereUniqueWithoutTestsInput[]
+    updateMany?: writing_submissionsUpdateManyWithWhereWithoutTestsInput | writing_submissionsUpdateManyWithWhereWithoutTestsInput[]
+    deleteMany?: writing_submissionsScalarWhereInput | writing_submissionsScalarWhereInput[]
+  }
+
   export type writing_questionsUncheckedUpdateManyWithoutTestsNestedInput = {
     create?: XOR<writing_questionsCreateWithoutTestsInput, writing_questionsUncheckedCreateWithoutTestsInput> | writing_questionsCreateWithoutTestsInput[] | writing_questionsUncheckedCreateWithoutTestsInput[]
     connectOrCreate?: writing_questionsCreateOrConnectWithoutTestsInput | writing_questionsCreateOrConnectWithoutTestsInput[]
@@ -33269,6 +33353,20 @@ export namespace Prisma {
     update?: writing_questionsUpdateWithWhereUniqueWithoutTestsInput | writing_questionsUpdateWithWhereUniqueWithoutTestsInput[]
     updateMany?: writing_questionsUpdateManyWithWhereWithoutTestsInput | writing_questionsUpdateManyWithWhereWithoutTestsInput[]
     deleteMany?: writing_questionsScalarWhereInput | writing_questionsScalarWhereInput[]
+  }
+
+  export type writing_submissionsUncheckedUpdateManyWithoutTestsNestedInput = {
+    create?: XOR<writing_submissionsCreateWithoutTestsInput, writing_submissionsUncheckedCreateWithoutTestsInput> | writing_submissionsCreateWithoutTestsInput[] | writing_submissionsUncheckedCreateWithoutTestsInput[]
+    connectOrCreate?: writing_submissionsCreateOrConnectWithoutTestsInput | writing_submissionsCreateOrConnectWithoutTestsInput[]
+    upsert?: writing_submissionsUpsertWithWhereUniqueWithoutTestsInput | writing_submissionsUpsertWithWhereUniqueWithoutTestsInput[]
+    createMany?: writing_submissionsCreateManyTestsInputEnvelope
+    set?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
+    disconnect?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
+    delete?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
+    connect?: writing_submissionsWhereUniqueInput | writing_submissionsWhereUniqueInput[]
+    update?: writing_submissionsUpdateWithWhereUniqueWithoutTestsInput | writing_submissionsUpdateWithWhereUniqueWithoutTestsInput[]
+    updateMany?: writing_submissionsUpdateManyWithWhereWithoutTestsInput | writing_submissionsUpdateManyWithWhereWithoutTestsInput[]
+    deleteMany?: writing_submissionsScalarWhereInput | writing_submissionsScalarWhereInput[]
   }
 
   export type usersCreateNestedOneWithoutUser_detailsInput = {
@@ -33349,6 +33447,12 @@ export namespace Prisma {
     update?: XOR<XOR<testsUpdateToOneWithWhereWithoutWriting_questionsInput, testsUpdateWithoutWriting_questionsInput>, testsUncheckedUpdateWithoutWriting_questionsInput>
   }
 
+  export type testsCreateNestedOneWithoutWriting_submissionsInput = {
+    create?: XOR<testsCreateWithoutWriting_submissionsInput, testsUncheckedCreateWithoutWriting_submissionsInput>
+    connectOrCreate?: testsCreateOrConnectWithoutWriting_submissionsInput
+    connect?: testsWhereUniqueInput
+  }
+
   export type expert_review_requestsCreateNestedOneWithoutWriting_submissionsInput = {
     create?: XOR<expert_review_requestsCreateWithoutWriting_submissionsInput, expert_review_requestsUncheckedCreateWithoutWriting_submissionsInput>
     connectOrCreate?: expert_review_requestsCreateOrConnectWithoutWriting_submissionsInput
@@ -33367,6 +33471,14 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type testsUpdateOneRequiredWithoutWriting_submissionsNestedInput = {
+    create?: XOR<testsCreateWithoutWriting_submissionsInput, testsUncheckedCreateWithoutWriting_submissionsInput>
+    connectOrCreate?: testsCreateOrConnectWithoutWriting_submissionsInput
+    upsert?: testsUpsertWithoutWriting_submissionsInput
+    connect?: testsWhereUniqueInput
+    update?: XOR<XOR<testsUpdateToOneWithWhereWithoutWriting_submissionsInput, testsUpdateWithoutWriting_submissionsInput>, testsUncheckedUpdateWithoutWriting_submissionsInput>
   }
 
   export type expert_review_requestsUpdateOneWithoutWriting_submissionsNestedInput = {
@@ -34192,6 +34304,54 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type writing_submissionsCreateWithoutTestsInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    task1_answer?: string | null
+    task1_word_count?: number | null
+    task2_answer?: string | null
+    task2_word_count?: number | null
+    time_taken: number
+    ai_evaluation?: string | null
+    expert_score?: number | null
+    expert_feedback?: string | null
+    expert_feedback_sent?: boolean
+    overall_band_score?: number | null
+    status?: string
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    expert_review_requests?: expert_review_requestsCreateNestedOneWithoutWriting_submissionsInput
+  }
+
+  export type writing_submissionsUncheckedCreateWithoutTestsInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    task1_answer?: string | null
+    task1_word_count?: number | null
+    task2_answer?: string | null
+    task2_word_count?: number | null
+    time_taken: number
+    ai_evaluation?: string | null
+    expert_score?: number | null
+    expert_feedback?: string | null
+    expert_feedback_sent?: boolean
+    overall_band_score?: number | null
+    status?: string
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    expert_review_requests?: expert_review_requestsUncheckedCreateNestedOneWithoutWriting_submissionsInput
+  }
+
+  export type writing_submissionsCreateOrConnectWithoutTestsInput = {
+    where: writing_submissionsWhereUniqueInput
+    create: XOR<writing_submissionsCreateWithoutTestsInput, writing_submissionsUncheckedCreateWithoutTestsInput>
+  }
+
+  export type writing_submissionsCreateManyTestsInputEnvelope = {
+    data: writing_submissionsCreateManyTestsInput | writing_submissionsCreateManyTestsInput[]
+    skipDuplicates?: boolean
+  }
+
   export type writing_questionsUpsertWithWhereUniqueWithoutTestsInput = {
     where: writing_questionsWhereUniqueInput
     update: XOR<writing_questionsUpdateWithoutTestsInput, writing_questionsUncheckedUpdateWithoutTestsInput>
@@ -34220,6 +34380,44 @@ export namespace Prisma {
     word_limit?: IntFilter<"writing_questions"> | number
     created_at?: DateTimeNullableFilter<"writing_questions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"writing_questions"> | Date | string | null
+  }
+
+  export type writing_submissionsUpsertWithWhereUniqueWithoutTestsInput = {
+    where: writing_submissionsWhereUniqueInput
+    update: XOR<writing_submissionsUpdateWithoutTestsInput, writing_submissionsUncheckedUpdateWithoutTestsInput>
+    create: XOR<writing_submissionsCreateWithoutTestsInput, writing_submissionsUncheckedCreateWithoutTestsInput>
+  }
+
+  export type writing_submissionsUpdateWithWhereUniqueWithoutTestsInput = {
+    where: writing_submissionsWhereUniqueInput
+    data: XOR<writing_submissionsUpdateWithoutTestsInput, writing_submissionsUncheckedUpdateWithoutTestsInput>
+  }
+
+  export type writing_submissionsUpdateManyWithWhereWithoutTestsInput = {
+    where: writing_submissionsScalarWhereInput
+    data: XOR<writing_submissionsUpdateManyMutationInput, writing_submissionsUncheckedUpdateManyWithoutTestsInput>
+  }
+
+  export type writing_submissionsScalarWhereInput = {
+    AND?: writing_submissionsScalarWhereInput | writing_submissionsScalarWhereInput[]
+    OR?: writing_submissionsScalarWhereInput[]
+    NOT?: writing_submissionsScalarWhereInput | writing_submissionsScalarWhereInput[]
+    id?: BigIntFilter<"writing_submissions"> | bigint | number
+    user_id?: BigIntFilter<"writing_submissions"> | bigint | number
+    test_id?: BigIntFilter<"writing_submissions"> | bigint | number
+    task1_answer?: StringNullableFilter<"writing_submissions"> | string | null
+    task1_word_count?: IntNullableFilter<"writing_submissions"> | number | null
+    task2_answer?: StringNullableFilter<"writing_submissions"> | string | null
+    task2_word_count?: IntNullableFilter<"writing_submissions"> | number | null
+    time_taken?: IntFilter<"writing_submissions"> | number
+    ai_evaluation?: StringNullableFilter<"writing_submissions"> | string | null
+    expert_score?: FloatNullableFilter<"writing_submissions"> | number | null
+    expert_feedback?: StringNullableFilter<"writing_submissions"> | string | null
+    expert_feedback_sent?: BoolFilter<"writing_submissions"> | boolean
+    overall_band_score?: FloatNullableFilter<"writing_submissions"> | number | null
+    status?: StringFilter<"writing_submissions"> | string
+    created_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
   }
 
   export type usersCreateWithoutUser_detailsInput = {
@@ -34454,6 +34652,7 @@ export namespace Prisma {
     listening_focus_keywords?: string | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    writing_submissions?: writing_submissionsCreateNestedManyWithoutTestsInput
   }
 
   export type testsUncheckedCreateWithoutWriting_questionsInput = {
@@ -34476,6 +34675,7 @@ export namespace Prisma {
     listening_focus_keywords?: string | null
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    writing_submissions?: writing_submissionsUncheckedCreateNestedManyWithoutTestsInput
   }
 
   export type testsCreateOrConnectWithoutWriting_questionsInput = {
@@ -34514,6 +34714,7 @@ export namespace Prisma {
     listening_focus_keywords?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    writing_submissions?: writing_submissionsUpdateManyWithoutTestsNestedInput
   }
 
   export type testsUncheckedUpdateWithoutWriting_questionsInput = {
@@ -34536,6 +34737,58 @@ export namespace Prisma {
     listening_focus_keywords?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    writing_submissions?: writing_submissionsUncheckedUpdateManyWithoutTestsNestedInput
+  }
+
+  export type testsCreateWithoutWriting_submissionsInput = {
+    id?: bigint | number
+    name: string
+    type: number
+    category: number
+    status: number
+    audio?: string | null
+    paragraph1?: string | null
+    paragraph2?: string | null
+    paragraph3?: string | null
+    paragraph4?: string | null
+    paragraph5?: string | null
+    reading_meta_title?: string | null
+    reading_meta_description?: string | null
+    reading_focus_keywords?: string | null
+    listening_meta_title?: string | null
+    listening_meta_description?: string | null
+    listening_focus_keywords?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    writing_questions?: writing_questionsCreateNestedManyWithoutTestsInput
+  }
+
+  export type testsUncheckedCreateWithoutWriting_submissionsInput = {
+    id?: bigint | number
+    name: string
+    type: number
+    category: number
+    status: number
+    audio?: string | null
+    paragraph1?: string | null
+    paragraph2?: string | null
+    paragraph3?: string | null
+    paragraph4?: string | null
+    paragraph5?: string | null
+    reading_meta_title?: string | null
+    reading_meta_description?: string | null
+    reading_focus_keywords?: string | null
+    listening_meta_title?: string | null
+    listening_meta_description?: string | null
+    listening_focus_keywords?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    writing_questions?: writing_questionsUncheckedCreateNestedManyWithoutTestsInput
+  }
+
+  export type testsCreateOrConnectWithoutWriting_submissionsInput = {
+    where: testsWhereUniqueInput
+    create: XOR<testsCreateWithoutWriting_submissionsInput, testsUncheckedCreateWithoutWriting_submissionsInput>
   }
 
   export type expert_review_requestsCreateWithoutWriting_submissionsInput = {
@@ -34563,6 +34816,63 @@ export namespace Prisma {
   export type expert_review_requestsCreateOrConnectWithoutWriting_submissionsInput = {
     where: expert_review_requestsWhereUniqueInput
     create: XOR<expert_review_requestsCreateWithoutWriting_submissionsInput, expert_review_requestsUncheckedCreateWithoutWriting_submissionsInput>
+  }
+
+  export type testsUpsertWithoutWriting_submissionsInput = {
+    update: XOR<testsUpdateWithoutWriting_submissionsInput, testsUncheckedUpdateWithoutWriting_submissionsInput>
+    create: XOR<testsCreateWithoutWriting_submissionsInput, testsUncheckedCreateWithoutWriting_submissionsInput>
+    where?: testsWhereInput
+  }
+
+  export type testsUpdateToOneWithWhereWithoutWriting_submissionsInput = {
+    where?: testsWhereInput
+    data: XOR<testsUpdateWithoutWriting_submissionsInput, testsUncheckedUpdateWithoutWriting_submissionsInput>
+  }
+
+  export type testsUpdateWithoutWriting_submissionsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    type?: IntFieldUpdateOperationsInput | number
+    category?: IntFieldUpdateOperationsInput | number
+    status?: IntFieldUpdateOperationsInput | number
+    audio?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph1?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph2?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph3?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph4?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph5?: NullableStringFieldUpdateOperationsInput | string | null
+    reading_meta_title?: NullableStringFieldUpdateOperationsInput | string | null
+    reading_meta_description?: NullableStringFieldUpdateOperationsInput | string | null
+    reading_focus_keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    listening_meta_title?: NullableStringFieldUpdateOperationsInput | string | null
+    listening_meta_description?: NullableStringFieldUpdateOperationsInput | string | null
+    listening_focus_keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    writing_questions?: writing_questionsUpdateManyWithoutTestsNestedInput
+  }
+
+  export type testsUncheckedUpdateWithoutWriting_submissionsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    name?: StringFieldUpdateOperationsInput | string
+    type?: IntFieldUpdateOperationsInput | number
+    category?: IntFieldUpdateOperationsInput | number
+    status?: IntFieldUpdateOperationsInput | number
+    audio?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph1?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph2?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph3?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph4?: NullableStringFieldUpdateOperationsInput | string | null
+    paragraph5?: NullableStringFieldUpdateOperationsInput | string | null
+    reading_meta_title?: NullableStringFieldUpdateOperationsInput | string | null
+    reading_meta_description?: NullableStringFieldUpdateOperationsInput | string | null
+    reading_focus_keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    listening_meta_title?: NullableStringFieldUpdateOperationsInput | string | null
+    listening_meta_description?: NullableStringFieldUpdateOperationsInput | string | null
+    listening_focus_keywords?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    writing_questions?: writing_questionsUncheckedUpdateManyWithoutTestsNestedInput
   }
 
   export type expert_review_requestsUpsertWithoutWriting_submissionsInput = {
@@ -34601,7 +34911,6 @@ export namespace Prisma {
   export type writing_submissionsCreateWithoutExpert_review_requestsInput = {
     id?: bigint | number
     user_id: bigint | number
-    test_id: bigint | number
     task1_answer?: string | null
     task1_word_count?: number | null
     task2_answer?: string | null
@@ -34615,6 +34924,7 @@ export namespace Prisma {
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
+    tests: testsCreateNestedOneWithoutWriting_submissionsInput
   }
 
   export type writing_submissionsUncheckedCreateWithoutExpert_review_requestsInput = {
@@ -34655,7 +34965,6 @@ export namespace Prisma {
   export type writing_submissionsUpdateWithoutExpert_review_requestsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     user_id?: BigIntFieldUpdateOperationsInput | bigint | number
-    test_id?: BigIntFieldUpdateOperationsInput | bigint | number
     task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
     task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34669,6 +34978,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    tests?: testsUpdateOneRequiredWithoutWriting_submissionsNestedInput
   }
 
   export type writing_submissionsUncheckedUpdateWithoutExpert_review_requestsInput = {
@@ -34808,6 +35118,24 @@ export namespace Prisma {
     updated_at?: Date | string | null
   }
 
+  export type writing_submissionsCreateManyTestsInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    task1_answer?: string | null
+    task1_word_count?: number | null
+    task2_answer?: string | null
+    task2_word_count?: number | null
+    time_taken: number
+    ai_evaluation?: string | null
+    expert_score?: number | null
+    expert_feedback?: string | null
+    expert_feedback_sent?: boolean
+    overall_band_score?: number | null
+    status?: string
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
   export type writing_questionsUpdateWithoutTestsInput = {
     id?: BigIntFieldUpdateOperationsInput | bigint | number
     task_number?: IntFieldUpdateOperationsInput | number
@@ -34834,6 +35162,62 @@ export namespace Prisma {
     question_text?: StringFieldUpdateOperationsInput | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
     word_limit?: IntFieldUpdateOperationsInput | number
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type writing_submissionsUpdateWithoutTestsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    time_taken?: IntFieldUpdateOperationsInput | number
+    ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
+    overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expert_review_requests?: expert_review_requestsUpdateOneWithoutWriting_submissionsNestedInput
+  }
+
+  export type writing_submissionsUncheckedUpdateWithoutTestsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    time_taken?: IntFieldUpdateOperationsInput | number
+    ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
+    overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expert_review_requests?: expert_review_requestsUncheckedUpdateOneWithoutWriting_submissionsNestedInput
+  }
+
+  export type writing_submissionsUncheckedUpdateManyWithoutTestsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    time_taken?: IntFieldUpdateOperationsInput | number
+    ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
+    overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
