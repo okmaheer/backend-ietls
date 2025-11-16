@@ -128,6 +128,16 @@ export type migrations = $Result.DefaultSelection<Prisma.$migrationsPayload>
  * 
  */
 export type writing_questions = $Result.DefaultSelection<Prisma.$writing_questionsPayload>
+/**
+ * Model writing_submissions
+ * 
+ */
+export type writing_submissions = $Result.DefaultSelection<Prisma.$writing_submissionsPayload>
+/**
+ * Model expert_review_requests
+ * 
+ */
+export type expert_review_requests = $Result.DefaultSelection<Prisma.$expert_review_requestsPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -481,6 +491,26 @@ export class PrismaClient<
     * ```
     */
   get writing_questions(): Prisma.writing_questionsDelegate<ExtArgs>;
+
+  /**
+   * `prisma.writing_submissions`: Exposes CRUD operations for the **writing_submissions** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Writing_submissions
+    * const writing_submissions = await prisma.writing_submissions.findMany()
+    * ```
+    */
+  get writing_submissions(): Prisma.writing_submissionsDelegate<ExtArgs>;
+
+  /**
+   * `prisma.expert_review_requests`: Exposes CRUD operations for the **expert_review_requests** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Expert_review_requests
+    * const expert_review_requests = await prisma.expert_review_requests.findMany()
+    * ```
+    */
+  get expert_review_requests(): Prisma.expert_review_requestsDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -944,7 +974,9 @@ export namespace Prisma {
     cities: 'cities',
     failed_jobs: 'failed_jobs',
     migrations: 'migrations',
-    writing_questions: 'writing_questions'
+    writing_questions: 'writing_questions',
+    writing_submissions: 'writing_submissions',
+    expert_review_requests: 'expert_review_requests'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -960,7 +992,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "countries" | "fill_in_blanks" | "finished_tests" | "m_c_q_s" | "model_has_permissions" | "model_has_roles" | "modules" | "options" | "permissions" | "question_groups" | "question_lists" | "questions" | "registeration_requests" | "role_has_permissions" | "roles" | "tests" | "user_details" | "users" | "branches" | "cities" | "failed_jobs" | "migrations" | "writing_questions"
+      modelProps: "countries" | "fill_in_blanks" | "finished_tests" | "m_c_q_s" | "model_has_permissions" | "model_has_roles" | "modules" | "options" | "permissions" | "question_groups" | "question_lists" | "questions" | "registeration_requests" | "role_has_permissions" | "roles" | "tests" | "user_details" | "users" | "branches" | "cities" | "failed_jobs" | "migrations" | "writing_questions" | "writing_submissions" | "expert_review_requests"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2479,6 +2511,138 @@ export namespace Prisma {
           count: {
             args: Prisma.writing_questionsCountArgs<ExtArgs>
             result: $Utils.Optional<Writing_questionsCountAggregateOutputType> | number
+          }
+        }
+      }
+      writing_submissions: {
+        payload: Prisma.$writing_submissionsPayload<ExtArgs>
+        fields: Prisma.writing_submissionsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.writing_submissionsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$writing_submissionsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.writing_submissionsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$writing_submissionsPayload>
+          }
+          findFirst: {
+            args: Prisma.writing_submissionsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$writing_submissionsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.writing_submissionsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$writing_submissionsPayload>
+          }
+          findMany: {
+            args: Prisma.writing_submissionsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$writing_submissionsPayload>[]
+          }
+          create: {
+            args: Prisma.writing_submissionsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$writing_submissionsPayload>
+          }
+          createMany: {
+            args: Prisma.writing_submissionsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.writing_submissionsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$writing_submissionsPayload>
+          }
+          update: {
+            args: Prisma.writing_submissionsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$writing_submissionsPayload>
+          }
+          deleteMany: {
+            args: Prisma.writing_submissionsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.writing_submissionsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.writing_submissionsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$writing_submissionsPayload>
+          }
+          aggregate: {
+            args: Prisma.Writing_submissionsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWriting_submissions>
+          }
+          groupBy: {
+            args: Prisma.writing_submissionsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Writing_submissionsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.writing_submissionsCountArgs<ExtArgs>
+            result: $Utils.Optional<Writing_submissionsCountAggregateOutputType> | number
+          }
+        }
+      }
+      expert_review_requests: {
+        payload: Prisma.$expert_review_requestsPayload<ExtArgs>
+        fields: Prisma.expert_review_requestsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.expert_review_requestsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$expert_review_requestsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.expert_review_requestsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$expert_review_requestsPayload>
+          }
+          findFirst: {
+            args: Prisma.expert_review_requestsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$expert_review_requestsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.expert_review_requestsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$expert_review_requestsPayload>
+          }
+          findMany: {
+            args: Prisma.expert_review_requestsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$expert_review_requestsPayload>[]
+          }
+          create: {
+            args: Prisma.expert_review_requestsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$expert_review_requestsPayload>
+          }
+          createMany: {
+            args: Prisma.expert_review_requestsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.expert_review_requestsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$expert_review_requestsPayload>
+          }
+          update: {
+            args: Prisma.expert_review_requestsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$expert_review_requestsPayload>
+          }
+          deleteMany: {
+            args: Prisma.expert_review_requestsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.expert_review_requestsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.expert_review_requestsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$expert_review_requestsPayload>
+          }
+          aggregate: {
+            args: Prisma.Expert_review_requestsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateExpert_review_requests>
+          }
+          groupBy: {
+            args: Prisma.expert_review_requestsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Expert_review_requestsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.expert_review_requestsCountArgs<ExtArgs>
+            result: $Utils.Optional<Expert_review_requestsCountAggregateOutputType> | number
           }
         }
       }
@@ -24533,6 +24697,2048 @@ export namespace Prisma {
 
 
   /**
+   * Model writing_submissions
+   */
+
+  export type AggregateWriting_submissions = {
+    _count: Writing_submissionsCountAggregateOutputType | null
+    _avg: Writing_submissionsAvgAggregateOutputType | null
+    _sum: Writing_submissionsSumAggregateOutputType | null
+    _min: Writing_submissionsMinAggregateOutputType | null
+    _max: Writing_submissionsMaxAggregateOutputType | null
+  }
+
+  export type Writing_submissionsAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    test_id: number | null
+    task1_word_count: number | null
+    task2_word_count: number | null
+    time_taken: number | null
+    expert_score: number | null
+    overall_band_score: number | null
+  }
+
+  export type Writing_submissionsSumAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    test_id: bigint | null
+    task1_word_count: number | null
+    task2_word_count: number | null
+    time_taken: number | null
+    expert_score: number | null
+    overall_band_score: number | null
+  }
+
+  export type Writing_submissionsMinAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    test_id: bigint | null
+    task1_answer: string | null
+    task1_word_count: number | null
+    task2_answer: string | null
+    task2_word_count: number | null
+    time_taken: number | null
+    ai_evaluation: string | null
+    expert_score: number | null
+    expert_feedback: string | null
+    expert_feedback_sent: boolean | null
+    overall_band_score: number | null
+    status: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Writing_submissionsMaxAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    test_id: bigint | null
+    task1_answer: string | null
+    task1_word_count: number | null
+    task2_answer: string | null
+    task2_word_count: number | null
+    time_taken: number | null
+    ai_evaluation: string | null
+    expert_score: number | null
+    expert_feedback: string | null
+    expert_feedback_sent: boolean | null
+    overall_band_score: number | null
+    status: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Writing_submissionsCountAggregateOutputType = {
+    id: number
+    user_id: number
+    test_id: number
+    task1_answer: number
+    task1_word_count: number
+    task2_answer: number
+    task2_word_count: number
+    time_taken: number
+    ai_evaluation: number
+    expert_score: number
+    expert_feedback: number
+    expert_feedback_sent: number
+    overall_band_score: number
+    status: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type Writing_submissionsAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    test_id?: true
+    task1_word_count?: true
+    task2_word_count?: true
+    time_taken?: true
+    expert_score?: true
+    overall_band_score?: true
+  }
+
+  export type Writing_submissionsSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    test_id?: true
+    task1_word_count?: true
+    task2_word_count?: true
+    time_taken?: true
+    expert_score?: true
+    overall_band_score?: true
+  }
+
+  export type Writing_submissionsMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    test_id?: true
+    task1_answer?: true
+    task1_word_count?: true
+    task2_answer?: true
+    task2_word_count?: true
+    time_taken?: true
+    ai_evaluation?: true
+    expert_score?: true
+    expert_feedback?: true
+    expert_feedback_sent?: true
+    overall_band_score?: true
+    status?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Writing_submissionsMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    test_id?: true
+    task1_answer?: true
+    task1_word_count?: true
+    task2_answer?: true
+    task2_word_count?: true
+    time_taken?: true
+    ai_evaluation?: true
+    expert_score?: true
+    expert_feedback?: true
+    expert_feedback_sent?: true
+    overall_band_score?: true
+    status?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Writing_submissionsCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    test_id?: true
+    task1_answer?: true
+    task1_word_count?: true
+    task2_answer?: true
+    task2_word_count?: true
+    time_taken?: true
+    ai_evaluation?: true
+    expert_score?: true
+    expert_feedback?: true
+    expert_feedback_sent?: true
+    overall_band_score?: true
+    status?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type Writing_submissionsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which writing_submissions to aggregate.
+     */
+    where?: writing_submissionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of writing_submissions to fetch.
+     */
+    orderBy?: writing_submissionsOrderByWithRelationInput | writing_submissionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: writing_submissionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` writing_submissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` writing_submissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned writing_submissions
+    **/
+    _count?: true | Writing_submissionsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Writing_submissionsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Writing_submissionsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Writing_submissionsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Writing_submissionsMaxAggregateInputType
+  }
+
+  export type GetWriting_submissionsAggregateType<T extends Writing_submissionsAggregateArgs> = {
+        [P in keyof T & keyof AggregateWriting_submissions]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWriting_submissions[P]>
+      : GetScalarType<T[P], AggregateWriting_submissions[P]>
+  }
+
+
+
+
+  export type writing_submissionsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: writing_submissionsWhereInput
+    orderBy?: writing_submissionsOrderByWithAggregationInput | writing_submissionsOrderByWithAggregationInput[]
+    by: Writing_submissionsScalarFieldEnum[] | Writing_submissionsScalarFieldEnum
+    having?: writing_submissionsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Writing_submissionsCountAggregateInputType | true
+    _avg?: Writing_submissionsAvgAggregateInputType
+    _sum?: Writing_submissionsSumAggregateInputType
+    _min?: Writing_submissionsMinAggregateInputType
+    _max?: Writing_submissionsMaxAggregateInputType
+  }
+
+  export type Writing_submissionsGroupByOutputType = {
+    id: bigint
+    user_id: bigint
+    test_id: bigint
+    task1_answer: string | null
+    task1_word_count: number | null
+    task2_answer: string | null
+    task2_word_count: number | null
+    time_taken: number
+    ai_evaluation: string | null
+    expert_score: number | null
+    expert_feedback: string | null
+    expert_feedback_sent: boolean
+    overall_band_score: number | null
+    status: string
+    created_at: Date | null
+    updated_at: Date | null
+    _count: Writing_submissionsCountAggregateOutputType | null
+    _avg: Writing_submissionsAvgAggregateOutputType | null
+    _sum: Writing_submissionsSumAggregateOutputType | null
+    _min: Writing_submissionsMinAggregateOutputType | null
+    _max: Writing_submissionsMaxAggregateOutputType | null
+  }
+
+  type GetWriting_submissionsGroupByPayload<T extends writing_submissionsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Writing_submissionsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Writing_submissionsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Writing_submissionsGroupByOutputType[P]>
+            : GetScalarType<T[P], Writing_submissionsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type writing_submissionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    test_id?: boolean
+    task1_answer?: boolean
+    task1_word_count?: boolean
+    task2_answer?: boolean
+    task2_word_count?: boolean
+    time_taken?: boolean
+    ai_evaluation?: boolean
+    expert_score?: boolean
+    expert_feedback?: boolean
+    expert_feedback_sent?: boolean
+    overall_band_score?: boolean
+    status?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    expert_review_requests?: boolean | writing_submissions$expert_review_requestsArgs<ExtArgs>
+  }, ExtArgs["result"]["writing_submissions"]>
+
+
+  export type writing_submissionsSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    test_id?: boolean
+    task1_answer?: boolean
+    task1_word_count?: boolean
+    task2_answer?: boolean
+    task2_word_count?: boolean
+    time_taken?: boolean
+    ai_evaluation?: boolean
+    expert_score?: boolean
+    expert_feedback?: boolean
+    expert_feedback_sent?: boolean
+    overall_band_score?: boolean
+    status?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type writing_submissionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    expert_review_requests?: boolean | writing_submissions$expert_review_requestsArgs<ExtArgs>
+  }
+
+  export type $writing_submissionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "writing_submissions"
+    objects: {
+      expert_review_requests: Prisma.$expert_review_requestsPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_id: bigint
+      test_id: bigint
+      task1_answer: string | null
+      task1_word_count: number | null
+      task2_answer: string | null
+      task2_word_count: number | null
+      time_taken: number
+      ai_evaluation: string | null
+      expert_score: number | null
+      expert_feedback: string | null
+      expert_feedback_sent: boolean
+      overall_band_score: number | null
+      status: string
+      created_at: Date | null
+      updated_at: Date | null
+    }, ExtArgs["result"]["writing_submissions"]>
+    composites: {}
+  }
+
+  type writing_submissionsGetPayload<S extends boolean | null | undefined | writing_submissionsDefaultArgs> = $Result.GetResult<Prisma.$writing_submissionsPayload, S>
+
+  type writing_submissionsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<writing_submissionsFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: Writing_submissionsCountAggregateInputType | true
+    }
+
+  export interface writing_submissionsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['writing_submissions'], meta: { name: 'writing_submissions' } }
+    /**
+     * Find zero or one Writing_submissions that matches the filter.
+     * @param {writing_submissionsFindUniqueArgs} args - Arguments to find a Writing_submissions
+     * @example
+     * // Get one Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends writing_submissionsFindUniqueArgs>(args: SelectSubset<T, writing_submissionsFindUniqueArgs<ExtArgs>>): Prisma__writing_submissionsClient<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Writing_submissions that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {writing_submissionsFindUniqueOrThrowArgs} args - Arguments to find a Writing_submissions
+     * @example
+     * // Get one Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends writing_submissionsFindUniqueOrThrowArgs>(args: SelectSubset<T, writing_submissionsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__writing_submissionsClient<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Writing_submissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {writing_submissionsFindFirstArgs} args - Arguments to find a Writing_submissions
+     * @example
+     * // Get one Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends writing_submissionsFindFirstArgs>(args?: SelectSubset<T, writing_submissionsFindFirstArgs<ExtArgs>>): Prisma__writing_submissionsClient<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Writing_submissions that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {writing_submissionsFindFirstOrThrowArgs} args - Arguments to find a Writing_submissions
+     * @example
+     * // Get one Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends writing_submissionsFindFirstOrThrowArgs>(args?: SelectSubset<T, writing_submissionsFindFirstOrThrowArgs<ExtArgs>>): Prisma__writing_submissionsClient<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Writing_submissions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {writing_submissionsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.findMany()
+     * 
+     * // Get first 10 Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const writing_submissionsWithIdOnly = await prisma.writing_submissions.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends writing_submissionsFindManyArgs>(args?: SelectSubset<T, writing_submissionsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Writing_submissions.
+     * @param {writing_submissionsCreateArgs} args - Arguments to create a Writing_submissions.
+     * @example
+     * // Create one Writing_submissions
+     * const Writing_submissions = await prisma.writing_submissions.create({
+     *   data: {
+     *     // ... data to create a Writing_submissions
+     *   }
+     * })
+     * 
+     */
+    create<T extends writing_submissionsCreateArgs>(args: SelectSubset<T, writing_submissionsCreateArgs<ExtArgs>>): Prisma__writing_submissionsClient<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Writing_submissions.
+     * @param {writing_submissionsCreateManyArgs} args - Arguments to create many Writing_submissions.
+     * @example
+     * // Create many Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends writing_submissionsCreateManyArgs>(args?: SelectSubset<T, writing_submissionsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Writing_submissions.
+     * @param {writing_submissionsDeleteArgs} args - Arguments to delete one Writing_submissions.
+     * @example
+     * // Delete one Writing_submissions
+     * const Writing_submissions = await prisma.writing_submissions.delete({
+     *   where: {
+     *     // ... filter to delete one Writing_submissions
+     *   }
+     * })
+     * 
+     */
+    delete<T extends writing_submissionsDeleteArgs>(args: SelectSubset<T, writing_submissionsDeleteArgs<ExtArgs>>): Prisma__writing_submissionsClient<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Writing_submissions.
+     * @param {writing_submissionsUpdateArgs} args - Arguments to update one Writing_submissions.
+     * @example
+     * // Update one Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends writing_submissionsUpdateArgs>(args: SelectSubset<T, writing_submissionsUpdateArgs<ExtArgs>>): Prisma__writing_submissionsClient<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Writing_submissions.
+     * @param {writing_submissionsDeleteManyArgs} args - Arguments to filter Writing_submissions to delete.
+     * @example
+     * // Delete a few Writing_submissions
+     * const { count } = await prisma.writing_submissions.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends writing_submissionsDeleteManyArgs>(args?: SelectSubset<T, writing_submissionsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Writing_submissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {writing_submissionsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends writing_submissionsUpdateManyArgs>(args: SelectSubset<T, writing_submissionsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Writing_submissions.
+     * @param {writing_submissionsUpsertArgs} args - Arguments to update or create a Writing_submissions.
+     * @example
+     * // Update or create a Writing_submissions
+     * const writing_submissions = await prisma.writing_submissions.upsert({
+     *   create: {
+     *     // ... data to create a Writing_submissions
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Writing_submissions we want to update
+     *   }
+     * })
+     */
+    upsert<T extends writing_submissionsUpsertArgs>(args: SelectSubset<T, writing_submissionsUpsertArgs<ExtArgs>>): Prisma__writing_submissionsClient<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Writing_submissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {writing_submissionsCountArgs} args - Arguments to filter Writing_submissions to count.
+     * @example
+     * // Count the number of Writing_submissions
+     * const count = await prisma.writing_submissions.count({
+     *   where: {
+     *     // ... the filter for the Writing_submissions we want to count
+     *   }
+     * })
+    **/
+    count<T extends writing_submissionsCountArgs>(
+      args?: Subset<T, writing_submissionsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Writing_submissionsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Writing_submissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Writing_submissionsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Writing_submissionsAggregateArgs>(args: Subset<T, Writing_submissionsAggregateArgs>): Prisma.PrismaPromise<GetWriting_submissionsAggregateType<T>>
+
+    /**
+     * Group by Writing_submissions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {writing_submissionsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends writing_submissionsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: writing_submissionsGroupByArgs['orderBy'] }
+        : { orderBy?: writing_submissionsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, writing_submissionsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWriting_submissionsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the writing_submissions model
+   */
+  readonly fields: writing_submissionsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for writing_submissions.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__writing_submissionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    expert_review_requests<T extends writing_submissions$expert_review_requestsArgs<ExtArgs> = {}>(args?: Subset<T, writing_submissions$expert_review_requestsArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "findUniqueOrThrow"> | null, null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the writing_submissions model
+   */ 
+  interface writing_submissionsFieldRefs {
+    readonly id: FieldRef<"writing_submissions", 'BigInt'>
+    readonly user_id: FieldRef<"writing_submissions", 'BigInt'>
+    readonly test_id: FieldRef<"writing_submissions", 'BigInt'>
+    readonly task1_answer: FieldRef<"writing_submissions", 'String'>
+    readonly task1_word_count: FieldRef<"writing_submissions", 'Int'>
+    readonly task2_answer: FieldRef<"writing_submissions", 'String'>
+    readonly task2_word_count: FieldRef<"writing_submissions", 'Int'>
+    readonly time_taken: FieldRef<"writing_submissions", 'Int'>
+    readonly ai_evaluation: FieldRef<"writing_submissions", 'String'>
+    readonly expert_score: FieldRef<"writing_submissions", 'Float'>
+    readonly expert_feedback: FieldRef<"writing_submissions", 'String'>
+    readonly expert_feedback_sent: FieldRef<"writing_submissions", 'Boolean'>
+    readonly overall_band_score: FieldRef<"writing_submissions", 'Float'>
+    readonly status: FieldRef<"writing_submissions", 'String'>
+    readonly created_at: FieldRef<"writing_submissions", 'DateTime'>
+    readonly updated_at: FieldRef<"writing_submissions", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * writing_submissions findUnique
+   */
+  export type writing_submissionsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    /**
+     * Filter, which writing_submissions to fetch.
+     */
+    where: writing_submissionsWhereUniqueInput
+  }
+
+  /**
+   * writing_submissions findUniqueOrThrow
+   */
+  export type writing_submissionsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    /**
+     * Filter, which writing_submissions to fetch.
+     */
+    where: writing_submissionsWhereUniqueInput
+  }
+
+  /**
+   * writing_submissions findFirst
+   */
+  export type writing_submissionsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    /**
+     * Filter, which writing_submissions to fetch.
+     */
+    where?: writing_submissionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of writing_submissions to fetch.
+     */
+    orderBy?: writing_submissionsOrderByWithRelationInput | writing_submissionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for writing_submissions.
+     */
+    cursor?: writing_submissionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` writing_submissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` writing_submissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of writing_submissions.
+     */
+    distinct?: Writing_submissionsScalarFieldEnum | Writing_submissionsScalarFieldEnum[]
+  }
+
+  /**
+   * writing_submissions findFirstOrThrow
+   */
+  export type writing_submissionsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    /**
+     * Filter, which writing_submissions to fetch.
+     */
+    where?: writing_submissionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of writing_submissions to fetch.
+     */
+    orderBy?: writing_submissionsOrderByWithRelationInput | writing_submissionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for writing_submissions.
+     */
+    cursor?: writing_submissionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` writing_submissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` writing_submissions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of writing_submissions.
+     */
+    distinct?: Writing_submissionsScalarFieldEnum | Writing_submissionsScalarFieldEnum[]
+  }
+
+  /**
+   * writing_submissions findMany
+   */
+  export type writing_submissionsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    /**
+     * Filter, which writing_submissions to fetch.
+     */
+    where?: writing_submissionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of writing_submissions to fetch.
+     */
+    orderBy?: writing_submissionsOrderByWithRelationInput | writing_submissionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing writing_submissions.
+     */
+    cursor?: writing_submissionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` writing_submissions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` writing_submissions.
+     */
+    skip?: number
+    distinct?: Writing_submissionsScalarFieldEnum | Writing_submissionsScalarFieldEnum[]
+  }
+
+  /**
+   * writing_submissions create
+   */
+  export type writing_submissionsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a writing_submissions.
+     */
+    data: XOR<writing_submissionsCreateInput, writing_submissionsUncheckedCreateInput>
+  }
+
+  /**
+   * writing_submissions createMany
+   */
+  export type writing_submissionsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many writing_submissions.
+     */
+    data: writing_submissionsCreateManyInput | writing_submissionsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * writing_submissions update
+   */
+  export type writing_submissionsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a writing_submissions.
+     */
+    data: XOR<writing_submissionsUpdateInput, writing_submissionsUncheckedUpdateInput>
+    /**
+     * Choose, which writing_submissions to update.
+     */
+    where: writing_submissionsWhereUniqueInput
+  }
+
+  /**
+   * writing_submissions updateMany
+   */
+  export type writing_submissionsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update writing_submissions.
+     */
+    data: XOR<writing_submissionsUpdateManyMutationInput, writing_submissionsUncheckedUpdateManyInput>
+    /**
+     * Filter which writing_submissions to update
+     */
+    where?: writing_submissionsWhereInput
+  }
+
+  /**
+   * writing_submissions upsert
+   */
+  export type writing_submissionsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the writing_submissions to update in case it exists.
+     */
+    where: writing_submissionsWhereUniqueInput
+    /**
+     * In case the writing_submissions found by the `where` argument doesn't exist, create a new writing_submissions with this data.
+     */
+    create: XOR<writing_submissionsCreateInput, writing_submissionsUncheckedCreateInput>
+    /**
+     * In case the writing_submissions was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<writing_submissionsUpdateInput, writing_submissionsUncheckedUpdateInput>
+  }
+
+  /**
+   * writing_submissions delete
+   */
+  export type writing_submissionsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+    /**
+     * Filter which writing_submissions to delete.
+     */
+    where: writing_submissionsWhereUniqueInput
+  }
+
+  /**
+   * writing_submissions deleteMany
+   */
+  export type writing_submissionsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which writing_submissions to delete
+     */
+    where?: writing_submissionsWhereInput
+  }
+
+  /**
+   * writing_submissions.expert_review_requests
+   */
+  export type writing_submissions$expert_review_requestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    where?: expert_review_requestsWhereInput
+  }
+
+  /**
+   * writing_submissions without action
+   */
+  export type writing_submissionsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the writing_submissions
+     */
+    select?: writing_submissionsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: writing_submissionsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model expert_review_requests
+   */
+
+  export type AggregateExpert_review_requests = {
+    _count: Expert_review_requestsCountAggregateOutputType | null
+    _avg: Expert_review_requestsAvgAggregateOutputType | null
+    _sum: Expert_review_requestsSumAggregateOutputType | null
+    _min: Expert_review_requestsMinAggregateOutputType | null
+    _max: Expert_review_requestsMaxAggregateOutputType | null
+  }
+
+  export type Expert_review_requestsAvgAggregateOutputType = {
+    id: number | null
+    submission_id: number | null
+    user_id: number | null
+  }
+
+  export type Expert_review_requestsSumAggregateOutputType = {
+    id: bigint | null
+    submission_id: bigint | null
+    user_id: bigint | null
+  }
+
+  export type Expert_review_requestsMinAggregateOutputType = {
+    id: bigint | null
+    submission_id: bigint | null
+    user_id: bigint | null
+    status: string | null
+    requested_at: Date | null
+    reviewed_at: Date | null
+    admin_notes: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Expert_review_requestsMaxAggregateOutputType = {
+    id: bigint | null
+    submission_id: bigint | null
+    user_id: bigint | null
+    status: string | null
+    requested_at: Date | null
+    reviewed_at: Date | null
+    admin_notes: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Expert_review_requestsCountAggregateOutputType = {
+    id: number
+    submission_id: number
+    user_id: number
+    status: number
+    requested_at: number
+    reviewed_at: number
+    admin_notes: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type Expert_review_requestsAvgAggregateInputType = {
+    id?: true
+    submission_id?: true
+    user_id?: true
+  }
+
+  export type Expert_review_requestsSumAggregateInputType = {
+    id?: true
+    submission_id?: true
+    user_id?: true
+  }
+
+  export type Expert_review_requestsMinAggregateInputType = {
+    id?: true
+    submission_id?: true
+    user_id?: true
+    status?: true
+    requested_at?: true
+    reviewed_at?: true
+    admin_notes?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Expert_review_requestsMaxAggregateInputType = {
+    id?: true
+    submission_id?: true
+    user_id?: true
+    status?: true
+    requested_at?: true
+    reviewed_at?: true
+    admin_notes?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Expert_review_requestsCountAggregateInputType = {
+    id?: true
+    submission_id?: true
+    user_id?: true
+    status?: true
+    requested_at?: true
+    reviewed_at?: true
+    admin_notes?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type Expert_review_requestsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which expert_review_requests to aggregate.
+     */
+    where?: expert_review_requestsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of expert_review_requests to fetch.
+     */
+    orderBy?: expert_review_requestsOrderByWithRelationInput | expert_review_requestsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: expert_review_requestsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` expert_review_requests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` expert_review_requests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned expert_review_requests
+    **/
+    _count?: true | Expert_review_requestsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Expert_review_requestsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Expert_review_requestsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Expert_review_requestsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Expert_review_requestsMaxAggregateInputType
+  }
+
+  export type GetExpert_review_requestsAggregateType<T extends Expert_review_requestsAggregateArgs> = {
+        [P in keyof T & keyof AggregateExpert_review_requests]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateExpert_review_requests[P]>
+      : GetScalarType<T[P], AggregateExpert_review_requests[P]>
+  }
+
+
+
+
+  export type expert_review_requestsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: expert_review_requestsWhereInput
+    orderBy?: expert_review_requestsOrderByWithAggregationInput | expert_review_requestsOrderByWithAggregationInput[]
+    by: Expert_review_requestsScalarFieldEnum[] | Expert_review_requestsScalarFieldEnum
+    having?: expert_review_requestsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Expert_review_requestsCountAggregateInputType | true
+    _avg?: Expert_review_requestsAvgAggregateInputType
+    _sum?: Expert_review_requestsSumAggregateInputType
+    _min?: Expert_review_requestsMinAggregateInputType
+    _max?: Expert_review_requestsMaxAggregateInputType
+  }
+
+  export type Expert_review_requestsGroupByOutputType = {
+    id: bigint
+    submission_id: bigint
+    user_id: bigint
+    status: string
+    requested_at: Date
+    reviewed_at: Date | null
+    admin_notes: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    _count: Expert_review_requestsCountAggregateOutputType | null
+    _avg: Expert_review_requestsAvgAggregateOutputType | null
+    _sum: Expert_review_requestsSumAggregateOutputType | null
+    _min: Expert_review_requestsMinAggregateOutputType | null
+    _max: Expert_review_requestsMaxAggregateOutputType | null
+  }
+
+  type GetExpert_review_requestsGroupByPayload<T extends expert_review_requestsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Expert_review_requestsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Expert_review_requestsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Expert_review_requestsGroupByOutputType[P]>
+            : GetScalarType<T[P], Expert_review_requestsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type expert_review_requestsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    submission_id?: boolean
+    user_id?: boolean
+    status?: boolean
+    requested_at?: boolean
+    reviewed_at?: boolean
+    admin_notes?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    writing_submissions?: boolean | writing_submissionsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expert_review_requests"]>
+
+
+  export type expert_review_requestsSelectScalar = {
+    id?: boolean
+    submission_id?: boolean
+    user_id?: boolean
+    status?: boolean
+    requested_at?: boolean
+    reviewed_at?: boolean
+    admin_notes?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type expert_review_requestsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    writing_submissions?: boolean | writing_submissionsDefaultArgs<ExtArgs>
+  }
+
+  export type $expert_review_requestsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "expert_review_requests"
+    objects: {
+      writing_submissions: Prisma.$writing_submissionsPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      submission_id: bigint
+      user_id: bigint
+      status: string
+      requested_at: Date
+      reviewed_at: Date | null
+      admin_notes: string | null
+      created_at: Date | null
+      updated_at: Date | null
+    }, ExtArgs["result"]["expert_review_requests"]>
+    composites: {}
+  }
+
+  type expert_review_requestsGetPayload<S extends boolean | null | undefined | expert_review_requestsDefaultArgs> = $Result.GetResult<Prisma.$expert_review_requestsPayload, S>
+
+  type expert_review_requestsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<expert_review_requestsFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: Expert_review_requestsCountAggregateInputType | true
+    }
+
+  export interface expert_review_requestsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['expert_review_requests'], meta: { name: 'expert_review_requests' } }
+    /**
+     * Find zero or one Expert_review_requests that matches the filter.
+     * @param {expert_review_requestsFindUniqueArgs} args - Arguments to find a Expert_review_requests
+     * @example
+     * // Get one Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends expert_review_requestsFindUniqueArgs>(args: SelectSubset<T, expert_review_requestsFindUniqueArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Expert_review_requests that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {expert_review_requestsFindUniqueOrThrowArgs} args - Arguments to find a Expert_review_requests
+     * @example
+     * // Get one Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends expert_review_requestsFindUniqueOrThrowArgs>(args: SelectSubset<T, expert_review_requestsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Expert_review_requests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {expert_review_requestsFindFirstArgs} args - Arguments to find a Expert_review_requests
+     * @example
+     * // Get one Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends expert_review_requestsFindFirstArgs>(args?: SelectSubset<T, expert_review_requestsFindFirstArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Expert_review_requests that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {expert_review_requestsFindFirstOrThrowArgs} args - Arguments to find a Expert_review_requests
+     * @example
+     * // Get one Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends expert_review_requestsFindFirstOrThrowArgs>(args?: SelectSubset<T, expert_review_requestsFindFirstOrThrowArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Expert_review_requests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {expert_review_requestsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.findMany()
+     * 
+     * // Get first 10 Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const expert_review_requestsWithIdOnly = await prisma.expert_review_requests.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends expert_review_requestsFindManyArgs>(args?: SelectSubset<T, expert_review_requestsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Expert_review_requests.
+     * @param {expert_review_requestsCreateArgs} args - Arguments to create a Expert_review_requests.
+     * @example
+     * // Create one Expert_review_requests
+     * const Expert_review_requests = await prisma.expert_review_requests.create({
+     *   data: {
+     *     // ... data to create a Expert_review_requests
+     *   }
+     * })
+     * 
+     */
+    create<T extends expert_review_requestsCreateArgs>(args: SelectSubset<T, expert_review_requestsCreateArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Expert_review_requests.
+     * @param {expert_review_requestsCreateManyArgs} args - Arguments to create many Expert_review_requests.
+     * @example
+     * // Create many Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends expert_review_requestsCreateManyArgs>(args?: SelectSubset<T, expert_review_requestsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Expert_review_requests.
+     * @param {expert_review_requestsDeleteArgs} args - Arguments to delete one Expert_review_requests.
+     * @example
+     * // Delete one Expert_review_requests
+     * const Expert_review_requests = await prisma.expert_review_requests.delete({
+     *   where: {
+     *     // ... filter to delete one Expert_review_requests
+     *   }
+     * })
+     * 
+     */
+    delete<T extends expert_review_requestsDeleteArgs>(args: SelectSubset<T, expert_review_requestsDeleteArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Expert_review_requests.
+     * @param {expert_review_requestsUpdateArgs} args - Arguments to update one Expert_review_requests.
+     * @example
+     * // Update one Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends expert_review_requestsUpdateArgs>(args: SelectSubset<T, expert_review_requestsUpdateArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Expert_review_requests.
+     * @param {expert_review_requestsDeleteManyArgs} args - Arguments to filter Expert_review_requests to delete.
+     * @example
+     * // Delete a few Expert_review_requests
+     * const { count } = await prisma.expert_review_requests.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends expert_review_requestsDeleteManyArgs>(args?: SelectSubset<T, expert_review_requestsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Expert_review_requests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {expert_review_requestsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends expert_review_requestsUpdateManyArgs>(args: SelectSubset<T, expert_review_requestsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Expert_review_requests.
+     * @param {expert_review_requestsUpsertArgs} args - Arguments to update or create a Expert_review_requests.
+     * @example
+     * // Update or create a Expert_review_requests
+     * const expert_review_requests = await prisma.expert_review_requests.upsert({
+     *   create: {
+     *     // ... data to create a Expert_review_requests
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Expert_review_requests we want to update
+     *   }
+     * })
+     */
+    upsert<T extends expert_review_requestsUpsertArgs>(args: SelectSubset<T, expert_review_requestsUpsertArgs<ExtArgs>>): Prisma__expert_review_requestsClient<$Result.GetResult<Prisma.$expert_review_requestsPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Expert_review_requests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {expert_review_requestsCountArgs} args - Arguments to filter Expert_review_requests to count.
+     * @example
+     * // Count the number of Expert_review_requests
+     * const count = await prisma.expert_review_requests.count({
+     *   where: {
+     *     // ... the filter for the Expert_review_requests we want to count
+     *   }
+     * })
+    **/
+    count<T extends expert_review_requestsCountArgs>(
+      args?: Subset<T, expert_review_requestsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Expert_review_requestsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Expert_review_requests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Expert_review_requestsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Expert_review_requestsAggregateArgs>(args: Subset<T, Expert_review_requestsAggregateArgs>): Prisma.PrismaPromise<GetExpert_review_requestsAggregateType<T>>
+
+    /**
+     * Group by Expert_review_requests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {expert_review_requestsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends expert_review_requestsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: expert_review_requestsGroupByArgs['orderBy'] }
+        : { orderBy?: expert_review_requestsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, expert_review_requestsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetExpert_review_requestsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the expert_review_requests model
+   */
+  readonly fields: expert_review_requestsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for expert_review_requests.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__expert_review_requestsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    writing_submissions<T extends writing_submissionsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, writing_submissionsDefaultArgs<ExtArgs>>): Prisma__writing_submissionsClient<$Result.GetResult<Prisma.$writing_submissionsPayload<ExtArgs>, T, "findUniqueOrThrow"> | Null, Null, ExtArgs>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the expert_review_requests model
+   */ 
+  interface expert_review_requestsFieldRefs {
+    readonly id: FieldRef<"expert_review_requests", 'BigInt'>
+    readonly submission_id: FieldRef<"expert_review_requests", 'BigInt'>
+    readonly user_id: FieldRef<"expert_review_requests", 'BigInt'>
+    readonly status: FieldRef<"expert_review_requests", 'String'>
+    readonly requested_at: FieldRef<"expert_review_requests", 'DateTime'>
+    readonly reviewed_at: FieldRef<"expert_review_requests", 'DateTime'>
+    readonly admin_notes: FieldRef<"expert_review_requests", 'String'>
+    readonly created_at: FieldRef<"expert_review_requests", 'DateTime'>
+    readonly updated_at: FieldRef<"expert_review_requests", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * expert_review_requests findUnique
+   */
+  export type expert_review_requestsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    /**
+     * Filter, which expert_review_requests to fetch.
+     */
+    where: expert_review_requestsWhereUniqueInput
+  }
+
+  /**
+   * expert_review_requests findUniqueOrThrow
+   */
+  export type expert_review_requestsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    /**
+     * Filter, which expert_review_requests to fetch.
+     */
+    where: expert_review_requestsWhereUniqueInput
+  }
+
+  /**
+   * expert_review_requests findFirst
+   */
+  export type expert_review_requestsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    /**
+     * Filter, which expert_review_requests to fetch.
+     */
+    where?: expert_review_requestsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of expert_review_requests to fetch.
+     */
+    orderBy?: expert_review_requestsOrderByWithRelationInput | expert_review_requestsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for expert_review_requests.
+     */
+    cursor?: expert_review_requestsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` expert_review_requests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` expert_review_requests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of expert_review_requests.
+     */
+    distinct?: Expert_review_requestsScalarFieldEnum | Expert_review_requestsScalarFieldEnum[]
+  }
+
+  /**
+   * expert_review_requests findFirstOrThrow
+   */
+  export type expert_review_requestsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    /**
+     * Filter, which expert_review_requests to fetch.
+     */
+    where?: expert_review_requestsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of expert_review_requests to fetch.
+     */
+    orderBy?: expert_review_requestsOrderByWithRelationInput | expert_review_requestsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for expert_review_requests.
+     */
+    cursor?: expert_review_requestsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` expert_review_requests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` expert_review_requests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of expert_review_requests.
+     */
+    distinct?: Expert_review_requestsScalarFieldEnum | Expert_review_requestsScalarFieldEnum[]
+  }
+
+  /**
+   * expert_review_requests findMany
+   */
+  export type expert_review_requestsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    /**
+     * Filter, which expert_review_requests to fetch.
+     */
+    where?: expert_review_requestsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of expert_review_requests to fetch.
+     */
+    orderBy?: expert_review_requestsOrderByWithRelationInput | expert_review_requestsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing expert_review_requests.
+     */
+    cursor?: expert_review_requestsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` expert_review_requests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` expert_review_requests.
+     */
+    skip?: number
+    distinct?: Expert_review_requestsScalarFieldEnum | Expert_review_requestsScalarFieldEnum[]
+  }
+
+  /**
+   * expert_review_requests create
+   */
+  export type expert_review_requestsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a expert_review_requests.
+     */
+    data: XOR<expert_review_requestsCreateInput, expert_review_requestsUncheckedCreateInput>
+  }
+
+  /**
+   * expert_review_requests createMany
+   */
+  export type expert_review_requestsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many expert_review_requests.
+     */
+    data: expert_review_requestsCreateManyInput | expert_review_requestsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * expert_review_requests update
+   */
+  export type expert_review_requestsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a expert_review_requests.
+     */
+    data: XOR<expert_review_requestsUpdateInput, expert_review_requestsUncheckedUpdateInput>
+    /**
+     * Choose, which expert_review_requests to update.
+     */
+    where: expert_review_requestsWhereUniqueInput
+  }
+
+  /**
+   * expert_review_requests updateMany
+   */
+  export type expert_review_requestsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update expert_review_requests.
+     */
+    data: XOR<expert_review_requestsUpdateManyMutationInput, expert_review_requestsUncheckedUpdateManyInput>
+    /**
+     * Filter which expert_review_requests to update
+     */
+    where?: expert_review_requestsWhereInput
+  }
+
+  /**
+   * expert_review_requests upsert
+   */
+  export type expert_review_requestsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the expert_review_requests to update in case it exists.
+     */
+    where: expert_review_requestsWhereUniqueInput
+    /**
+     * In case the expert_review_requests found by the `where` argument doesn't exist, create a new expert_review_requests with this data.
+     */
+    create: XOR<expert_review_requestsCreateInput, expert_review_requestsUncheckedCreateInput>
+    /**
+     * In case the expert_review_requests was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<expert_review_requestsUpdateInput, expert_review_requestsUncheckedUpdateInput>
+  }
+
+  /**
+   * expert_review_requests delete
+   */
+  export type expert_review_requestsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+    /**
+     * Filter which expert_review_requests to delete.
+     */
+    where: expert_review_requestsWhereUniqueInput
+  }
+
+  /**
+   * expert_review_requests deleteMany
+   */
+  export type expert_review_requestsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which expert_review_requests to delete
+     */
+    where?: expert_review_requestsWhereInput
+  }
+
+  /**
+   * expert_review_requests without action
+   */
+  export type expert_review_requestsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the expert_review_requests
+     */
+    select?: expert_review_requestsSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: expert_review_requestsInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -24889,6 +27095,43 @@ export namespace Prisma {
   };
 
   export type Writing_questionsScalarFieldEnum = (typeof Writing_questionsScalarFieldEnum)[keyof typeof Writing_questionsScalarFieldEnum]
+
+
+  export const Writing_submissionsScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    test_id: 'test_id',
+    task1_answer: 'task1_answer',
+    task1_word_count: 'task1_word_count',
+    task2_answer: 'task2_answer',
+    task2_word_count: 'task2_word_count',
+    time_taken: 'time_taken',
+    ai_evaluation: 'ai_evaluation',
+    expert_score: 'expert_score',
+    expert_feedback: 'expert_feedback',
+    expert_feedback_sent: 'expert_feedback_sent',
+    overall_band_score: 'overall_band_score',
+    status: 'status',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type Writing_submissionsScalarFieldEnum = (typeof Writing_submissionsScalarFieldEnum)[keyof typeof Writing_submissionsScalarFieldEnum]
+
+
+  export const Expert_review_requestsScalarFieldEnum: {
+    id: 'id',
+    submission_id: 'submission_id',
+    user_id: 'user_id',
+    status: 'status',
+    requested_at: 'requested_at',
+    reviewed_at: 'reviewed_at',
+    admin_notes: 'admin_notes',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type Expert_review_requestsScalarFieldEnum = (typeof Expert_review_requestsScalarFieldEnum)[keyof typeof Expert_review_requestsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -26704,6 +28947,195 @@ export namespace Prisma {
     word_limit?: IntWithAggregatesFilter<"writing_questions"> | number
     created_at?: DateTimeNullableWithAggregatesFilter<"writing_questions"> | Date | string | null
     updated_at?: DateTimeNullableWithAggregatesFilter<"writing_questions"> | Date | string | null
+  }
+
+  export type writing_submissionsWhereInput = {
+    AND?: writing_submissionsWhereInput | writing_submissionsWhereInput[]
+    OR?: writing_submissionsWhereInput[]
+    NOT?: writing_submissionsWhereInput | writing_submissionsWhereInput[]
+    id?: BigIntFilter<"writing_submissions"> | bigint | number
+    user_id?: BigIntFilter<"writing_submissions"> | bigint | number
+    test_id?: BigIntFilter<"writing_submissions"> | bigint | number
+    task1_answer?: StringNullableFilter<"writing_submissions"> | string | null
+    task1_word_count?: IntNullableFilter<"writing_submissions"> | number | null
+    task2_answer?: StringNullableFilter<"writing_submissions"> | string | null
+    task2_word_count?: IntNullableFilter<"writing_submissions"> | number | null
+    time_taken?: IntFilter<"writing_submissions"> | number
+    ai_evaluation?: StringNullableFilter<"writing_submissions"> | string | null
+    expert_score?: FloatNullableFilter<"writing_submissions"> | number | null
+    expert_feedback?: StringNullableFilter<"writing_submissions"> | string | null
+    expert_feedback_sent?: BoolFilter<"writing_submissions"> | boolean
+    overall_band_score?: FloatNullableFilter<"writing_submissions"> | number | null
+    status?: StringFilter<"writing_submissions"> | string
+    created_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
+    expert_review_requests?: XOR<Expert_review_requestsNullableRelationFilter, expert_review_requestsWhereInput> | null
+  }
+
+  export type writing_submissionsOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    test_id?: SortOrder
+    task1_answer?: SortOrderInput | SortOrder
+    task1_word_count?: SortOrderInput | SortOrder
+    task2_answer?: SortOrderInput | SortOrder
+    task2_word_count?: SortOrderInput | SortOrder
+    time_taken?: SortOrder
+    ai_evaluation?: SortOrderInput | SortOrder
+    expert_score?: SortOrderInput | SortOrder
+    expert_feedback?: SortOrderInput | SortOrder
+    expert_feedback_sent?: SortOrder
+    overall_band_score?: SortOrderInput | SortOrder
+    status?: SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    expert_review_requests?: expert_review_requestsOrderByWithRelationInput
+  }
+
+  export type writing_submissionsWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    AND?: writing_submissionsWhereInput | writing_submissionsWhereInput[]
+    OR?: writing_submissionsWhereInput[]
+    NOT?: writing_submissionsWhereInput | writing_submissionsWhereInput[]
+    user_id?: BigIntFilter<"writing_submissions"> | bigint | number
+    test_id?: BigIntFilter<"writing_submissions"> | bigint | number
+    task1_answer?: StringNullableFilter<"writing_submissions"> | string | null
+    task1_word_count?: IntNullableFilter<"writing_submissions"> | number | null
+    task2_answer?: StringNullableFilter<"writing_submissions"> | string | null
+    task2_word_count?: IntNullableFilter<"writing_submissions"> | number | null
+    time_taken?: IntFilter<"writing_submissions"> | number
+    ai_evaluation?: StringNullableFilter<"writing_submissions"> | string | null
+    expert_score?: FloatNullableFilter<"writing_submissions"> | number | null
+    expert_feedback?: StringNullableFilter<"writing_submissions"> | string | null
+    expert_feedback_sent?: BoolFilter<"writing_submissions"> | boolean
+    overall_band_score?: FloatNullableFilter<"writing_submissions"> | number | null
+    status?: StringFilter<"writing_submissions"> | string
+    created_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
+    expert_review_requests?: XOR<Expert_review_requestsNullableRelationFilter, expert_review_requestsWhereInput> | null
+  }, "id">
+
+  export type writing_submissionsOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    test_id?: SortOrder
+    task1_answer?: SortOrderInput | SortOrder
+    task1_word_count?: SortOrderInput | SortOrder
+    task2_answer?: SortOrderInput | SortOrder
+    task2_word_count?: SortOrderInput | SortOrder
+    time_taken?: SortOrder
+    ai_evaluation?: SortOrderInput | SortOrder
+    expert_score?: SortOrderInput | SortOrder
+    expert_feedback?: SortOrderInput | SortOrder
+    expert_feedback_sent?: SortOrder
+    overall_band_score?: SortOrderInput | SortOrder
+    status?: SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    _count?: writing_submissionsCountOrderByAggregateInput
+    _avg?: writing_submissionsAvgOrderByAggregateInput
+    _max?: writing_submissionsMaxOrderByAggregateInput
+    _min?: writing_submissionsMinOrderByAggregateInput
+    _sum?: writing_submissionsSumOrderByAggregateInput
+  }
+
+  export type writing_submissionsScalarWhereWithAggregatesInput = {
+    AND?: writing_submissionsScalarWhereWithAggregatesInput | writing_submissionsScalarWhereWithAggregatesInput[]
+    OR?: writing_submissionsScalarWhereWithAggregatesInput[]
+    NOT?: writing_submissionsScalarWhereWithAggregatesInput | writing_submissionsScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"writing_submissions"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"writing_submissions"> | bigint | number
+    test_id?: BigIntWithAggregatesFilter<"writing_submissions"> | bigint | number
+    task1_answer?: StringNullableWithAggregatesFilter<"writing_submissions"> | string | null
+    task1_word_count?: IntNullableWithAggregatesFilter<"writing_submissions"> | number | null
+    task2_answer?: StringNullableWithAggregatesFilter<"writing_submissions"> | string | null
+    task2_word_count?: IntNullableWithAggregatesFilter<"writing_submissions"> | number | null
+    time_taken?: IntWithAggregatesFilter<"writing_submissions"> | number
+    ai_evaluation?: StringNullableWithAggregatesFilter<"writing_submissions"> | string | null
+    expert_score?: FloatNullableWithAggregatesFilter<"writing_submissions"> | number | null
+    expert_feedback?: StringNullableWithAggregatesFilter<"writing_submissions"> | string | null
+    expert_feedback_sent?: BoolWithAggregatesFilter<"writing_submissions"> | boolean
+    overall_band_score?: FloatNullableWithAggregatesFilter<"writing_submissions"> | number | null
+    status?: StringWithAggregatesFilter<"writing_submissions"> | string
+    created_at?: DateTimeNullableWithAggregatesFilter<"writing_submissions"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"writing_submissions"> | Date | string | null
+  }
+
+  export type expert_review_requestsWhereInput = {
+    AND?: expert_review_requestsWhereInput | expert_review_requestsWhereInput[]
+    OR?: expert_review_requestsWhereInput[]
+    NOT?: expert_review_requestsWhereInput | expert_review_requestsWhereInput[]
+    id?: BigIntFilter<"expert_review_requests"> | bigint | number
+    submission_id?: BigIntFilter<"expert_review_requests"> | bigint | number
+    user_id?: BigIntFilter<"expert_review_requests"> | bigint | number
+    status?: StringFilter<"expert_review_requests"> | string
+    requested_at?: DateTimeFilter<"expert_review_requests"> | Date | string
+    reviewed_at?: DateTimeNullableFilter<"expert_review_requests"> | Date | string | null
+    admin_notes?: StringNullableFilter<"expert_review_requests"> | string | null
+    created_at?: DateTimeNullableFilter<"expert_review_requests"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"expert_review_requests"> | Date | string | null
+    writing_submissions?: XOR<Writing_submissionsRelationFilter, writing_submissionsWhereInput>
+  }
+
+  export type expert_review_requestsOrderByWithRelationInput = {
+    id?: SortOrder
+    submission_id?: SortOrder
+    user_id?: SortOrder
+    status?: SortOrder
+    requested_at?: SortOrder
+    reviewed_at?: SortOrderInput | SortOrder
+    admin_notes?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    writing_submissions?: writing_submissionsOrderByWithRelationInput
+  }
+
+  export type expert_review_requestsWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    submission_id?: bigint | number
+    AND?: expert_review_requestsWhereInput | expert_review_requestsWhereInput[]
+    OR?: expert_review_requestsWhereInput[]
+    NOT?: expert_review_requestsWhereInput | expert_review_requestsWhereInput[]
+    user_id?: BigIntFilter<"expert_review_requests"> | bigint | number
+    status?: StringFilter<"expert_review_requests"> | string
+    requested_at?: DateTimeFilter<"expert_review_requests"> | Date | string
+    reviewed_at?: DateTimeNullableFilter<"expert_review_requests"> | Date | string | null
+    admin_notes?: StringNullableFilter<"expert_review_requests"> | string | null
+    created_at?: DateTimeNullableFilter<"expert_review_requests"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"expert_review_requests"> | Date | string | null
+    writing_submissions?: XOR<Writing_submissionsRelationFilter, writing_submissionsWhereInput>
+  }, "id" | "submission_id">
+
+  export type expert_review_requestsOrderByWithAggregationInput = {
+    id?: SortOrder
+    submission_id?: SortOrder
+    user_id?: SortOrder
+    status?: SortOrder
+    requested_at?: SortOrder
+    reviewed_at?: SortOrderInput | SortOrder
+    admin_notes?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    _count?: expert_review_requestsCountOrderByAggregateInput
+    _avg?: expert_review_requestsAvgOrderByAggregateInput
+    _max?: expert_review_requestsMaxOrderByAggregateInput
+    _min?: expert_review_requestsMinOrderByAggregateInput
+    _sum?: expert_review_requestsSumOrderByAggregateInput
+  }
+
+  export type expert_review_requestsScalarWhereWithAggregatesInput = {
+    AND?: expert_review_requestsScalarWhereWithAggregatesInput | expert_review_requestsScalarWhereWithAggregatesInput[]
+    OR?: expert_review_requestsScalarWhereWithAggregatesInput[]
+    NOT?: expert_review_requestsScalarWhereWithAggregatesInput | expert_review_requestsScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"expert_review_requests"> | bigint | number
+    submission_id?: BigIntWithAggregatesFilter<"expert_review_requests"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"expert_review_requests"> | bigint | number
+    status?: StringWithAggregatesFilter<"expert_review_requests"> | string
+    requested_at?: DateTimeWithAggregatesFilter<"expert_review_requests"> | Date | string
+    reviewed_at?: DateTimeNullableWithAggregatesFilter<"expert_review_requests"> | Date | string | null
+    admin_notes?: StringNullableWithAggregatesFilter<"expert_review_requests"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"expert_review_requests"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"expert_review_requests"> | Date | string | null
   }
 
   export type countriesCreateInput = {
@@ -28657,6 +31089,226 @@ export namespace Prisma {
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type writing_submissionsCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    test_id: bigint | number
+    task1_answer?: string | null
+    task1_word_count?: number | null
+    task2_answer?: string | null
+    task2_word_count?: number | null
+    time_taken: number
+    ai_evaluation?: string | null
+    expert_score?: number | null
+    expert_feedback?: string | null
+    expert_feedback_sent?: boolean
+    overall_band_score?: number | null
+    status?: string
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    expert_review_requests?: expert_review_requestsCreateNestedOneWithoutWriting_submissionsInput
+  }
+
+  export type writing_submissionsUncheckedCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    test_id: bigint | number
+    task1_answer?: string | null
+    task1_word_count?: number | null
+    task2_answer?: string | null
+    task2_word_count?: number | null
+    time_taken: number
+    ai_evaluation?: string | null
+    expert_score?: number | null
+    expert_feedback?: string | null
+    expert_feedback_sent?: boolean
+    overall_band_score?: number | null
+    status?: string
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    expert_review_requests?: expert_review_requestsUncheckedCreateNestedOneWithoutWriting_submissionsInput
+  }
+
+  export type writing_submissionsUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    test_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    time_taken?: IntFieldUpdateOperationsInput | number
+    ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
+    overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expert_review_requests?: expert_review_requestsUpdateOneWithoutWriting_submissionsNestedInput
+  }
+
+  export type writing_submissionsUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    test_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    time_taken?: IntFieldUpdateOperationsInput | number
+    ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
+    overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expert_review_requests?: expert_review_requestsUncheckedUpdateOneWithoutWriting_submissionsNestedInput
+  }
+
+  export type writing_submissionsCreateManyInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    test_id: bigint | number
+    task1_answer?: string | null
+    task1_word_count?: number | null
+    task2_answer?: string | null
+    task2_word_count?: number | null
+    time_taken: number
+    ai_evaluation?: string | null
+    expert_score?: number | null
+    expert_feedback?: string | null
+    expert_feedback_sent?: boolean
+    overall_band_score?: number | null
+    status?: string
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type writing_submissionsUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    test_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    time_taken?: IntFieldUpdateOperationsInput | number
+    ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
+    overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type writing_submissionsUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    test_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    time_taken?: IntFieldUpdateOperationsInput | number
+    ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
+    overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type expert_review_requestsCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    status?: string
+    requested_at?: Date | string
+    reviewed_at?: Date | string | null
+    admin_notes?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+    writing_submissions: writing_submissionsCreateNestedOneWithoutExpert_review_requestsInput
+  }
+
+  export type expert_review_requestsUncheckedCreateInput = {
+    id?: bigint | number
+    submission_id: bigint | number
+    user_id: bigint | number
+    status?: string
+    requested_at?: Date | string
+    reviewed_at?: Date | string | null
+    admin_notes?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type expert_review_requestsUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    status?: StringFieldUpdateOperationsInput | string
+    requested_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    writing_submissions?: writing_submissionsUpdateOneRequiredWithoutExpert_review_requestsNestedInput
+  }
+
+  export type expert_review_requestsUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    submission_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    status?: StringFieldUpdateOperationsInput | string
+    requested_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type expert_review_requestsCreateManyInput = {
+    id?: bigint | number
+    submission_id: bigint | number
+    user_id: bigint | number
+    status?: string
+    requested_at?: Date | string
+    reviewed_at?: Date | string | null
+    admin_notes?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type expert_review_requestsUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    status?: StringFieldUpdateOperationsInput | string
+    requested_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type expert_review_requestsUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    submission_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    status?: StringFieldUpdateOperationsInput | string
+    requested_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type BigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[]
@@ -30087,6 +32739,170 @@ export namespace Prisma {
     word_limit?: SortOrder
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type Expert_review_requestsNullableRelationFilter = {
+    is?: expert_review_requestsWhereInput | null
+    isNot?: expert_review_requestsWhereInput | null
+  }
+
+  export type writing_submissionsCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    test_id?: SortOrder
+    task1_answer?: SortOrder
+    task1_word_count?: SortOrder
+    task2_answer?: SortOrder
+    task2_word_count?: SortOrder
+    time_taken?: SortOrder
+    ai_evaluation?: SortOrder
+    expert_score?: SortOrder
+    expert_feedback?: SortOrder
+    expert_feedback_sent?: SortOrder
+    overall_band_score?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type writing_submissionsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    test_id?: SortOrder
+    task1_word_count?: SortOrder
+    task2_word_count?: SortOrder
+    time_taken?: SortOrder
+    expert_score?: SortOrder
+    overall_band_score?: SortOrder
+  }
+
+  export type writing_submissionsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    test_id?: SortOrder
+    task1_answer?: SortOrder
+    task1_word_count?: SortOrder
+    task2_answer?: SortOrder
+    task2_word_count?: SortOrder
+    time_taken?: SortOrder
+    ai_evaluation?: SortOrder
+    expert_score?: SortOrder
+    expert_feedback?: SortOrder
+    expert_feedback_sent?: SortOrder
+    overall_band_score?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type writing_submissionsMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    test_id?: SortOrder
+    task1_answer?: SortOrder
+    task1_word_count?: SortOrder
+    task2_answer?: SortOrder
+    task2_word_count?: SortOrder
+    time_taken?: SortOrder
+    ai_evaluation?: SortOrder
+    expert_score?: SortOrder
+    expert_feedback?: SortOrder
+    expert_feedback_sent?: SortOrder
+    overall_band_score?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type writing_submissionsSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    test_id?: SortOrder
+    task1_word_count?: SortOrder
+    task2_word_count?: SortOrder
+    time_taken?: SortOrder
+    expert_score?: SortOrder
+    overall_band_score?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type Writing_submissionsRelationFilter = {
+    is?: writing_submissionsWhereInput
+    isNot?: writing_submissionsWhereInput
+  }
+
+  export type expert_review_requestsCountOrderByAggregateInput = {
+    id?: SortOrder
+    submission_id?: SortOrder
+    user_id?: SortOrder
+    status?: SortOrder
+    requested_at?: SortOrder
+    reviewed_at?: SortOrder
+    admin_notes?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type expert_review_requestsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    submission_id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type expert_review_requestsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    submission_id?: SortOrder
+    user_id?: SortOrder
+    status?: SortOrder
+    requested_at?: SortOrder
+    reviewed_at?: SortOrder
+    admin_notes?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type expert_review_requestsMinOrderByAggregateInput = {
+    id?: SortOrder
+    submission_id?: SortOrder
+    user_id?: SortOrder
+    status?: SortOrder
+    requested_at?: SortOrder
+    reviewed_at?: SortOrder
+    admin_notes?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type expert_review_requestsSumOrderByAggregateInput = {
+    id?: SortOrder
+    submission_id?: SortOrder
+    user_id?: SortOrder
+  }
+
   export type BigIntFieldUpdateOperationsInput = {
     set?: bigint | number
     increment?: bigint | number
@@ -30533,6 +33349,60 @@ export namespace Prisma {
     update?: XOR<XOR<testsUpdateToOneWithWhereWithoutWriting_questionsInput, testsUpdateWithoutWriting_questionsInput>, testsUncheckedUpdateWithoutWriting_questionsInput>
   }
 
+  export type expert_review_requestsCreateNestedOneWithoutWriting_submissionsInput = {
+    create?: XOR<expert_review_requestsCreateWithoutWriting_submissionsInput, expert_review_requestsUncheckedCreateWithoutWriting_submissionsInput>
+    connectOrCreate?: expert_review_requestsCreateOrConnectWithoutWriting_submissionsInput
+    connect?: expert_review_requestsWhereUniqueInput
+  }
+
+  export type expert_review_requestsUncheckedCreateNestedOneWithoutWriting_submissionsInput = {
+    create?: XOR<expert_review_requestsCreateWithoutWriting_submissionsInput, expert_review_requestsUncheckedCreateWithoutWriting_submissionsInput>
+    connectOrCreate?: expert_review_requestsCreateOrConnectWithoutWriting_submissionsInput
+    connect?: expert_review_requestsWhereUniqueInput
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type expert_review_requestsUpdateOneWithoutWriting_submissionsNestedInput = {
+    create?: XOR<expert_review_requestsCreateWithoutWriting_submissionsInput, expert_review_requestsUncheckedCreateWithoutWriting_submissionsInput>
+    connectOrCreate?: expert_review_requestsCreateOrConnectWithoutWriting_submissionsInput
+    upsert?: expert_review_requestsUpsertWithoutWriting_submissionsInput
+    disconnect?: expert_review_requestsWhereInput | boolean
+    delete?: expert_review_requestsWhereInput | boolean
+    connect?: expert_review_requestsWhereUniqueInput
+    update?: XOR<XOR<expert_review_requestsUpdateToOneWithWhereWithoutWriting_submissionsInput, expert_review_requestsUpdateWithoutWriting_submissionsInput>, expert_review_requestsUncheckedUpdateWithoutWriting_submissionsInput>
+  }
+
+  export type expert_review_requestsUncheckedUpdateOneWithoutWriting_submissionsNestedInput = {
+    create?: XOR<expert_review_requestsCreateWithoutWriting_submissionsInput, expert_review_requestsUncheckedCreateWithoutWriting_submissionsInput>
+    connectOrCreate?: expert_review_requestsCreateOrConnectWithoutWriting_submissionsInput
+    upsert?: expert_review_requestsUpsertWithoutWriting_submissionsInput
+    disconnect?: expert_review_requestsWhereInput | boolean
+    delete?: expert_review_requestsWhereInput | boolean
+    connect?: expert_review_requestsWhereUniqueInput
+    update?: XOR<XOR<expert_review_requestsUpdateToOneWithWhereWithoutWriting_submissionsInput, expert_review_requestsUpdateWithoutWriting_submissionsInput>, expert_review_requestsUncheckedUpdateWithoutWriting_submissionsInput>
+  }
+
+  export type writing_submissionsCreateNestedOneWithoutExpert_review_requestsInput = {
+    create?: XOR<writing_submissionsCreateWithoutExpert_review_requestsInput, writing_submissionsUncheckedCreateWithoutExpert_review_requestsInput>
+    connectOrCreate?: writing_submissionsCreateOrConnectWithoutExpert_review_requestsInput
+    connect?: writing_submissionsWhereUniqueInput
+  }
+
+  export type writing_submissionsUpdateOneRequiredWithoutExpert_review_requestsNestedInput = {
+    create?: XOR<writing_submissionsCreateWithoutExpert_review_requestsInput, writing_submissionsUncheckedCreateWithoutExpert_review_requestsInput>
+    connectOrCreate?: writing_submissionsCreateOrConnectWithoutExpert_review_requestsInput
+    upsert?: writing_submissionsUpsertWithoutExpert_review_requestsInput
+    connect?: writing_submissionsWhereUniqueInput
+    update?: XOR<XOR<writing_submissionsUpdateToOneWithWhereWithoutExpert_review_requestsInput, writing_submissionsUpdateWithoutExpert_review_requestsInput>, writing_submissionsUncheckedUpdateWithoutExpert_review_requestsInput>
+  }
+
   export type NestedBigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[]
@@ -30786,6 +33656,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type permissionsCreateWithoutModel_has_permissionsInput = {
@@ -31652,6 +34538,158 @@ export namespace Prisma {
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type expert_review_requestsCreateWithoutWriting_submissionsInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    status?: string
+    requested_at?: Date | string
+    reviewed_at?: Date | string | null
+    admin_notes?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type expert_review_requestsUncheckedCreateWithoutWriting_submissionsInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    status?: string
+    requested_at?: Date | string
+    reviewed_at?: Date | string | null
+    admin_notes?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type expert_review_requestsCreateOrConnectWithoutWriting_submissionsInput = {
+    where: expert_review_requestsWhereUniqueInput
+    create: XOR<expert_review_requestsCreateWithoutWriting_submissionsInput, expert_review_requestsUncheckedCreateWithoutWriting_submissionsInput>
+  }
+
+  export type expert_review_requestsUpsertWithoutWriting_submissionsInput = {
+    update: XOR<expert_review_requestsUpdateWithoutWriting_submissionsInput, expert_review_requestsUncheckedUpdateWithoutWriting_submissionsInput>
+    create: XOR<expert_review_requestsCreateWithoutWriting_submissionsInput, expert_review_requestsUncheckedCreateWithoutWriting_submissionsInput>
+    where?: expert_review_requestsWhereInput
+  }
+
+  export type expert_review_requestsUpdateToOneWithWhereWithoutWriting_submissionsInput = {
+    where?: expert_review_requestsWhereInput
+    data: XOR<expert_review_requestsUpdateWithoutWriting_submissionsInput, expert_review_requestsUncheckedUpdateWithoutWriting_submissionsInput>
+  }
+
+  export type expert_review_requestsUpdateWithoutWriting_submissionsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    status?: StringFieldUpdateOperationsInput | string
+    requested_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type expert_review_requestsUncheckedUpdateWithoutWriting_submissionsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    status?: StringFieldUpdateOperationsInput | string
+    requested_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    admin_notes?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type writing_submissionsCreateWithoutExpert_review_requestsInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    test_id: bigint | number
+    task1_answer?: string | null
+    task1_word_count?: number | null
+    task2_answer?: string | null
+    task2_word_count?: number | null
+    time_taken: number
+    ai_evaluation?: string | null
+    expert_score?: number | null
+    expert_feedback?: string | null
+    expert_feedback_sent?: boolean
+    overall_band_score?: number | null
+    status?: string
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type writing_submissionsUncheckedCreateWithoutExpert_review_requestsInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    test_id: bigint | number
+    task1_answer?: string | null
+    task1_word_count?: number | null
+    task2_answer?: string | null
+    task2_word_count?: number | null
+    time_taken: number
+    ai_evaluation?: string | null
+    expert_score?: number | null
+    expert_feedback?: string | null
+    expert_feedback_sent?: boolean
+    overall_band_score?: number | null
+    status?: string
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type writing_submissionsCreateOrConnectWithoutExpert_review_requestsInput = {
+    where: writing_submissionsWhereUniqueInput
+    create: XOR<writing_submissionsCreateWithoutExpert_review_requestsInput, writing_submissionsUncheckedCreateWithoutExpert_review_requestsInput>
+  }
+
+  export type writing_submissionsUpsertWithoutExpert_review_requestsInput = {
+    update: XOR<writing_submissionsUpdateWithoutExpert_review_requestsInput, writing_submissionsUncheckedUpdateWithoutExpert_review_requestsInput>
+    create: XOR<writing_submissionsCreateWithoutExpert_review_requestsInput, writing_submissionsUncheckedCreateWithoutExpert_review_requestsInput>
+    where?: writing_submissionsWhereInput
+  }
+
+  export type writing_submissionsUpdateToOneWithWhereWithoutExpert_review_requestsInput = {
+    where?: writing_submissionsWhereInput
+    data: XOR<writing_submissionsUpdateWithoutExpert_review_requestsInput, writing_submissionsUncheckedUpdateWithoutExpert_review_requestsInput>
+  }
+
+  export type writing_submissionsUpdateWithoutExpert_review_requestsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    test_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    time_taken?: IntFieldUpdateOperationsInput | number
+    ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
+    overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type writing_submissionsUncheckedUpdateWithoutExpert_review_requestsInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    test_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    task1_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task1_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    task2_answer?: NullableStringFieldUpdateOperationsInput | string | null
+    task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
+    time_taken?: IntFieldUpdateOperationsInput | number
+    ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
+    overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type permissionsCreateManyModulesInput = {
     id?: bigint | number
     name: string
@@ -32021,6 +35059,14 @@ export namespace Prisma {
      * @deprecated Use writing_questionsDefaultArgs instead
      */
     export type writing_questionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = writing_questionsDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use writing_submissionsDefaultArgs instead
+     */
+    export type writing_submissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = writing_submissionsDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use expert_review_requestsDefaultArgs instead
+     */
+    export type expert_review_requestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = expert_review_requestsDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

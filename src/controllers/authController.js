@@ -147,12 +147,9 @@ export const googleAuthCallback = async (req, res) => {
     if (!user) {
       // Check if user exists with this email but different auth provider
       const existingEmailUser = await prisma.users.findFirst({
-        where: { 
+        where: {
           email,
-          OR: [
-            { auth_provider: { not: 'google' } },
-            { auth_provider: null }
-          ]
+          auth_provider: { not: 'google' }
         },
       });
 

@@ -8,6 +8,7 @@ import userRoutes from "./src/routes/userRoutes.js";
 import testRoutes from "./src/routes/testRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import takeWritingTestRoutes from "./src/routes/takeTest/takeWritingTestRoutes.js";
+import expertReviewRoutes from "./src/routes/takeTest/expertReviewRoutes.js";
 
 dotenv.config();
 
@@ -64,6 +65,9 @@ app.use("/api/tests", testRoutes);
 
 // Writing Test routes
 app.use("/api/take-test/writing", takeWritingTestRoutes);
+
+// Expert Review routes
+app.use("/api/expert-review", expertReviewRoutes);
 // Health check
 app.get("/", (req, res) => {
   console.log("✅ Received GET / request");

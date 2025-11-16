@@ -398,6 +398,37 @@ exports.Prisma.Writing_questionsScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.Writing_submissionsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  test_id: 'test_id',
+  task1_answer: 'task1_answer',
+  task1_word_count: 'task1_word_count',
+  task2_answer: 'task2_answer',
+  task2_word_count: 'task2_word_count',
+  time_taken: 'time_taken',
+  ai_evaluation: 'ai_evaluation',
+  expert_score: 'expert_score',
+  expert_feedback: 'expert_feedback',
+  expert_feedback_sent: 'expert_feedback_sent',
+  overall_band_score: 'overall_band_score',
+  status: 'status',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
+exports.Prisma.Expert_review_requestsScalarFieldEnum = {
+  id: 'id',
+  submission_id: 'submission_id',
+  user_id: 'user_id',
+  status: 'status',
+  requested_at: 'requested_at',
+  reviewed_at: 'reviewed_at',
+  admin_notes: 'admin_notes',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -432,7 +463,9 @@ exports.Prisma.ModelName = {
   cities: 'cities',
   failed_jobs: 'failed_jobs',
   migrations: 'migrations',
-  writing_questions: 'writing_questions'
+  writing_questions: 'writing_questions',
+  writing_submissions: 'writing_submissions',
+  expert_review_requests: 'expert_review_requests'
 };
 
 /**
