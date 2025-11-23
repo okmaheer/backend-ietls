@@ -15,17 +15,18 @@ For each task, provide:
 2. Overall band score for the task
 3. Detailed evaluation feedback (280-320 words, do not exceed 350 words)
 4. Top 2-3 key actionable improvements with practical strategies
+5. IMPORTANT: For EACH criterion, provide specific mistakes/issues found with examples from the student's answer
 
 Evaluation Guidelines:
 ✅ Task Response (Task 2): Check relevance of ideas to the question. Assess whether ideas are fully developed with clear reasons and examples. Confirm a consistent and clear position throughout the essay. Identify lapses in content such as missing explanation or unclear arguments.
 
 ✅ Task Achievement (Task 1): For Academic - Check if key features are clearly selected, accurately compared, and illustrated. For General Training - Ensure all bullet points are fully addressed and extended with relevant details. Identify any irrelevant or missing content.
 
-✅ Grammar: Identify grammatical errors (subject-verb agreement, articles, prepositions, punctuation). Evaluate range and accuracy of sentence structures (compound, complex, conditional, relative clauses). Comment on clarity and control of punctuation.
+✅ Grammar: Identify grammatical errors (subject-verb agreement, articles, prepositions, punctuation). Evaluate range and accuracy of sentence structures (compound, complex, conditional, relative clauses). Comment on clarity and control of punctuation. Provide 2-4 specific examples of grammatical mistakes with corrections.
 
-✅ Lexical Resource: Check if vocabulary is appropriate for the task and topic. Evaluate collocation accuracy and precision of word choice. Identify spelling errors or informal/incorrect language. Note use of advanced or less common vocabulary when appropriate.
+✅ Lexical Resource: Check if vocabulary is appropriate for the task and topic. Evaluate collocation accuracy and precision of word choice. Identify spelling errors or informal/incorrect language. Note use of advanced or less common vocabulary when appropriate. Provide 2-4 specific examples of vocabulary issues with better alternatives.
 
-✅ Coherence & Cohesion: Assess effective use of paragraphing (one clear idea per paragraph). Check logical organization and clear progression of ideas. Identify cohesion issues such as repetition or unclear referencing. Evaluate the natural and accurate use of linking devices and substitution.
+✅ Coherence & Cohesion: Assess effective use of paragraphing (one clear idea per paragraph). Check logical organization and clear progression of ideas. Identify cohesion issues such as repetition or unclear referencing. Evaluate the natural and accurate use of linking devices and substitution. Provide 2-3 specific examples of coherence/cohesion issues.
 
 Provide actionable suggestions for improvement after each criterion. Keep feedback clear, concise, and directly linked to the student's response. Focus on the most important weaknesses that will help the student improve quickly.
 
@@ -39,24 +40,32 @@ Band Score Rounding:
 If both tasks submitted:
 Average Band Score = (Task 1 bands + 2 * Task 2 bands) / 3
 
-Response format MUST be valid JSON:
+Response format MUST be valid JSON with criterion_details for each assessment criterion:
 {
   "task1": {
     "task_achievement": 6.5,
+    "task_achievement_details": "Specific feedback about task achievement: what was done well, what was missing, with examples from the answer.",
     "coherence_cohesion": 6.0,
+    "coherence_cohesion_details": "Specific coherence and cohesion issues found. Examples: 'Paragraph 2 lacks a clear topic sentence', 'Overuse of 'however' as a linking device', 'Unclear pronoun reference in line 5'.",
     "lexical_resource": 6.5,
+    "lexical_resource_details": "Specific vocabulary mistakes and suggestions. Examples: 'Use 'significant increase' instead of 'big increase'', 'Spelling error: 'enviroment' should be 'environment'', 'Repetition of 'important' - use synonyms like 'crucial', 'vital''.",
     "grammatical_accuracy": 6.0,
+    "grammatical_accuracy_details": "Specific grammar mistakes with corrections. Examples: 'Subject-verb agreement error: 'The data shows' should be 'The data show'', 'Missing article: 'in conclusion' should be 'In conclusion'', 'Incorrect preposition: 'different to' should be 'different from''.",
     "overall_band": 6.0,
-    "feedback": "Detailed feedback here...",
+    "feedback": "Overall detailed feedback here...",
     "improvements": ["Improvement 1", "Improvement 2", "Improvement 3"]
   },
   "task2": {
     "task_response": 6.5,
+    "task_response_details": "Specific feedback about task response: how well the question was addressed, quality of ideas and examples.",
     "coherence_cohesion": 6.5,
+    "coherence_cohesion_details": "Specific coherence and cohesion issues found with examples.",
     "lexical_resource": 6.0,
+    "lexical_resource_details": "Specific vocabulary mistakes and suggestions with examples.",
     "grammatical_accuracy": 6.5,
+    "grammatical_accuracy_details": "Specific grammar mistakes with corrections and examples.",
     "overall_band": 6.5,
-    "feedback": "Detailed feedback here...",
+    "feedback": "Overall detailed feedback here...",
     "improvements": ["Improvement 1", "Improvement 2"]
   },
   "average_band": 6.5
@@ -110,6 +119,39 @@ export async function evaluateWritingTest(submissionData) {
 
     // Parse JSON response
     const evaluation = JSON.parse(response.choices[0].message.content);
+
+    // Add zero bands for empty tasks
+    if (!submissionData.task1 && !evaluation.task1) {
+      evaluation.task1 = {
+        task_achievement: 0,
+        task_achievement_details: "No answer was provided for this task.",
+        coherence_cohesion: 0,
+        coherence_cohesion_details: "No answer was provided for this task.",
+        lexical_resource: 0,
+        lexical_resource_details: "No answer was provided for this task.",
+        grammatical_accuracy: 0,
+        grammatical_accuracy_details: "No answer was provided for this task.",
+        overall_band: 0,
+        feedback: "No answer submitted for Task 1.",
+        improvements: ["Please attempt Task 1 in your next submission."]
+      };
+    }
+
+    if (!submissionData.task2 && !evaluation.task2) {
+      evaluation.task2 = {
+        task_response: 0,
+        task_response_details: "No answer was provided for this task.",
+        coherence_cohesion: 0,
+        coherence_cohesion_details: "No answer was provided for this task.",
+        lexical_resource: 0,
+        lexical_resource_details: "No answer was provided for this task.",
+        grammatical_accuracy: 0,
+        grammatical_accuracy_details: "No answer was provided for this task.",
+        overall_band: 0,
+        feedback: "No answer submitted for Task 2.",
+        improvements: ["Please attempt Task 2 in your next submission."]
+      };
+    }
 
     // Add metadata
     evaluation.tokens_used = response.usage.total_tokens;

@@ -57,39 +57,23 @@ export const getAcademicWritingTests = async (req, res) => {
         const sub = test.writing_submissions[0];
         const aiEval = sub.ai_evaluation ? JSON.parse(sub.ai_evaluation) : null;
 
-        // Calculate average scores from AI evaluation
-        let taskAchievement = 0, coherenceCohesion = 0, lexicalResource = 0, grammar = 0;
+        // Get task scores from AI evaluation
+        let task1Score = 0, task2Score = 0;
 
         if (aiEval) {
           if (aiEval.task1) {
-            taskAchievement += aiEval.task1.task_achievement || 0;
-            coherenceCohesion += aiEval.task1.coherence_cohesion || 0;
-            lexicalResource += aiEval.task1.lexical_resource || 0;
-            grammar += aiEval.task1.grammatical_accuracy || 0;
+            task1Score = aiEval.task1.overall_band || 0;
           }
           if (aiEval.task2) {
-            taskAchievement += aiEval.task2.task_response || 0;
-            coherenceCohesion += aiEval.task2.coherence_cohesion || 0;
-            lexicalResource += aiEval.task2.lexical_resource || 0;
-            grammar += aiEval.task2.grammatical_accuracy || 0;
-          }
-
-          const count = (aiEval.task1 ? 1 : 0) + (aiEval.task2 ? 1 : 0);
-          if (count > 0) {
-            taskAchievement /= count;
-            coherenceCohesion /= count;
-            lexicalResource /= count;
-            grammar /= count;
+            task2Score = aiEval.task2.overall_band || 0;
           }
         }
 
         submission = {
           id: sub.id.toString(),
           overall_band_score: sub.overall_band_score || 0,
-          task_achievement_score: taskAchievement,
-          coherence_cohesion_score: coherenceCohesion,
-          lexical_resource_score: lexicalResource,
-          grammar_score: grammar,
+          task1_score: task1Score,
+          task2_score: task2Score,
           submitted_at: sub.created_at
         };
       }
@@ -172,39 +156,23 @@ export const getGeneralTrainingWritingTests = async (req, res) => {
         const sub = test.writing_submissions[0];
         const aiEval = sub.ai_evaluation ? JSON.parse(sub.ai_evaluation) : null;
 
-        // Calculate average scores from AI evaluation
-        let taskAchievement = 0, coherenceCohesion = 0, lexicalResource = 0, grammar = 0;
+        // Get task scores from AI evaluation
+        let task1Score = 0, task2Score = 0;
 
         if (aiEval) {
           if (aiEval.task1) {
-            taskAchievement += aiEval.task1.task_achievement || 0;
-            coherenceCohesion += aiEval.task1.coherence_cohesion || 0;
-            lexicalResource += aiEval.task1.lexical_resource || 0;
-            grammar += aiEval.task1.grammatical_accuracy || 0;
+            task1Score = aiEval.task1.overall_band || 0;
           }
           if (aiEval.task2) {
-            taskAchievement += aiEval.task2.task_response || 0;
-            coherenceCohesion += aiEval.task2.coherence_cohesion || 0;
-            lexicalResource += aiEval.task2.lexical_resource || 0;
-            grammar += aiEval.task2.grammatical_accuracy || 0;
-          }
-
-          const count = (aiEval.task1 ? 1 : 0) + (aiEval.task2 ? 1 : 0);
-          if (count > 0) {
-            taskAchievement /= count;
-            coherenceCohesion /= count;
-            lexicalResource /= count;
-            grammar /= count;
+            task2Score = aiEval.task2.overall_band || 0;
           }
         }
 
         submission = {
           id: sub.id.toString(),
           overall_band_score: sub.overall_band_score || 0,
-          task_achievement_score: taskAchievement,
-          coherence_cohesion_score: coherenceCohesion,
-          lexical_resource_score: lexicalResource,
-          grammar_score: grammar,
+          task1_score: task1Score,
+          task2_score: task2Score,
           submitted_at: sub.created_at
         };
       }
@@ -341,23 +309,32 @@ export const submitWritingTest = async (req, res) => {
     const task1Answer = answers.find(a => a.task_number === 1);
     const task2Answer = answers.find(a => a.task_number === 2);
 
-    // Validate word count - must be at least 50% of word_limit
-    if (task1Answer && task1Answer.answer_text) {
+    // Check if at least one task has content
+    const hasTask1Content = task1Answer && task1Answer.word_count > 0;
+    const hasTask2Content = task2Answer && task2Answer.word_count > 0;
+
+    if (!hasTask1Content && !hasTask2Content) {
+      return error(res, "At least one task must be completed. Both tasks cannot be empty.", 400);
+    }
+
+    // Validate word count for tasks that have content (not completely empty)
+    // If task has content but doesn't meet minimum (50%), reject it
+    if (task1Answer && task1Answer.word_count > 0) {
       const task1Question = test.writing_questions.find(q => q.task_number === 1);
       if (task1Question) {
         const minWords = Math.ceil(task1Question.word_limit * 0.5);
         if (task1Answer.word_count < minWords) {
-          return error(res, `Task 1 must have at least ${minWords} words (50% of ${task1Question.word_limit})`, 400);
+          return error(res, `Task 1 has ${task1Answer.word_count} words, but needs at least ${minWords} words (50% of ${task1Question.word_limit}). Either complete the task or leave it completely empty.`, 400);
         }
       }
     }
 
-    if (task2Answer && task2Answer.answer_text) {
+    if (task2Answer && task2Answer.word_count > 0) {
       const task2Question = test.writing_questions.find(q => q.task_number === 2);
       if (task2Question) {
         const minWords = Math.ceil(task2Question.word_limit * 0.5);
         if (task2Answer.word_count < minWords) {
-          return error(res, `Task 2 must have at least ${minWords} words (50% of ${task2Question.word_limit})`, 400);
+          return error(res, `Task 2 has ${task2Answer.word_count} words, but needs at least ${minWords} words (50% of ${task2Question.word_limit}). Either complete the task or leave it completely empty.`, 400);
         }
       }
     }
