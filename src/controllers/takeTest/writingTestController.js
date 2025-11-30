@@ -74,6 +74,8 @@ export const getAcademicWritingTests = async (req, res) => {
           overall_band_score: sub.overall_band_score || 0,
           task1_score: task1Score,
           task2_score: task2Score,
+          task1_completed: aiEval?.task1 && aiEval.task1.overall_band > 0,
+          task2_completed: aiEval?.task2 && aiEval.task2.overall_band > 0,
           submitted_at: sub.created_at
         };
       }
@@ -173,6 +175,8 @@ export const getGeneralTrainingWritingTests = async (req, res) => {
           overall_band_score: sub.overall_band_score || 0,
           task1_score: task1Score,
           task2_score: task2Score,
+          task1_completed: aiEval?.task1 && aiEval.task1.overall_band > 0,
+          task2_completed: aiEval?.task2 && aiEval.task2.overall_band > 0,
           submitted_at: sub.created_at
         };
       }
@@ -291,6 +295,14 @@ export const submitWritingTest = async (req, res) => {
       return error(res, "User not authenticated", 401);
     }
 
+    // Check if user already has a submission for this test
+    const existingSubmission = await prisma.writing_submissions.findFirst({
+      where: {
+        user_id: BigInt(userId),
+        test_id: BigInt(test_id)
+      }
+    });
+
     // Fetch test with questions
     const test = await prisma.tests.findUnique({
       where: { id: BigInt(test_id) },
@@ -309,11 +321,40 @@ export const submitWritingTest = async (req, res) => {
     const task1Answer = answers.find(a => a.task_number === 1);
     const task2Answer = answers.find(a => a.task_number === 2);
 
-    // Check if at least one task has content
+    // Check if at least one task has NEW content
     const hasTask1Content = task1Answer && task1Answer.word_count > 0;
     const hasTask2Content = task2Answer && task2Answer.word_count > 0;
 
-    if (!hasTask1Content && !hasTask2Content) {
+    // If updating existing submission, merge with existing data
+    let existingTask1 = null;
+    let existingTask2 = null;
+    let existingAiEval = null;
+
+    if (existingSubmission) {
+      // Parse existing AI evaluation
+      existingAiEval = existingSubmission.ai_evaluation ? JSON.parse(existingSubmission.ai_evaluation) : null;
+
+      // Get existing tasks that won't be overwritten
+      if (existingSubmission.task1_answer && !hasTask1Content) {
+        existingTask1 = {
+          answer_text: existingSubmission.task1_answer,
+          word_count: existingSubmission.task1_word_count
+        };
+      }
+
+      if (existingSubmission.task2_answer && !hasTask2Content) {
+        existingTask2 = {
+          answer_text: existingSubmission.task2_answer,
+          word_count: existingSubmission.task2_word_count
+        };
+      }
+    }
+
+    // Check if at least one task has content (new or existing)
+    const hasFinalTask1 = hasTask1Content || existingTask1;
+    const hasFinalTask2 = hasTask2Content || existingTask2;
+
+    if (!hasFinalTask1 && !hasFinalTask2) {
       return error(res, "At least one task must be completed. Both tasks cannot be empty.", 400);
     }
 
@@ -339,10 +380,10 @@ export const submitWritingTest = async (req, res) => {
       }
     }
 
-    // Prepare data for OpenAI evaluation
+    // Prepare data for OpenAI evaluation (only evaluate NEW tasks)
     const submissionData = {};
 
-    if (task1Answer && task1Answer.answer_text) {
+    if (hasTask1Content && task1Answer.answer_text) {
       const task1Question = test.writing_questions.find(q => q.task_number === 1);
       submissionData.task1 = {
         question: task1Question?.question_text || '',
@@ -351,7 +392,7 @@ export const submitWritingTest = async (req, res) => {
       };
     }
 
-    if (task2Answer && task2Answer.answer_text) {
+    if (hasTask2Content && task2Answer.answer_text) {
       const task2Question = test.writing_questions.find(q => q.task_number === 2);
       submissionData.task2 = {
         question: task2Question?.question_text || '',
@@ -360,48 +401,87 @@ export const submitWritingTest = async (req, res) => {
       };
     }
 
-    // Call OpenAI to evaluate
-    const aiEvaluation = await evaluateWritingTest(submissionData);
+    // Call OpenAI to evaluate ONLY if there are NEW tasks
+    let newEvaluation = { task1: null, task2: null };
+    if (Object.keys(submissionData).length > 0) {
+      const aiEvaluation = await evaluateWritingTest(submissionData);
 
-    if (!aiEvaluation.success) {
-      return error(res, aiEvaluation.error || "Failed to evaluate test", 500);
+      if (!aiEvaluation.success) {
+        return error(res, aiEvaluation.error || "Failed to evaluate test", 500);
+      }
+
+      newEvaluation = aiEvaluation.data;
     }
 
-    // Calculate overall band score
-    const task1Band = aiEvaluation.data.task1?.overall_band || null;
-    const task2Band = aiEvaluation.data.task2?.overall_band || null;
+    // Merge evaluations: use new evaluation for new tasks, keep existing for unchanged tasks
+    const finalEvaluation = {
+      task1: hasTask1Content ? newEvaluation.task1 : (existingAiEval?.task1 || null),
+      task2: hasTask2Content ? newEvaluation.task2 : (existingAiEval?.task2 || null)
+    };
+
+    // Calculate overall band score from merged evaluation
+    const task1Band = finalEvaluation.task1?.overall_band || null;
+    const task2Band = finalEvaluation.task2?.overall_band || null;
     const overallBand = calculateAverageBand(task1Band, task2Band);
 
-    // Save submission to database
-    const submission = await prisma.writing_submissions.create({
-      data: {
-        user_id: BigInt(userId),
-        test_id: BigInt(test_id),
-        task1_answer: task1Answer?.answer_text || null,
-        task1_word_count: task1Answer?.word_count || null,
-        task2_answer: task2Answer?.answer_text || null,
-        task2_word_count: task2Answer?.word_count || null,
-        time_taken: time_taken || 0,
-        ai_evaluation: JSON.stringify(aiEvaluation.data),
-        overall_band_score: overallBand,
-        status: 'evaluated',
-        created_at: new Date(),
-        updated_at: new Date()
-      }
-    });
+    // Prepare final answers (use new or existing)
+    const finalTask1Answer = hasTask1Content ? task1Answer.answer_text : (existingTask1?.answer_text || null);
+    const finalTask1WordCount = hasTask1Content ? task1Answer.word_count : (existingTask1?.word_count || null);
+    const finalTask2Answer = hasTask2Content ? task2Answer.answer_text : (existingTask2?.answer_text || null);
+    const finalTask2WordCount = hasTask2Content ? task2Answer.word_count : (existingTask2?.word_count || null);
+
+    // Save or update submission in database
+    let submission;
+    if (existingSubmission) {
+      // Update existing submission
+      submission = await prisma.writing_submissions.update({
+        where: { id: existingSubmission.id },
+        data: {
+          task1_answer: finalTask1Answer,
+          task1_word_count: finalTask1WordCount,
+          task2_answer: finalTask2Answer,
+          task2_word_count: finalTask2WordCount,
+          time_taken: (existingSubmission.time_taken || 0) + (time_taken || 0),
+          ai_evaluation: JSON.stringify(finalEvaluation),
+          overall_band_score: overallBand,
+          status: 'evaluated',
+          updated_at: new Date()
+        }
+      });
+    } else {
+      // Create new submission
+      submission = await prisma.writing_submissions.create({
+        data: {
+          user_id: BigInt(userId),
+          test_id: BigInt(test_id),
+          task1_answer: finalTask1Answer,
+          task1_word_count: finalTask1WordCount,
+          task2_answer: finalTask2Answer,
+          task2_word_count: finalTask2WordCount,
+          time_taken: time_taken || 0,
+          ai_evaluation: JSON.stringify(finalEvaluation),
+          overall_band_score: overallBand,
+          status: 'evaluated',
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      });
+    }
 
     // Return submission ID and results
     logInfo('Writing test submitted successfully', {
       userId,
       testId: test_id,
       submissionId: submission.id.toString(),
-      overallBand
+      overallBand,
+      isUpdate: !!existingSubmission
     });
     success(res, {
       submission_id: submission.id.toString(),
       overall_band: overallBand,
-      evaluation: aiEvaluation.data,
-      message: "Test submitted and evaluated successfully"
+      evaluation: finalEvaluation,
+      is_update: !!existingSubmission,
+      message: existingSubmission ? "Test updated and evaluated successfully" : "Test submitted and evaluated successfully"
     }, "Test submitted successfully");
 
   } catch (err) {
