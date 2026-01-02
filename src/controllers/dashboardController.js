@@ -12,19 +12,18 @@ const getAdminDashboard = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    // Verify admin role
-    const user = await prisma.users.findUnique({
-      where: { id: BigInt(userId) },
+    // Verify admin role through model_has_roles junction table
+    const userRoles = await prisma.model_has_roles.findMany({
+      where: {
+        model_type: 'App\\Models\\User',
+        model_id: BigInt(userId),
+      },
       include: {
-        user_roles: {
-          include: {
-            role: true,
-          },
-        },
+        roles: true,
       },
     });
 
-    const isAdmin = user?.user_roles?.some((ur) => ur.role.name === 'Admin');
+    const isAdmin = userRoles.some((ur) => ur.roles.name === 'Admin');
     if (!isAdmin) {
       return res.status(403).json({ message: 'Forbidden: Admin access required' });
     }
@@ -33,7 +32,7 @@ const getAdminDashboard = async (req, res) => {
     const totalUsers = await prisma.users.count();
 
     // 2. Total Tests Created
-    const totalTests = await prisma.writing_tests.count();
+    const totalTests = await prisma.tests.count();
 
     // 3. Total Submissions
     const totalSubmissions = await prisma.writing_submissions.count();
