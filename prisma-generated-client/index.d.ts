@@ -19011,6 +19011,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     google_id: string | null
+    facebook_id: string | null
     auth_provider: string | null
     profile_picture: string | null
     phone: string | null
@@ -19033,6 +19034,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     google_id: string | null
+    facebook_id: string | null
     auth_provider: string | null
     profile_picture: string | null
     phone: string | null
@@ -19055,6 +19057,7 @@ export namespace Prisma {
     name: number
     email: number
     google_id: number
+    facebook_id: number
     auth_provider: number
     profile_picture: number
     phone: number
@@ -19093,6 +19096,7 @@ export namespace Prisma {
     name?: true
     email?: true
     google_id?: true
+    facebook_id?: true
     auth_provider?: true
     profile_picture?: true
     phone?: true
@@ -19115,6 +19119,7 @@ export namespace Prisma {
     name?: true
     email?: true
     google_id?: true
+    facebook_id?: true
     auth_provider?: true
     profile_picture?: true
     phone?: true
@@ -19137,6 +19142,7 @@ export namespace Prisma {
     name?: true
     email?: true
     google_id?: true
+    facebook_id?: true
     auth_provider?: true
     profile_picture?: true
     phone?: true
@@ -19246,6 +19252,7 @@ export namespace Prisma {
     name: string
     email: string | null
     google_id: string | null
+    facebook_id: string | null
     auth_provider: string
     profile_picture: string | null
     phone: string | null
@@ -19287,6 +19294,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     google_id?: boolean
+    facebook_id?: boolean
     auth_provider?: boolean
     profile_picture?: boolean
     phone?: boolean
@@ -19312,6 +19320,7 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     google_id?: boolean
+    facebook_id?: boolean
     auth_provider?: boolean
     profile_picture?: boolean
     phone?: boolean
@@ -19344,6 +19353,7 @@ export namespace Prisma {
       name: string
       email: string | null
       google_id: string | null
+      facebook_id: string | null
       auth_provider: string
       profile_picture: string | null
       phone: string | null
@@ -19733,6 +19743,7 @@ export namespace Prisma {
     readonly name: FieldRef<"users", 'String'>
     readonly email: FieldRef<"users", 'String'>
     readonly google_id: FieldRef<"users", 'String'>
+    readonly facebook_id: FieldRef<"users", 'String'>
     readonly auth_provider: FieldRef<"users", 'String'>
     readonly profile_picture: FieldRef<"users", 'String'>
     readonly phone: FieldRef<"users", 'String'>
@@ -24748,8 +24759,11 @@ export namespace Prisma {
     task1_word_count: number | null
     task2_word_count: number | null
     time_taken: number | null
+    tokens_used: number | null
+    api_cost: Decimal | null
     expert_score: number | null
     overall_band_score: number | null
+    expert_overall_score: number | null
   }
 
   export type Writing_submissionsSumAggregateOutputType = {
@@ -24759,8 +24773,11 @@ export namespace Prisma {
     task1_word_count: number | null
     task2_word_count: number | null
     time_taken: number | null
+    tokens_used: number | null
+    api_cost: Decimal | null
     expert_score: number | null
     overall_band_score: number | null
+    expert_overall_score: number | null
   }
 
   export type Writing_submissionsMinAggregateOutputType = {
@@ -24773,10 +24790,13 @@ export namespace Prisma {
     task2_word_count: number | null
     time_taken: number | null
     ai_evaluation: string | null
+    tokens_used: number | null
+    api_cost: Decimal | null
     expert_score: number | null
     expert_feedback: string | null
     expert_feedback_sent: boolean | null
     overall_band_score: number | null
+    expert_overall_score: number | null
     status: string | null
     created_at: Date | null
     updated_at: Date | null
@@ -24792,10 +24812,13 @@ export namespace Prisma {
     task2_word_count: number | null
     time_taken: number | null
     ai_evaluation: string | null
+    tokens_used: number | null
+    api_cost: Decimal | null
     expert_score: number | null
     expert_feedback: string | null
     expert_feedback_sent: boolean | null
     overall_band_score: number | null
+    expert_overall_score: number | null
     status: string | null
     created_at: Date | null
     updated_at: Date | null
@@ -24811,10 +24834,13 @@ export namespace Prisma {
     task2_word_count: number
     time_taken: number
     ai_evaluation: number
+    tokens_used: number
+    api_cost: number
     expert_score: number
     expert_feedback: number
     expert_feedback_sent: number
     overall_band_score: number
+    expert_overall_score: number
     status: number
     created_at: number
     updated_at: number
@@ -24829,8 +24855,11 @@ export namespace Prisma {
     task1_word_count?: true
     task2_word_count?: true
     time_taken?: true
+    tokens_used?: true
+    api_cost?: true
     expert_score?: true
     overall_band_score?: true
+    expert_overall_score?: true
   }
 
   export type Writing_submissionsSumAggregateInputType = {
@@ -24840,8 +24869,11 @@ export namespace Prisma {
     task1_word_count?: true
     task2_word_count?: true
     time_taken?: true
+    tokens_used?: true
+    api_cost?: true
     expert_score?: true
     overall_band_score?: true
+    expert_overall_score?: true
   }
 
   export type Writing_submissionsMinAggregateInputType = {
@@ -24854,10 +24886,13 @@ export namespace Prisma {
     task2_word_count?: true
     time_taken?: true
     ai_evaluation?: true
+    tokens_used?: true
+    api_cost?: true
     expert_score?: true
     expert_feedback?: true
     expert_feedback_sent?: true
     overall_band_score?: true
+    expert_overall_score?: true
     status?: true
     created_at?: true
     updated_at?: true
@@ -24873,10 +24908,13 @@ export namespace Prisma {
     task2_word_count?: true
     time_taken?: true
     ai_evaluation?: true
+    tokens_used?: true
+    api_cost?: true
     expert_score?: true
     expert_feedback?: true
     expert_feedback_sent?: true
     overall_band_score?: true
+    expert_overall_score?: true
     status?: true
     created_at?: true
     updated_at?: true
@@ -24892,10 +24930,13 @@ export namespace Prisma {
     task2_word_count?: true
     time_taken?: true
     ai_evaluation?: true
+    tokens_used?: true
+    api_cost?: true
     expert_score?: true
     expert_feedback?: true
     expert_feedback_sent?: true
     overall_band_score?: true
+    expert_overall_score?: true
     status?: true
     created_at?: true
     updated_at?: true
@@ -24998,10 +25039,13 @@ export namespace Prisma {
     task2_word_count: number | null
     time_taken: number
     ai_evaluation: string | null
+    tokens_used: number | null
+    api_cost: Decimal | null
     expert_score: number | null
     expert_feedback: string | null
     expert_feedback_sent: boolean
     overall_band_score: number | null
+    expert_overall_score: number | null
     status: string
     created_at: Date | null
     updated_at: Date | null
@@ -25036,10 +25080,13 @@ export namespace Prisma {
     task2_word_count?: boolean
     time_taken?: boolean
     ai_evaluation?: boolean
+    tokens_used?: boolean
+    api_cost?: boolean
     expert_score?: boolean
     expert_feedback?: boolean
     expert_feedback_sent?: boolean
     overall_band_score?: boolean
+    expert_overall_score?: boolean
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -25058,10 +25105,13 @@ export namespace Prisma {
     task2_word_count?: boolean
     time_taken?: boolean
     ai_evaluation?: boolean
+    tokens_used?: boolean
+    api_cost?: boolean
     expert_score?: boolean
     expert_feedback?: boolean
     expert_feedback_sent?: boolean
     overall_band_score?: boolean
+    expert_overall_score?: boolean
     status?: boolean
     created_at?: boolean
     updated_at?: boolean
@@ -25088,10 +25138,13 @@ export namespace Prisma {
       task2_word_count: number | null
       time_taken: number
       ai_evaluation: string | null
+      tokens_used: number | null
+      api_cost: Prisma.Decimal | null
       expert_score: number | null
       expert_feedback: string | null
       expert_feedback_sent: boolean
       overall_band_score: number | null
+      expert_overall_score: number | null
       status: string
       created_at: Date | null
       updated_at: Date | null
@@ -25475,10 +25528,13 @@ export namespace Prisma {
     readonly task2_word_count: FieldRef<"writing_submissions", 'Int'>
     readonly time_taken: FieldRef<"writing_submissions", 'Int'>
     readonly ai_evaluation: FieldRef<"writing_submissions", 'String'>
+    readonly tokens_used: FieldRef<"writing_submissions", 'Int'>
+    readonly api_cost: FieldRef<"writing_submissions", 'Decimal'>
     readonly expert_score: FieldRef<"writing_submissions", 'Float'>
     readonly expert_feedback: FieldRef<"writing_submissions", 'String'>
     readonly expert_feedback_sent: FieldRef<"writing_submissions", 'Boolean'>
     readonly overall_band_score: FieldRef<"writing_submissions", 'Float'>
+    readonly expert_overall_score: FieldRef<"writing_submissions", 'Float'>
     readonly status: FieldRef<"writing_submissions", 'String'>
     readonly created_at: FieldRef<"writing_submissions", 'DateTime'>
     readonly updated_at: FieldRef<"writing_submissions", 'DateTime'>
@@ -27040,6 +27096,7 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     google_id: 'google_id',
+    facebook_id: 'facebook_id',
     auth_provider: 'auth_provider',
     profile_picture: 'profile_picture',
     phone: 'phone',
@@ -27144,10 +27201,13 @@ export namespace Prisma {
     task2_word_count: 'task2_word_count',
     time_taken: 'time_taken',
     ai_evaluation: 'ai_evaluation',
+    tokens_used: 'tokens_used',
+    api_cost: 'api_cost',
     expert_score: 'expert_score',
     expert_feedback: 'expert_feedback',
     expert_feedback_sent: 'expert_feedback_sent',
     overall_band_score: 'overall_band_score',
+    expert_overall_score: 'expert_overall_score',
     status: 'status',
     created_at: 'created_at',
     updated_at: 'updated_at'
@@ -27224,6 +27284,13 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
@@ -28490,6 +28557,7 @@ export namespace Prisma {
     name?: StringFilter<"users"> | string
     email?: StringNullableFilter<"users"> | string | null
     google_id?: StringNullableFilter<"users"> | string | null
+    facebook_id?: StringNullableFilter<"users"> | string | null
     auth_provider?: StringFilter<"users"> | string
     profile_picture?: StringNullableFilter<"users"> | string | null
     phone?: StringNullableFilter<"users"> | string | null
@@ -28513,6 +28581,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrderInput | SortOrder
     google_id?: SortOrderInput | SortOrder
+    facebook_id?: SortOrderInput | SortOrder
     auth_provider?: SortOrder
     profile_picture?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
@@ -28539,6 +28608,7 @@ export namespace Prisma {
     name?: StringFilter<"users"> | string
     email?: StringNullableFilter<"users"> | string | null
     google_id?: StringNullableFilter<"users"> | string | null
+    facebook_id?: StringNullableFilter<"users"> | string | null
     auth_provider?: StringFilter<"users"> | string
     profile_picture?: StringNullableFilter<"users"> | string | null
     phone?: StringNullableFilter<"users"> | string | null
@@ -28562,6 +28632,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrderInput | SortOrder
     google_id?: SortOrderInput | SortOrder
+    facebook_id?: SortOrderInput | SortOrder
     auth_provider?: SortOrder
     profile_picture?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
@@ -28592,6 +28663,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"users"> | string
     email?: StringNullableWithAggregatesFilter<"users"> | string | null
     google_id?: StringNullableWithAggregatesFilter<"users"> | string | null
+    facebook_id?: StringNullableWithAggregatesFilter<"users"> | string | null
     auth_provider?: StringWithAggregatesFilter<"users"> | string
     profile_picture?: StringNullableWithAggregatesFilter<"users"> | string | null
     phone?: StringNullableWithAggregatesFilter<"users"> | string | null
@@ -29002,10 +29074,13 @@ export namespace Prisma {
     task2_word_count?: IntNullableFilter<"writing_submissions"> | number | null
     time_taken?: IntFilter<"writing_submissions"> | number
     ai_evaluation?: StringNullableFilter<"writing_submissions"> | string | null
+    tokens_used?: IntNullableFilter<"writing_submissions"> | number | null
+    api_cost?: DecimalNullableFilter<"writing_submissions"> | Decimal | DecimalJsLike | number | string | null
     expert_score?: FloatNullableFilter<"writing_submissions"> | number | null
     expert_feedback?: StringNullableFilter<"writing_submissions"> | string | null
     expert_feedback_sent?: BoolFilter<"writing_submissions"> | boolean
     overall_band_score?: FloatNullableFilter<"writing_submissions"> | number | null
+    expert_overall_score?: FloatNullableFilter<"writing_submissions"> | number | null
     status?: StringFilter<"writing_submissions"> | string
     created_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
@@ -29023,10 +29098,13 @@ export namespace Prisma {
     task2_word_count?: SortOrderInput | SortOrder
     time_taken?: SortOrder
     ai_evaluation?: SortOrderInput | SortOrder
+    tokens_used?: SortOrderInput | SortOrder
+    api_cost?: SortOrderInput | SortOrder
     expert_score?: SortOrderInput | SortOrder
     expert_feedback?: SortOrderInput | SortOrder
     expert_feedback_sent?: SortOrder
     overall_band_score?: SortOrderInput | SortOrder
+    expert_overall_score?: SortOrderInput | SortOrder
     status?: SortOrder
     created_at?: SortOrderInput | SortOrder
     updated_at?: SortOrderInput | SortOrder
@@ -29047,10 +29125,13 @@ export namespace Prisma {
     task2_word_count?: IntNullableFilter<"writing_submissions"> | number | null
     time_taken?: IntFilter<"writing_submissions"> | number
     ai_evaluation?: StringNullableFilter<"writing_submissions"> | string | null
+    tokens_used?: IntNullableFilter<"writing_submissions"> | number | null
+    api_cost?: DecimalNullableFilter<"writing_submissions"> | Decimal | DecimalJsLike | number | string | null
     expert_score?: FloatNullableFilter<"writing_submissions"> | number | null
     expert_feedback?: StringNullableFilter<"writing_submissions"> | string | null
     expert_feedback_sent?: BoolFilter<"writing_submissions"> | boolean
     overall_band_score?: FloatNullableFilter<"writing_submissions"> | number | null
+    expert_overall_score?: FloatNullableFilter<"writing_submissions"> | number | null
     status?: StringFilter<"writing_submissions"> | string
     created_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
@@ -29068,10 +29149,13 @@ export namespace Prisma {
     task2_word_count?: SortOrderInput | SortOrder
     time_taken?: SortOrder
     ai_evaluation?: SortOrderInput | SortOrder
+    tokens_used?: SortOrderInput | SortOrder
+    api_cost?: SortOrderInput | SortOrder
     expert_score?: SortOrderInput | SortOrder
     expert_feedback?: SortOrderInput | SortOrder
     expert_feedback_sent?: SortOrder
     overall_band_score?: SortOrderInput | SortOrder
+    expert_overall_score?: SortOrderInput | SortOrder
     status?: SortOrder
     created_at?: SortOrderInput | SortOrder
     updated_at?: SortOrderInput | SortOrder
@@ -29095,10 +29179,13 @@ export namespace Prisma {
     task2_word_count?: IntNullableWithAggregatesFilter<"writing_submissions"> | number | null
     time_taken?: IntWithAggregatesFilter<"writing_submissions"> | number
     ai_evaluation?: StringNullableWithAggregatesFilter<"writing_submissions"> | string | null
+    tokens_used?: IntNullableWithAggregatesFilter<"writing_submissions"> | number | null
+    api_cost?: DecimalNullableWithAggregatesFilter<"writing_submissions"> | Decimal | DecimalJsLike | number | string | null
     expert_score?: FloatNullableWithAggregatesFilter<"writing_submissions"> | number | null
     expert_feedback?: StringNullableWithAggregatesFilter<"writing_submissions"> | string | null
     expert_feedback_sent?: BoolWithAggregatesFilter<"writing_submissions"> | boolean
     overall_band_score?: FloatNullableWithAggregatesFilter<"writing_submissions"> | number | null
+    expert_overall_score?: FloatNullableWithAggregatesFilter<"writing_submissions"> | number | null
     status?: StringWithAggregatesFilter<"writing_submissions"> | string
     created_at?: DateTimeNullableWithAggregatesFilter<"writing_submissions"> | Date | string | null
     updated_at?: DateTimeNullableWithAggregatesFilter<"writing_submissions"> | Date | string | null
@@ -30556,6 +30643,7 @@ export namespace Prisma {
     name: string
     email?: string | null
     google_id?: string | null
+    facebook_id?: string | null
     auth_provider?: string
     profile_picture?: string | null
     phone?: string | null
@@ -30579,6 +30667,7 @@ export namespace Prisma {
     name: string
     email?: string | null
     google_id?: string | null
+    facebook_id?: string | null
     auth_provider?: string
     profile_picture?: string | null
     phone?: string | null
@@ -30602,6 +30691,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
+    facebook_id?: NullableStringFieldUpdateOperationsInput | string | null
     auth_provider?: StringFieldUpdateOperationsInput | string
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30625,6 +30715,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
+    facebook_id?: NullableStringFieldUpdateOperationsInput | string | null
     auth_provider?: StringFieldUpdateOperationsInput | string
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30648,6 +30739,7 @@ export namespace Prisma {
     name: string
     email?: string | null
     google_id?: string | null
+    facebook_id?: string | null
     auth_provider?: string
     profile_picture?: string | null
     phone?: string | null
@@ -30670,6 +30762,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
+    facebook_id?: NullableStringFieldUpdateOperationsInput | string | null
     auth_provider?: StringFieldUpdateOperationsInput | string
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30692,6 +30785,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
+    facebook_id?: NullableStringFieldUpdateOperationsInput | string | null
     auth_provider?: StringFieldUpdateOperationsInput | string
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31145,10 +31239,13 @@ export namespace Prisma {
     task2_word_count?: number | null
     time_taken: number
     ai_evaluation?: string | null
+    tokens_used?: number | null
+    api_cost?: Decimal | DecimalJsLike | number | string | null
     expert_score?: number | null
     expert_feedback?: string | null
     expert_feedback_sent?: boolean
     overall_band_score?: number | null
+    expert_overall_score?: number | null
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -31166,10 +31263,13 @@ export namespace Prisma {
     task2_word_count?: number | null
     time_taken: number
     ai_evaluation?: string | null
+    tokens_used?: number | null
+    api_cost?: Decimal | DecimalJsLike | number | string | null
     expert_score?: number | null
     expert_feedback?: string | null
     expert_feedback_sent?: boolean
     overall_band_score?: number | null
+    expert_overall_score?: number | null
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -31185,10 +31285,13 @@ export namespace Prisma {
     task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     time_taken?: IntFieldUpdateOperationsInput | number
     ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    tokens_used?: NullableIntFieldUpdateOperationsInput | number | null
+    api_cost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
     expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
     expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
     overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_overall_score?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31206,10 +31309,13 @@ export namespace Prisma {
     task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     time_taken?: IntFieldUpdateOperationsInput | number
     ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    tokens_used?: NullableIntFieldUpdateOperationsInput | number | null
+    api_cost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
     expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
     expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
     overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_overall_score?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31226,10 +31332,13 @@ export namespace Prisma {
     task2_word_count?: number | null
     time_taken: number
     ai_evaluation?: string | null
+    tokens_used?: number | null
+    api_cost?: Decimal | DecimalJsLike | number | string | null
     expert_score?: number | null
     expert_feedback?: string | null
     expert_feedback_sent?: boolean
     overall_band_score?: number | null
+    expert_overall_score?: number | null
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -31244,10 +31353,13 @@ export namespace Prisma {
     task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     time_taken?: IntFieldUpdateOperationsInput | number
     ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    tokens_used?: NullableIntFieldUpdateOperationsInput | number | null
+    api_cost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
     expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
     expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
     overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_overall_score?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31263,10 +31375,13 @@ export namespace Prisma {
     task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     time_taken?: IntFieldUpdateOperationsInput | number
     ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    tokens_used?: NullableIntFieldUpdateOperationsInput | number | null
+    api_cost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
     expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
     expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
     overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_overall_score?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -32443,6 +32558,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     google_id?: SortOrder
+    facebook_id?: SortOrder
     auth_provider?: SortOrder
     profile_picture?: SortOrder
     phone?: SortOrder
@@ -32472,6 +32588,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     google_id?: SortOrder
+    facebook_id?: SortOrder
     auth_provider?: SortOrder
     profile_picture?: SortOrder
     phone?: SortOrder
@@ -32494,6 +32611,7 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     google_id?: SortOrder
+    facebook_id?: SortOrder
     auth_provider?: SortOrder
     profile_picture?: SortOrder
     phone?: SortOrder
@@ -32795,6 +32913,17 @@ export namespace Prisma {
     word_limit?: SortOrder
   }
 
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
   export type FloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | null
@@ -32821,10 +32950,13 @@ export namespace Prisma {
     task2_word_count?: SortOrder
     time_taken?: SortOrder
     ai_evaluation?: SortOrder
+    tokens_used?: SortOrder
+    api_cost?: SortOrder
     expert_score?: SortOrder
     expert_feedback?: SortOrder
     expert_feedback_sent?: SortOrder
     overall_band_score?: SortOrder
+    expert_overall_score?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -32837,8 +32969,11 @@ export namespace Prisma {
     task1_word_count?: SortOrder
     task2_word_count?: SortOrder
     time_taken?: SortOrder
+    tokens_used?: SortOrder
+    api_cost?: SortOrder
     expert_score?: SortOrder
     overall_band_score?: SortOrder
+    expert_overall_score?: SortOrder
   }
 
   export type writing_submissionsMaxOrderByAggregateInput = {
@@ -32851,10 +32986,13 @@ export namespace Prisma {
     task2_word_count?: SortOrder
     time_taken?: SortOrder
     ai_evaluation?: SortOrder
+    tokens_used?: SortOrder
+    api_cost?: SortOrder
     expert_score?: SortOrder
     expert_feedback?: SortOrder
     expert_feedback_sent?: SortOrder
     overall_band_score?: SortOrder
+    expert_overall_score?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -32870,10 +33008,13 @@ export namespace Prisma {
     task2_word_count?: SortOrder
     time_taken?: SortOrder
     ai_evaluation?: SortOrder
+    tokens_used?: SortOrder
+    api_cost?: SortOrder
     expert_score?: SortOrder
     expert_feedback?: SortOrder
     expert_feedback_sent?: SortOrder
     overall_band_score?: SortOrder
+    expert_overall_score?: SortOrder
     status?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
@@ -32886,8 +33027,27 @@ export namespace Prisma {
     task1_word_count?: SortOrder
     task2_word_count?: SortOrder
     time_taken?: SortOrder
+    tokens_used?: SortOrder
+    api_cost?: SortOrder
     expert_score?: SortOrder
     overall_band_score?: SortOrder
+    expert_overall_score?: SortOrder
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -33465,6 +33625,14 @@ export namespace Prisma {
     connect?: expert_review_requestsWhereUniqueInput
   }
 
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -33768,6 +33936,33 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -34313,10 +34508,13 @@ export namespace Prisma {
     task2_word_count?: number | null
     time_taken: number
     ai_evaluation?: string | null
+    tokens_used?: number | null
+    api_cost?: Decimal | DecimalJsLike | number | string | null
     expert_score?: number | null
     expert_feedback?: string | null
     expert_feedback_sent?: boolean
     overall_band_score?: number | null
+    expert_overall_score?: number | null
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -34332,10 +34530,13 @@ export namespace Prisma {
     task2_word_count?: number | null
     time_taken: number
     ai_evaluation?: string | null
+    tokens_used?: number | null
+    api_cost?: Decimal | DecimalJsLike | number | string | null
     expert_score?: number | null
     expert_feedback?: string | null
     expert_feedback_sent?: boolean
     overall_band_score?: number | null
+    expert_overall_score?: number | null
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -34411,10 +34612,13 @@ export namespace Prisma {
     task2_word_count?: IntNullableFilter<"writing_submissions"> | number | null
     time_taken?: IntFilter<"writing_submissions"> | number
     ai_evaluation?: StringNullableFilter<"writing_submissions"> | string | null
+    tokens_used?: IntNullableFilter<"writing_submissions"> | number | null
+    api_cost?: DecimalNullableFilter<"writing_submissions"> | Decimal | DecimalJsLike | number | string | null
     expert_score?: FloatNullableFilter<"writing_submissions"> | number | null
     expert_feedback?: StringNullableFilter<"writing_submissions"> | string | null
     expert_feedback_sent?: BoolFilter<"writing_submissions"> | boolean
     overall_band_score?: FloatNullableFilter<"writing_submissions"> | number | null
+    expert_overall_score?: FloatNullableFilter<"writing_submissions"> | number | null
     status?: StringFilter<"writing_submissions"> | string
     created_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
     updated_at?: DateTimeNullableFilter<"writing_submissions"> | Date | string | null
@@ -34428,6 +34632,7 @@ export namespace Prisma {
     name: string
     email?: string | null
     google_id?: string | null
+    facebook_id?: string | null
     auth_provider?: string
     profile_picture?: string | null
     phone?: string | null
@@ -34450,6 +34655,7 @@ export namespace Prisma {
     name: string
     email?: string | null
     google_id?: string | null
+    facebook_id?: string | null
     auth_provider?: string
     profile_picture?: string | null
     phone?: string | null
@@ -34488,6 +34694,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
+    facebook_id?: NullableStringFieldUpdateOperationsInput | string | null
     auth_provider?: StringFieldUpdateOperationsInput | string
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34510,6 +34717,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
     google_id?: NullableStringFieldUpdateOperationsInput | string | null
+    facebook_id?: NullableStringFieldUpdateOperationsInput | string | null
     auth_provider?: StringFieldUpdateOperationsInput | string
     profile_picture?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34917,10 +35125,13 @@ export namespace Prisma {
     task2_word_count?: number | null
     time_taken: number
     ai_evaluation?: string | null
+    tokens_used?: number | null
+    api_cost?: Decimal | DecimalJsLike | number | string | null
     expert_score?: number | null
     expert_feedback?: string | null
     expert_feedback_sent?: boolean
     overall_band_score?: number | null
+    expert_overall_score?: number | null
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -34937,10 +35148,13 @@ export namespace Prisma {
     task2_word_count?: number | null
     time_taken: number
     ai_evaluation?: string | null
+    tokens_used?: number | null
+    api_cost?: Decimal | DecimalJsLike | number | string | null
     expert_score?: number | null
     expert_feedback?: string | null
     expert_feedback_sent?: boolean
     overall_band_score?: number | null
+    expert_overall_score?: number | null
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -34971,10 +35185,13 @@ export namespace Prisma {
     task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     time_taken?: IntFieldUpdateOperationsInput | number
     ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    tokens_used?: NullableIntFieldUpdateOperationsInput | number | null
+    api_cost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
     expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
     expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
     overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_overall_score?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34991,10 +35208,13 @@ export namespace Prisma {
     task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     time_taken?: IntFieldUpdateOperationsInput | number
     ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    tokens_used?: NullableIntFieldUpdateOperationsInput | number | null
+    api_cost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
     expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
     expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
     overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_overall_score?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35127,10 +35347,13 @@ export namespace Prisma {
     task2_word_count?: number | null
     time_taken: number
     ai_evaluation?: string | null
+    tokens_used?: number | null
+    api_cost?: Decimal | DecimalJsLike | number | string | null
     expert_score?: number | null
     expert_feedback?: string | null
     expert_feedback_sent?: boolean
     overall_band_score?: number | null
+    expert_overall_score?: number | null
     status?: string
     created_at?: Date | string | null
     updated_at?: Date | string | null
@@ -35175,10 +35398,13 @@ export namespace Prisma {
     task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     time_taken?: IntFieldUpdateOperationsInput | number
     ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    tokens_used?: NullableIntFieldUpdateOperationsInput | number | null
+    api_cost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
     expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
     expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
     overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_overall_score?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35194,10 +35420,13 @@ export namespace Prisma {
     task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     time_taken?: IntFieldUpdateOperationsInput | number
     ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    tokens_used?: NullableIntFieldUpdateOperationsInput | number | null
+    api_cost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
     expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
     expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
     overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_overall_score?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35213,10 +35442,13 @@ export namespace Prisma {
     task2_word_count?: NullableIntFieldUpdateOperationsInput | number | null
     time_taken?: IntFieldUpdateOperationsInput | number
     ai_evaluation?: NullableStringFieldUpdateOperationsInput | string | null
+    tokens_used?: NullableIntFieldUpdateOperationsInput | number | null
+    api_cost?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     expert_score?: NullableFloatFieldUpdateOperationsInput | number | null
     expert_feedback?: NullableStringFieldUpdateOperationsInput | string | null
     expert_feedback_sent?: BoolFieldUpdateOperationsInput | boolean
     overall_band_score?: NullableFloatFieldUpdateOperationsInput | number | null
+    expert_overall_score?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: StringFieldUpdateOperationsInput | string
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

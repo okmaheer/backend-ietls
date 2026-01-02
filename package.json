@@ -27,6 +27,7 @@
     "mysql2": "^3.15.2",
     "openai": "^6.9.0",
     "passport": "^0.7.0",
+    "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "winston": "^3.18.3",
     "winston-daily-rotate-file": "^5.0.0"

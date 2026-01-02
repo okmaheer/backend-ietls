@@ -9,6 +9,7 @@ import testRoutes from "./src/routes/testRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import takeWritingTestRoutes from "./src/routes/takeTest/takeWritingTestRoutes.js";
 import expertReviewRoutes from "./src/routes/takeTest/expertReviewRoutes.js";
+import dashboardRoutes from "./src/routes/dashboardRoutes.js";
 
 dotenv.config();
 
@@ -32,6 +33,17 @@ app.use(cors({
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Request logger middleware
+app.use((req, res, next) => {
+  console.log(`\n📨 ${req.method} ${req.path}`);
+  console.log('📨 Headers:', {
+    authorization: req.headers.authorization ? `${req.headers.authorization.substring(0, 30)}...` : 'none',
+    origin: req.headers.origin,
+    'content-type': req.headers['content-type']
+  });
+  next();
+});
 
 // Session configurationx
 app.use(
@@ -68,6 +80,10 @@ app.use("/api/take-test/writing", takeWritingTestRoutes);
 
 // Expert Review routes
 app.use("/api/expert-review", expertReviewRoutes);
+
+// Dashboard routes
+app.use("/api/dashboard", dashboardRoutes);
+
 // Health check
 app.get("/", (req, res) => {
   console.log("✅ Received GET / request");

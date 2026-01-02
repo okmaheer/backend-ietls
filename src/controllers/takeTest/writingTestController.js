@@ -390,6 +390,11 @@ export const submitWritingTest = async (req, res) => {
         answer: task1Answer.answer_text,
         wordCount: task1Answer.word_count
       };
+
+      // Include image URL if exists (for charts, graphs, diagrams in Academic Writing)
+      if (task1Question?.image_url) {
+        submissionData.task1.imageUrl = task1Question.image_url;
+      }
     }
 
     if (hasTask2Content && task2Answer.answer_text) {
@@ -399,6 +404,11 @@ export const submitWritingTest = async (req, res) => {
         answer: task2Answer.answer_text,
         wordCount: task2Answer.word_count
       };
+
+      // Include image URL if exists (rare for Task 2, but support it)
+      if (task2Question?.image_url) {
+        submissionData.task2.imageUrl = task2Question.image_url;
+      }
     }
 
     // Call OpenAI to evaluate ONLY if there are NEW tasks
@@ -418,6 +428,20 @@ export const submitWritingTest = async (req, res) => {
       task1: hasTask1Content ? newEvaluation.task1 : (existingAiEval?.task1 || null),
       task2: hasTask2Content ? newEvaluation.task2 : (existingAiEval?.task2 || null)
     };
+
+    // Extract token usage and cost from new evaluation (if available)
+    // NOTE: Token count automatically includes vision tokens if images were sent
+    // High-detail images: ~765 tokens per image (512x512), ~1105 tokens (1024x1024)
+    const newTokensUsed = newEvaluation.tokens_used || 0;
+    const newApiCost = newEvaluation.estimated_cost ? parseFloat(newEvaluation.estimated_cost) : 0;
+
+    // Calculate cumulative tokens and cost (add new to existing if updating)
+    const totalTokensUsed = existingSubmission
+      ? (existingSubmission.tokens_used || 0) + newTokensUsed
+      : newTokensUsed;
+    const totalApiCost = existingSubmission
+      ? parseFloat(existingSubmission.api_cost || 0) + newApiCost
+      : newApiCost;
 
     // Calculate overall band score from merged evaluation
     const task1Band = finalEvaluation.task1?.overall_band || null;
@@ -443,6 +467,8 @@ export const submitWritingTest = async (req, res) => {
           task2_word_count: finalTask2WordCount,
           time_taken: (existingSubmission.time_taken || 0) + (time_taken || 0),
           ai_evaluation: JSON.stringify(finalEvaluation),
+          tokens_used: totalTokensUsed > 0 ? totalTokensUsed : null,
+          api_cost: totalApiCost > 0 ? totalApiCost : null,
           overall_band_score: overallBand,
           status: 'evaluated',
           updated_at: new Date()
@@ -460,6 +486,8 @@ export const submitWritingTest = async (req, res) => {
           task2_word_count: finalTask2WordCount,
           time_taken: time_taken || 0,
           ai_evaluation: JSON.stringify(finalEvaluation),
+          tokens_used: totalTokensUsed > 0 ? totalTokensUsed : null,
+          api_cost: totalApiCost > 0 ? totalApiCost : null,
           overall_band_score: overallBand,
           status: 'evaluated',
           created_at: new Date(),

@@ -8,6 +8,8 @@ const openai = new OpenAI({
 // System prompt stored in code - NOT sent every time (saves tokens and cost)
 const SYSTEM_PROMPT = `You are an expert IELTS Writing examiner. Evaluate writing tasks strictly according to official IELTS Writing Band Score Descriptors.
 
+IMPORTANT: For Academic Task 1, an image (chart, graph, diagram, map, or process) may be provided. When an image is present, analyze the visual data carefully and evaluate whether the student accurately described the key features, trends, and comparisons shown in the image.
+
 Your evaluation must be returned as valid JSON only. No additional text, explanations, or markdown formatting.
 
 For each task, provide:
@@ -20,7 +22,7 @@ For each task, provide:
 Evaluation Guidelines:
 ✅ Task Response (Task 2): Check relevance of ideas to the question. Assess whether ideas are fully developed with clear reasons and examples. Confirm a consistent and clear position throughout the essay. Identify lapses in content such as missing explanation or unclear arguments.
 
-✅ Task Achievement (Task 1): For Academic - Check if key features are clearly selected, accurately compared, and illustrated. For General Training - Ensure all bullet points are fully addressed and extended with relevant details. Identify any irrelevant or missing content.
+✅ Task Achievement (Task 1): For Academic - When an image is provided (chart/graph/diagram), verify that the student accurately described the visual data including specific numbers, trends, and comparisons. Check if key features are clearly selected, accurately compared, and illustrated. Evaluate whether the student correctly identified significant patterns and overlooked no important details from the image. For General Training - Ensure all bullet points are fully addressed and extended with relevant details. Identify any irrelevant or missing content.
 
 ✅ Grammar: Identify grammatical errors (subject-verb agreement, articles, prepositions, punctuation). Evaluate range and accuracy of sentence structures (compound, complex, conditional, relative clauses). Comment on clarity and control of punctuation. Provide 2-4 specific examples of grammatical mistakes with corrections.
 
@@ -74,43 +76,90 @@ Response format MUST be valid JSON with criterion_details for each assessment cr
 If only one task is submitted, omit the other task from JSON and set average_band to that task's overall_band.`;
 
 /**
- * Evaluate IELTS Writing Test using GPT-4o-mini
+ * Evaluate IELTS Writing Test using GPT-4o-mini with vision support
  * @param {Object} submissionData - Contains questions and answers
  * @param {Object} submissionData.task1 - Task 1 data (optional)
  * @param {string} submissionData.task1.question - Task 1 question
  * @param {string} submissionData.task1.answer - Task 1 answer
  * @param {number} submissionData.task1.wordCount - Task 1 word count
+ * @param {string} submissionData.task1.imageUrl - Task 1 image URL (optional, for charts/graphs)
  * @param {Object} submissionData.task2 - Task 2 data (optional)
  * @param {string} submissionData.task2.question - Task 2 question
  * @param {string} submissionData.task2.answer - Task 2 answer
  * @param {number} submissionData.task2.wordCount - Task 2 word count
+ * @param {string} submissionData.task2.imageUrl - Task 2 image URL (optional)
  * @returns {Promise<Object>} AI evaluation results
  */
 export async function evaluateWritingTest(submissionData) {
   try {
-    // Build user message with questions and answers
-    let userMessage = '';
+    // Build user message content array (supports both text and images)
+    const userMessageContent = [];
+
+    // Build text content
+    let textContent = '';
 
     if (submissionData.task1) {
-      userMessage += `TASK 1 (Academic/General Training Writing):\n`;
-      userMessage += `Question: ${submissionData.task1.question}\n\n`;
-      userMessage += `Student's Answer (${submissionData.task1.wordCount} words):\n${submissionData.task1.answer}\n\n`;
+      textContent += `TASK 1 (Academic/General Training Writing):\n`;
+      textContent += `Question: ${submissionData.task1.question}\n`;
+
+      // Add note if image is provided
+      if (submissionData.task1.imageUrl) {
+        textContent += `[Chart/Graph/Diagram provided - see image]\n`;
+      }
+
+      textContent += `\nStudent's Answer (${submissionData.task1.wordCount} words):\n${submissionData.task1.answer}\n\n`;
     }
 
     if (submissionData.task2) {
-      userMessage += `TASK 2 (Essay Writing):\n`;
-      userMessage += `Question: ${submissionData.task2.question}\n\n`;
-      userMessage += `Student's Answer (${submissionData.task2.wordCount} words):\n${submissionData.task2.answer}\n\n`;
+      textContent += `TASK 2 (Essay Writing):\n`;
+      textContent += `Question: ${submissionData.task2.question}\n`;
+
+      // Add note if image is provided
+      if (submissionData.task2.imageUrl) {
+        textContent += `[Related image provided - see image]\n`;
+      }
+
+      textContent += `\nStudent's Answer (${submissionData.task2.wordCount} words):\n${submissionData.task2.answer}\n\n`;
     }
 
-    userMessage += `\nProvide evaluation as JSON only.`;
+    textContent += `\nProvide evaluation as JSON only.`;
 
-    // Call OpenAI API with GPT-4o-mini (cost-effective)
+    // Add text content
+    userMessageContent.push({
+      type: 'text',
+      text: textContent
+    });
+
+    // Add Task 1 image if exists (usually charts, graphs, diagrams for Academic Writing)
+    if (submissionData.task1?.imageUrl) {
+      userMessageContent.push({
+        type: 'image_url',
+        image_url: {
+          url: submissionData.task1.imageUrl,
+          detail: 'high' // Use 'high' detail for accurate chart/graph reading
+        }
+      });
+    }
+
+    // Add Task 2 image if exists (rare, but support it)
+    if (submissionData.task2?.imageUrl) {
+      userMessageContent.push({
+        type: 'image_url',
+        image_url: {
+          url: submissionData.task2.imageUrl,
+          detail: 'high'
+        }
+      });
+    }
+
+    // Call OpenAI API with GPT-4o-mini (supports vision)
+    // Vision pricing: ~$0.15/1M input tokens, ~$0.60/1M output tokens
+    // Images consume additional tokens based on resolution (high detail ~765 tokens for 512x512)
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini', // Cost: ~$0.15/1M input tokens, ~$0.60/1M output tokens
+      model: 'gpt-4o-mini',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: userMessage }
+        { role: 'user', content: userMessageContent }
       ],
       response_format: { type: 'json_object' }, // Force JSON output
       temperature: 0.3, // Lower temperature for consistent evaluation

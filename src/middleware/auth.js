@@ -10,20 +10,38 @@ const USER_MODEL_TYPE = "App\\Models\\User";
  */
 export const authenticate = async (req, res, next) => {
   try {
+    console.log('🔐 Auth Middleware - Request:', {
+      method: req.method,
+      url: req.url,
+      path: req.path,
+      hasAuthHeader: !!req.headers.authorization
+    });
+
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      console.error('❌ Auth Middleware - No token provided');
       return error(res, new Error("No token provided"), 401);
     }
 
     const token = authHeader.split(" ")[1];
+    console.log('🔐 Auth Middleware - Token received:', {
+      tokenLength: token?.length,
+      tokenPreview: token?.substring(0, 20) + '...'
+    });
 
     if (!process.env.JWT_SECRET) {
+      console.error('❌ Auth Middleware - JWT_SECRET not configured');
       throw new Error("JWT_SECRET is not configured");
     }
 
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('✅ Auth Middleware - Token decoded:', {
+      userId: decoded.id,
+      email: decoded.email,
+      roles: decoded.roles
+    });
 
     // Fetch user
     const user = await prisma.users.findUnique({
@@ -31,10 +49,18 @@ export const authenticate = async (req, res, next) => {
     });
 
     if (!user) {
+      console.error('❌ Auth Middleware - User not found:', decoded.id);
       return error(res, new Error("User not found"), 404);
     }
 
+    console.log('✅ Auth Middleware - User found:', {
+      userId: user.id.toString(),
+      email: user.email,
+      status: user.status
+    });
+
     if (user.status !== "1") {
+      console.error('❌ Auth Middleware - User account inactive');
       return error(res, new Error("User account is inactive"), 403);
     }
 
@@ -51,6 +77,7 @@ export const authenticate = async (req, res, next) => {
 
     // Extract role names
     const roles = userRoles.map((mhr) => mhr.roles.name);
+    console.log('✅ Auth Middleware - Roles fetched:', roles);
 
     // Attach user with roles to request
     req.user = {
@@ -62,8 +89,15 @@ export const authenticate = async (req, res, next) => {
       isAdmin: roles.includes("admin"),
     };
 
+    console.log('✅ Auth Middleware - Authentication successful');
     next();
   } catch (err) {
+    console.error('❌ Auth Middleware - Error:', {
+      name: err.name,
+      message: err.message,
+      stack: err.stack
+    });
+
     if (err.name === "JsonWebTokenError") {
       return error(res, new Error("Invalid token"), 401);
     }

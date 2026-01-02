@@ -7,6 +7,219 @@ import bcrypt from "bcrypt";
 import { ROLES, USER_MODEL_TYPE, getUserRoles } from "../utils/roleHelper.js";
 import { logError, logInfo, logDebug } from "../utils/logger.js";
 
+// 🔄 Generic OAuth Callback Handler (DRY principle)
+const handleOAuthCallback = async (req, res, provider) => {
+  try {
+    console.log(`\n🔥 ${provider} OAuth Callback - START`);
+    console.log(`🔥 ${provider} OAuth - User data from passport:`, {
+      hasUser: !!req.user,
+      email: req.user?.email,
+      name: req.user?.name,
+      providerId: req.user?.[`${provider.toLowerCase()}Id`]
+    });
+    logDebug(`${provider} OAuth callback initiated`, { hasUser: !!req.user });
+
+    // Validate required user data from passport
+    const providerIdField = `${provider.toLowerCase()}Id`;
+    if (!req.user || !req.user.email || !req.user[providerIdField]) {
+      const validationError = new Error(`Invalid user data from ${provider} OAuth`);
+      validationError.details = {
+        hasUser: !!req.user,
+        hasEmail: !!req.user?.email,
+        hasProviderId: !!req.user?.[providerIdField],
+      };
+      logError(`${provider} OAuth validation failed`, validationError, validationError.details);
+      error(res, validationError, 400);
+
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/signin?error=invalid_user_data`
+      );
+    }
+
+    const { email, name, picture } = req.user;
+    const providerId = req.user[providerIdField];
+    const dbProviderField = `${provider.toLowerCase()}_id`;
+
+    logDebug(`${provider} OAuth user data received`, { email, name, providerId });
+
+    // Check if user exists with this provider ID
+    let user = await prisma.users.findFirst({
+      where: { [dbProviderField]: providerId },
+    });
+
+    if (!user) {
+      // Check if user exists with this email but different auth provider
+      const existingEmailUser = await prisma.users.findFirst({
+        where: {
+          email,
+          auth_provider: { not: provider.toLowerCase() }
+        },
+      });
+
+      if (existingEmailUser) {
+        logInfo(`Linking ${provider} account to existing user`, { userId: existingEmailUser.id.toString(), email });
+        // Link the provider account to existing user
+        user = await prisma.users.update({
+          where: { id: existingEmailUser.id },
+          data: {
+            [dbProviderField]: providerId,
+            auth_provider: provider.toLowerCase(),
+            profile_picture: picture,
+            email_verified_at: new Date(),
+            updated_at: new Date(),
+          },
+        });
+      } else {
+        logInfo(`Creating new ${provider} user`, { email });
+        // ✅ Create new user with 'user' role assignment
+        user = await prisma.$transaction(async (tx) => {
+          // Create user
+          const newUser = await tx.users.create({
+            data: {
+              name: name || email.split('@')[0],
+              email,
+              [dbProviderField]: providerId,
+              auth_provider: provider.toLowerCase(),
+              profile_picture: picture,
+              password: null,
+              status: "1",
+              email_verified_at: new Date(),
+              created_at: new Date(),
+              updated_at: new Date(),
+            },
+          });
+
+          // ✅ Find 'user' role
+          const userRole = await tx.roles.findFirst({
+            where: { name: ROLES.USER }
+          });
+
+          if (!userRole) {
+            throw new Error('User role not found in database. Please ensure roles are seeded.');
+          }
+
+          // ✅ Assign 'user' role to new user
+          await tx.model_has_roles.create({
+            data: {
+              role_id: userRole.id,
+              model_type: USER_MODEL_TYPE,
+              model_id: newUser.id,
+            },
+          });
+
+          return newUser;
+        });
+        logInfo(`New ${provider} user created successfully`, { userId: user.id.toString(), email });
+      }
+    } else {
+      logDebug(`Updating existing ${provider} user profile`, { userId: user.id.toString() });
+      // Update existing user's profile picture
+      user = await prisma.users.update({
+        where: { id: user.id },
+        data: {
+          profile_picture: picture,
+          updated_at: new Date()
+        },
+      });
+    }
+
+    let roles = await getUserRoles(user.id);
+
+    if (roles.length === 0) {
+      logDebug('Assigning default user role', { userId: user.id.toString() });
+      const userRole = await prisma.roles.findFirst({
+        where: { name: ROLES.USER }
+      });
+
+      if (!userRole) {
+        throw new Error('User role not found in database. Please ensure roles are seeded.');
+      }
+
+      await prisma.model_has_roles.create({
+        data: {
+          role_id: userRole.id,
+          model_type: USER_MODEL_TYPE,
+          model_id: user.id,
+        },
+      });
+
+      // Refetch roles
+      roles = await getUserRoles(user.id);
+    }
+
+    // Validate JWT_SECRET exists
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET is not configured');
+    }
+
+    const isAdmin = roles.includes(ROLES.ADMIN);
+
+    const token = jwt.sign(
+      {
+        id: user.id.toString(),
+        email: user.email,
+        name: user.name,
+        authProvider: user.auth_provider,
+        roles,
+        isAdmin,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    logInfo(`${provider} OAuth login successful`, {
+      userId: user.id.toString(),
+      email: user.email,
+      roles
+    });
+
+    // Build redirect URL safely
+    const redirectUrl = new URL('/auth/callback', process.env.FRONTEND_URL);
+    redirectUrl.searchParams.set('token', token);
+    const userData = {
+      id: user.id.toString(),
+      name: user.name,
+      email: user.email,
+      authProvider: user.auth_provider,
+      profilePicture: user.profile_picture,
+      roles,
+      isAdmin,
+    };
+    redirectUrl.searchParams.set('user', JSON.stringify(userData));
+
+    console.log(`\n✅ ${provider} OAuth - Token generated:`, {
+      tokenLength: token.length,
+      tokenPreview: token.substring(0, 30) + '...',
+      userId: user.id.toString(),
+      email: user.email,
+      roles,
+      isAdmin
+    });
+    console.log(`✅ ${provider} OAuth - Redirect URL:`, redirectUrl.toString().substring(0, 200) + '...');
+    console.log(`✅ ${provider} OAuth - Full redirect URL length:`, redirectUrl.toString().length);
+    console.log(`🔥 ${provider} OAuth Callback - END - Redirecting now...\n`);
+
+    res.redirect(redirectUrl.toString());
+
+  } catch (err) {
+    logError(`${provider} OAuth authentication failed`, err, {
+      email: req.user?.email,
+      method: req.method,
+      url: req.originalUrl
+    });
+    error(res, err, 500);
+
+    // Redirect with specific error messages
+    const errorMessage = err.code === 'P2002'
+      ? 'duplicate_account'
+      : 'authentication_failed';
+
+    res.redirect(
+      `${process.env.FRONTEND_URL}/signin?error=${errorMessage}`
+    );
+  }
+};
+
 // 🔐 Admin Login with Email & Password
 export const adminLogin = async (req, res) => {
   try {
@@ -134,201 +347,25 @@ export const adminLogin = async (req, res) => {
 
 // 🔐 Google OAuth Callback Handler
 export const googleAuthCallback = async (req, res) => {
-  try {
-    logDebug('Google OAuth callback initiated', { hasUser: !!req.user });
-
-    // Validate required user data from passport
-    if (!req.user || !req.user.email || !req.user.googleId) {
-      const validationError = new Error('Invalid user data from Google OAuth');
-      validationError.details = {
-        hasUser: !!req.user,
-        hasEmail: !!req.user?.email,
-        hasGoogleId: !!req.user?.googleId,
-      };
-      logError('Google OAuth validation failed', validationError, validationError.details);
-      error(res, validationError, 400);
-
-      return res.redirect(
-        `${process.env.FRONTEND_URL}/signin?error=invalid_user_data`
-      );
-    }
-
-    const { email, name, googleId, picture } = req.user;
-
-    logDebug('Google OAuth user data received', { email, name, googleId });
-
-    // Check if user exists with this Google ID
-    let user = await prisma.users.findFirst({
-      where: { google_id: googleId },
-    });
-
-    if (!user) {
-      // Check if user exists with this email but different auth provider
-      const existingEmailUser = await prisma.users.findFirst({
-        where: {
-          email,
-          auth_provider: { not: 'google' }
-        },
-      });
-
-      if (existingEmailUser) {
-        logInfo('Linking Google account to existing user', { userId: existingEmailUser.id.toString(), email });
-        // Link the Google account to existing user
-        user = await prisma.users.update({
-          where: { id: existingEmailUser.id },
-          data: {
-            google_id: googleId,
-            auth_provider: 'google',
-            profile_picture: picture,
-            email_verified_at: new Date(),
-            updated_at: new Date(),
-          },
-        });
-      } else {
-        logInfo('Creating new Google user', { email });
-        // ✅ Create new Google user with 'user' role assignment
-        user = await prisma.$transaction(async (tx) => {
-          // Create user
-          const newUser = await tx.users.create({
-            data: {
-              name: name || email.split('@')[0],
-              email,
-              google_id: googleId,
-              auth_provider: 'google',
-              profile_picture: picture,
-              password: null,
-              status: "1",
-              email_verified_at: new Date(),
-              created_at: new Date(),
-              updated_at: new Date(),
-            },
-          });
-
-          // ✅ Find 'user' role
-          const userRole = await tx.roles.findFirst({
-            where: { name: ROLES.USER }
-          });
-
-          if (!userRole) {
-            throw new Error('User role not found in database. Please ensure roles are seeded.');
-          }
-
-          // ✅ Assign 'user' role to new user
-          await tx.model_has_roles.create({
-            data: {
-              role_id: userRole.id,
-              model_type: USER_MODEL_TYPE,
-              model_id: newUser.id,
-            },
-          });
-
-          return newUser;
-        });
-        logInfo('New Google user created successfully', { userId: user.id.toString(), email });
-      }
-    } else {
-      logDebug('Updating existing Google user profile', { userId: user.id.toString() });
-      // Update existing Google user's profile picture
-      user = await prisma.users.update({
-        where: { id: user.id },
-        data: {
-          profile_picture: picture,
-          updated_at: new Date()
-        },
-      });
-    }
-
-    let roles = await getUserRoles(user.id);
-
-    if (roles.length === 0) {
-      logDebug('Assigning default user role', { userId: user.id.toString() });
-      const userRole = await prisma.roles.findFirst({
-        where: { name: ROLES.USER }
-      });
-
-      if (!userRole) {
-        throw new Error('User role not found in database. Please ensure roles are seeded.');
-      }
-
-      await prisma.model_has_roles.create({
-        data: {
-          role_id: userRole.id,
-          model_type: USER_MODEL_TYPE,
-          model_id: user.id,
-        },
-      });
-
-      // Refetch roles
-      roles = await getUserRoles(user.id);
-    }
-
-    // Validate JWT_SECRET exists
-    if (!process.env.JWT_SECRET) {
-      throw new Error('JWT_SECRET is not configured');
-    }
-
-    const isAdmin = roles.includes(ROLES.ADMIN);
-
-    const token = jwt.sign(
-      {
-        id: user.id.toString(),
-        email: user.email,
-        name: user.name,
-        authProvider: user.auth_provider,
-        roles,
-        isAdmin,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    logInfo('Google OAuth login successful', {
-      userId: user.id.toString(),
-      email: user.email,
-      roles
-    });
-
-    // Build redirect URL safely
-    const redirectUrl = new URL('/auth/callback', process.env.FRONTEND_URL);
-    redirectUrl.searchParams.set('token', token);
-    redirectUrl.searchParams.set('user', JSON.stringify({
-      id: user.id.toString(),
-      name: user.name,
-      email: user.email,
-      authProvider: user.auth_provider,
-      profilePicture: user.profile_picture,
-      roles,
-      isAdmin,
-    }));
-
-    res.redirect(redirectUrl.toString());
-
-  } catch (err) {
-    logError('Google OAuth authentication failed', err, {
-      email: req.user?.email,
-      method: req.method,
-      url: req.originalUrl
-    });
-    error(res, err, 500);
-
-    // Redirect with specific error messages
-    const errorMessage = err.code === 'P2002'
-      ? 'duplicate_account'
-      : 'authentication_failed';
-
-    res.redirect(
-      `${process.env.FRONTEND_URL}/signin?error=${errorMessage}`
-    );
-  }
+  return handleOAuthCallback(req, res, 'Google');
 };
 
-// ❌ Google Auth Failure Handler
-export const googleAuthFailure = (req, res) => {
-  const failureError = new Error('Google OAuth authentication failed');
-  logError('Google OAuth failure handler triggered', failureError);
+// 🔐 Facebook OAuth Callback Handler
+export const facebookAuthCallback = async (req, res) => {
+  return handleOAuthCallback(req, res, 'Facebook');
+};
+
+// ❌ OAuth Failure Handler (Generic)
+export const oauthFailure = (req, res) => {
+  const failureError = new Error('OAuth authentication failed');
+  logError('OAuth failure handler triggered', failureError);
   error(res, failureError, 401);
 
   res.redirect(
     `${process.env.FRONTEND_URL}/signin?error=authentication_failed`
   );
 };
+
+// Backward compatibility
+export const googleAuthFailure = oauthFailure;
+export const facebookAuthFailure = oauthFailure;
