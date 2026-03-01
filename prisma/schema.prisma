@@ -373,3 +373,19 @@ model expert_review_requests {
   @@index([status], map: "expert_review_requests_status_index")
   @@index([user_id], map: "expert_review_requests_user_id_index")
 }
+
+model payment_transactions {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  user_id           BigInt    @db.UnsignedBigInt
+  transaction_id    String    @unique @db.VarChar(50)
+  amount            Decimal   @db.Decimal(10, 2)
+  currency          String    @default("PKR") @db.VarChar(10)
+  item              String    @db.VarChar(500)
+  payment_status    String    @default("pending") @db.VarChar(50)
+  payment_method    String?   @db.VarChar(100)
+  swichnow_response String?   @db.LongText
+  created_at        DateTime? @db.Timestamp(0)
+  updated_at        DateTime? @db.Timestamp(0)
+
+  @@index([user_id], map: "payment_transactions_user_id_index")
+}

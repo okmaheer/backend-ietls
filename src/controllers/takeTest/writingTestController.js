@@ -642,3 +642,31 @@ export const getSubmissionDetails = async (req, res) => {
     error(res, err.message || "Failed to fetch submission details", 500);
   }
 };
+
+// 🧾 Get submission metadata (test name + category) - public, for SEO
+export const getSubmissionMeta = async (req, res) => {
+  try {
+    const { submissionId } = req.params;
+
+    const submission = await prisma.writing_submissions.findUnique({
+      where: { id: BigInt(submissionId) },
+      select: {
+        tests: {
+          select: {
+            name: true,
+            category: true,
+          },
+        },
+      },
+    });
+
+    if (!submission) {
+      return error(res, "Submission not found", 404);
+    }
+
+    success(res, { test: submission.tests }, "Submission meta fetched");
+  } catch (err) {
+    logError("Failed to fetch submission meta", err);
+    error(res, "Failed to fetch submission meta", 500);
+  }
+};

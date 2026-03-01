@@ -87,6 +87,7 @@ export const authenticate = async (req, res, next) => {
       authProvider: user.auth_provider,
       roles,
       isAdmin: roles.includes("admin"),
+      isUserPaid: user.is_user_paid,
     };
 
     console.log('✅ Auth Middleware - Authentication successful');
@@ -260,6 +261,7 @@ export const optionalAuth = async (req, res, next) => {
         authProvider: user.auth_provider,
         roles,
         isAdmin: roles.includes("Admin"),
+        isUserPaid: user.is_user_paid,
       };
     }
 
@@ -267,5 +269,42 @@ export const optionalAuth = async (req, res, next) => {
   } catch (err) {
     // Token invalid, continue without user
     next();
+  }
+};
+
+/**
+ * Check if user has paid access for paid tests (type=2).
+ * Fetches from database to avoid stale JWT token issues.
+ * Requires authenticate middleware to run first.
+ */
+export const requirePaidForPaidTests = async (req, res, next) => {
+  try {
+    const testId = req.body.test_id || req.params.testId;
+    if (!testId) return next();
+
+    // Fetch the test to check its type
+    const test = await prisma.tests.findUnique({
+      where: { id: BigInt(testId) },
+      select: { type: true }
+    });
+
+    if (!test) return error(res, new Error("Test not found"), 404);
+
+    // type=1 is free, type=2 is paid
+    if (test.type === 2) {
+      const user = await prisma.users.findUnique({
+        where: { id: req.user.id },
+        select: { is_user_paid: true }
+      });
+
+      if (!user || !user.is_user_paid) {
+        return error(res, new Error("Premium subscription required to access this test"), 403);
+      }
+    }
+
+    next();
+  } catch (err) {
+    console.error('❌ Paid test access check failed:', err.message);
+    return error(res, new Error("Failed to verify test access"), 500);
   }
 };

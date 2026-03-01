@@ -162,6 +162,7 @@ const handleOAuthCallback = async (req, res, provider) => {
         authProvider: user.auth_provider,
         roles,
         isAdmin,
+        isUserPaid: user.is_user_paid,
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
@@ -184,6 +185,7 @@ const handleOAuthCallback = async (req, res, provider) => {
       profilePicture: user.profile_picture,
       roles,
       isAdmin,
+      isUserPaid: user.is_user_paid,
     };
     redirectUrl.searchParams.set('user', JSON.stringify(userData));
 
@@ -305,6 +307,7 @@ export const adminLogin = async (req, res) => {
         authProvider: user.auth_provider,
         roles,
         isAdmin,
+        isUserPaid: user.is_user_paid,
         duration: user.duration,
         status: user.status
       },
@@ -331,6 +334,7 @@ export const adminLogin = async (req, res) => {
           profilePicture: user.profile_picture,
           roles,
           isAdmin,
+          isUserPaid: user.is_user_paid,
         },
       },
       "Login successful"

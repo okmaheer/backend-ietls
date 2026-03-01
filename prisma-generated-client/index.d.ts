@@ -138,6 +138,11 @@ export type writing_submissions = $Result.DefaultSelection<Prisma.$writing_submi
  * 
  */
 export type expert_review_requests = $Result.DefaultSelection<Prisma.$expert_review_requestsPayload>
+/**
+ * Model payment_transactions
+ * 
+ */
+export type payment_transactions = $Result.DefaultSelection<Prisma.$payment_transactionsPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -511,6 +516,16 @@ export class PrismaClient<
     * ```
     */
   get expert_review_requests(): Prisma.expert_review_requestsDelegate<ExtArgs>;
+
+  /**
+   * `prisma.payment_transactions`: Exposes CRUD operations for the **payment_transactions** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Payment_transactions
+    * const payment_transactions = await prisma.payment_transactions.findMany()
+    * ```
+    */
+  get payment_transactions(): Prisma.payment_transactionsDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -976,7 +991,8 @@ export namespace Prisma {
     migrations: 'migrations',
     writing_questions: 'writing_questions',
     writing_submissions: 'writing_submissions',
-    expert_review_requests: 'expert_review_requests'
+    expert_review_requests: 'expert_review_requests',
+    payment_transactions: 'payment_transactions'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -992,7 +1008,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "countries" | "fill_in_blanks" | "finished_tests" | "m_c_q_s" | "model_has_permissions" | "model_has_roles" | "modules" | "options" | "permissions" | "question_groups" | "question_lists" | "questions" | "registeration_requests" | "role_has_permissions" | "roles" | "tests" | "user_details" | "users" | "branches" | "cities" | "failed_jobs" | "migrations" | "writing_questions" | "writing_submissions" | "expert_review_requests"
+      modelProps: "countries" | "fill_in_blanks" | "finished_tests" | "m_c_q_s" | "model_has_permissions" | "model_has_roles" | "modules" | "options" | "permissions" | "question_groups" | "question_lists" | "questions" | "registeration_requests" | "role_has_permissions" | "roles" | "tests" | "user_details" | "users" | "branches" | "cities" | "failed_jobs" | "migrations" | "writing_questions" | "writing_submissions" | "expert_review_requests" | "payment_transactions"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2643,6 +2659,72 @@ export namespace Prisma {
           count: {
             args: Prisma.expert_review_requestsCountArgs<ExtArgs>
             result: $Utils.Optional<Expert_review_requestsCountAggregateOutputType> | number
+          }
+        }
+      }
+      payment_transactions: {
+        payload: Prisma.$payment_transactionsPayload<ExtArgs>
+        fields: Prisma.payment_transactionsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.payment_transactionsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$payment_transactionsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.payment_transactionsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$payment_transactionsPayload>
+          }
+          findFirst: {
+            args: Prisma.payment_transactionsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$payment_transactionsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.payment_transactionsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$payment_transactionsPayload>
+          }
+          findMany: {
+            args: Prisma.payment_transactionsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$payment_transactionsPayload>[]
+          }
+          create: {
+            args: Prisma.payment_transactionsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$payment_transactionsPayload>
+          }
+          createMany: {
+            args: Prisma.payment_transactionsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.payment_transactionsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$payment_transactionsPayload>
+          }
+          update: {
+            args: Prisma.payment_transactionsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$payment_transactionsPayload>
+          }
+          deleteMany: {
+            args: Prisma.payment_transactionsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.payment_transactionsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.payment_transactionsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$payment_transactionsPayload>
+          }
+          aggregate: {
+            args: Prisma.Payment_transactionsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePayment_transactions>
+          }
+          groupBy: {
+            args: Prisma.payment_transactionsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Payment_transactionsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.payment_transactionsCountArgs<ExtArgs>
+            result: $Utils.Optional<Payment_transactionsCountAggregateOutputType> | number
           }
         }
       }
@@ -26832,6 +26914,946 @@ export namespace Prisma {
 
 
   /**
+   * Model payment_transactions
+   */
+
+  export type AggregatePayment_transactions = {
+    _count: Payment_transactionsCountAggregateOutputType | null
+    _avg: Payment_transactionsAvgAggregateOutputType | null
+    _sum: Payment_transactionsSumAggregateOutputType | null
+    _min: Payment_transactionsMinAggregateOutputType | null
+    _max: Payment_transactionsMaxAggregateOutputType | null
+  }
+
+  export type Payment_transactionsAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    amount: Decimal | null
+  }
+
+  export type Payment_transactionsSumAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    amount: Decimal | null
+  }
+
+  export type Payment_transactionsMinAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    transaction_id: string | null
+    amount: Decimal | null
+    currency: string | null
+    item: string | null
+    payment_status: string | null
+    payment_method: string | null
+    swichnow_response: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Payment_transactionsMaxAggregateOutputType = {
+    id: bigint | null
+    user_id: bigint | null
+    transaction_id: string | null
+    amount: Decimal | null
+    currency: string | null
+    item: string | null
+    payment_status: string | null
+    payment_method: string | null
+    swichnow_response: string | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type Payment_transactionsCountAggregateOutputType = {
+    id: number
+    user_id: number
+    transaction_id: number
+    amount: number
+    currency: number
+    item: number
+    payment_status: number
+    payment_method: number
+    swichnow_response: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type Payment_transactionsAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    amount?: true
+  }
+
+  export type Payment_transactionsSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    amount?: true
+  }
+
+  export type Payment_transactionsMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    transaction_id?: true
+    amount?: true
+    currency?: true
+    item?: true
+    payment_status?: true
+    payment_method?: true
+    swichnow_response?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Payment_transactionsMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    transaction_id?: true
+    amount?: true
+    currency?: true
+    item?: true
+    payment_status?: true
+    payment_method?: true
+    swichnow_response?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type Payment_transactionsCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    transaction_id?: true
+    amount?: true
+    currency?: true
+    item?: true
+    payment_status?: true
+    payment_method?: true
+    swichnow_response?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type Payment_transactionsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which payment_transactions to aggregate.
+     */
+    where?: payment_transactionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of payment_transactions to fetch.
+     */
+    orderBy?: payment_transactionsOrderByWithRelationInput | payment_transactionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: payment_transactionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` payment_transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` payment_transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned payment_transactions
+    **/
+    _count?: true | Payment_transactionsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Payment_transactionsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Payment_transactionsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Payment_transactionsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Payment_transactionsMaxAggregateInputType
+  }
+
+  export type GetPayment_transactionsAggregateType<T extends Payment_transactionsAggregateArgs> = {
+        [P in keyof T & keyof AggregatePayment_transactions]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePayment_transactions[P]>
+      : GetScalarType<T[P], AggregatePayment_transactions[P]>
+  }
+
+
+
+
+  export type payment_transactionsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: payment_transactionsWhereInput
+    orderBy?: payment_transactionsOrderByWithAggregationInput | payment_transactionsOrderByWithAggregationInput[]
+    by: Payment_transactionsScalarFieldEnum[] | Payment_transactionsScalarFieldEnum
+    having?: payment_transactionsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Payment_transactionsCountAggregateInputType | true
+    _avg?: Payment_transactionsAvgAggregateInputType
+    _sum?: Payment_transactionsSumAggregateInputType
+    _min?: Payment_transactionsMinAggregateInputType
+    _max?: Payment_transactionsMaxAggregateInputType
+  }
+
+  export type Payment_transactionsGroupByOutputType = {
+    id: bigint
+    user_id: bigint
+    transaction_id: string
+    amount: Decimal
+    currency: string
+    item: string
+    payment_status: string
+    payment_method: string | null
+    swichnow_response: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    _count: Payment_transactionsCountAggregateOutputType | null
+    _avg: Payment_transactionsAvgAggregateOutputType | null
+    _sum: Payment_transactionsSumAggregateOutputType | null
+    _min: Payment_transactionsMinAggregateOutputType | null
+    _max: Payment_transactionsMaxAggregateOutputType | null
+  }
+
+  type GetPayment_transactionsGroupByPayload<T extends payment_transactionsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Payment_transactionsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Payment_transactionsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Payment_transactionsGroupByOutputType[P]>
+            : GetScalarType<T[P], Payment_transactionsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type payment_transactionsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    transaction_id?: boolean
+    amount?: boolean
+    currency?: boolean
+    item?: boolean
+    payment_status?: boolean
+    payment_method?: boolean
+    swichnow_response?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }, ExtArgs["result"]["payment_transactions"]>
+
+
+  export type payment_transactionsSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    transaction_id?: boolean
+    amount?: boolean
+    currency?: boolean
+    item?: boolean
+    payment_status?: boolean
+    payment_method?: boolean
+    swichnow_response?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+
+  export type $payment_transactionsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "payment_transactions"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: bigint
+      user_id: bigint
+      transaction_id: string
+      amount: Prisma.Decimal
+      currency: string
+      item: string
+      payment_status: string
+      payment_method: string | null
+      swichnow_response: string | null
+      created_at: Date | null
+      updated_at: Date | null
+    }, ExtArgs["result"]["payment_transactions"]>
+    composites: {}
+  }
+
+  type payment_transactionsGetPayload<S extends boolean | null | undefined | payment_transactionsDefaultArgs> = $Result.GetResult<Prisma.$payment_transactionsPayload, S>
+
+  type payment_transactionsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<payment_transactionsFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: Payment_transactionsCountAggregateInputType | true
+    }
+
+  export interface payment_transactionsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['payment_transactions'], meta: { name: 'payment_transactions' } }
+    /**
+     * Find zero or one Payment_transactions that matches the filter.
+     * @param {payment_transactionsFindUniqueArgs} args - Arguments to find a Payment_transactions
+     * @example
+     * // Get one Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends payment_transactionsFindUniqueArgs>(args: SelectSubset<T, payment_transactionsFindUniqueArgs<ExtArgs>>): Prisma__payment_transactionsClient<$Result.GetResult<Prisma.$payment_transactionsPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Payment_transactions that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {payment_transactionsFindUniqueOrThrowArgs} args - Arguments to find a Payment_transactions
+     * @example
+     * // Get one Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends payment_transactionsFindUniqueOrThrowArgs>(args: SelectSubset<T, payment_transactionsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__payment_transactionsClient<$Result.GetResult<Prisma.$payment_transactionsPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Payment_transactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {payment_transactionsFindFirstArgs} args - Arguments to find a Payment_transactions
+     * @example
+     * // Get one Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends payment_transactionsFindFirstArgs>(args?: SelectSubset<T, payment_transactionsFindFirstArgs<ExtArgs>>): Prisma__payment_transactionsClient<$Result.GetResult<Prisma.$payment_transactionsPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Payment_transactions that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {payment_transactionsFindFirstOrThrowArgs} args - Arguments to find a Payment_transactions
+     * @example
+     * // Get one Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends payment_transactionsFindFirstOrThrowArgs>(args?: SelectSubset<T, payment_transactionsFindFirstOrThrowArgs<ExtArgs>>): Prisma__payment_transactionsClient<$Result.GetResult<Prisma.$payment_transactionsPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Payment_transactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {payment_transactionsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.findMany()
+     * 
+     * // Get first 10 Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const payment_transactionsWithIdOnly = await prisma.payment_transactions.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends payment_transactionsFindManyArgs>(args?: SelectSubset<T, payment_transactionsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$payment_transactionsPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Payment_transactions.
+     * @param {payment_transactionsCreateArgs} args - Arguments to create a Payment_transactions.
+     * @example
+     * // Create one Payment_transactions
+     * const Payment_transactions = await prisma.payment_transactions.create({
+     *   data: {
+     *     // ... data to create a Payment_transactions
+     *   }
+     * })
+     * 
+     */
+    create<T extends payment_transactionsCreateArgs>(args: SelectSubset<T, payment_transactionsCreateArgs<ExtArgs>>): Prisma__payment_transactionsClient<$Result.GetResult<Prisma.$payment_transactionsPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Payment_transactions.
+     * @param {payment_transactionsCreateManyArgs} args - Arguments to create many Payment_transactions.
+     * @example
+     * // Create many Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends payment_transactionsCreateManyArgs>(args?: SelectSubset<T, payment_transactionsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Payment_transactions.
+     * @param {payment_transactionsDeleteArgs} args - Arguments to delete one Payment_transactions.
+     * @example
+     * // Delete one Payment_transactions
+     * const Payment_transactions = await prisma.payment_transactions.delete({
+     *   where: {
+     *     // ... filter to delete one Payment_transactions
+     *   }
+     * })
+     * 
+     */
+    delete<T extends payment_transactionsDeleteArgs>(args: SelectSubset<T, payment_transactionsDeleteArgs<ExtArgs>>): Prisma__payment_transactionsClient<$Result.GetResult<Prisma.$payment_transactionsPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Payment_transactions.
+     * @param {payment_transactionsUpdateArgs} args - Arguments to update one Payment_transactions.
+     * @example
+     * // Update one Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends payment_transactionsUpdateArgs>(args: SelectSubset<T, payment_transactionsUpdateArgs<ExtArgs>>): Prisma__payment_transactionsClient<$Result.GetResult<Prisma.$payment_transactionsPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Payment_transactions.
+     * @param {payment_transactionsDeleteManyArgs} args - Arguments to filter Payment_transactions to delete.
+     * @example
+     * // Delete a few Payment_transactions
+     * const { count } = await prisma.payment_transactions.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends payment_transactionsDeleteManyArgs>(args?: SelectSubset<T, payment_transactionsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Payment_transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {payment_transactionsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends payment_transactionsUpdateManyArgs>(args: SelectSubset<T, payment_transactionsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Payment_transactions.
+     * @param {payment_transactionsUpsertArgs} args - Arguments to update or create a Payment_transactions.
+     * @example
+     * // Update or create a Payment_transactions
+     * const payment_transactions = await prisma.payment_transactions.upsert({
+     *   create: {
+     *     // ... data to create a Payment_transactions
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Payment_transactions we want to update
+     *   }
+     * })
+     */
+    upsert<T extends payment_transactionsUpsertArgs>(args: SelectSubset<T, payment_transactionsUpsertArgs<ExtArgs>>): Prisma__payment_transactionsClient<$Result.GetResult<Prisma.$payment_transactionsPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Payment_transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {payment_transactionsCountArgs} args - Arguments to filter Payment_transactions to count.
+     * @example
+     * // Count the number of Payment_transactions
+     * const count = await prisma.payment_transactions.count({
+     *   where: {
+     *     // ... the filter for the Payment_transactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends payment_transactionsCountArgs>(
+      args?: Subset<T, payment_transactionsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Payment_transactionsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Payment_transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Payment_transactionsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Payment_transactionsAggregateArgs>(args: Subset<T, Payment_transactionsAggregateArgs>): Prisma.PrismaPromise<GetPayment_transactionsAggregateType<T>>
+
+    /**
+     * Group by Payment_transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {payment_transactionsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends payment_transactionsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: payment_transactionsGroupByArgs['orderBy'] }
+        : { orderBy?: payment_transactionsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, payment_transactionsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPayment_transactionsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the payment_transactions model
+   */
+  readonly fields: payment_transactionsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for payment_transactions.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__payment_transactionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the payment_transactions model
+   */ 
+  interface payment_transactionsFieldRefs {
+    readonly id: FieldRef<"payment_transactions", 'BigInt'>
+    readonly user_id: FieldRef<"payment_transactions", 'BigInt'>
+    readonly transaction_id: FieldRef<"payment_transactions", 'String'>
+    readonly amount: FieldRef<"payment_transactions", 'Decimal'>
+    readonly currency: FieldRef<"payment_transactions", 'String'>
+    readonly item: FieldRef<"payment_transactions", 'String'>
+    readonly payment_status: FieldRef<"payment_transactions", 'String'>
+    readonly payment_method: FieldRef<"payment_transactions", 'String'>
+    readonly swichnow_response: FieldRef<"payment_transactions", 'String'>
+    readonly created_at: FieldRef<"payment_transactions", 'DateTime'>
+    readonly updated_at: FieldRef<"payment_transactions", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * payment_transactions findUnique
+   */
+  export type payment_transactionsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+    /**
+     * Filter, which payment_transactions to fetch.
+     */
+    where: payment_transactionsWhereUniqueInput
+  }
+
+  /**
+   * payment_transactions findUniqueOrThrow
+   */
+  export type payment_transactionsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+    /**
+     * Filter, which payment_transactions to fetch.
+     */
+    where: payment_transactionsWhereUniqueInput
+  }
+
+  /**
+   * payment_transactions findFirst
+   */
+  export type payment_transactionsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+    /**
+     * Filter, which payment_transactions to fetch.
+     */
+    where?: payment_transactionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of payment_transactions to fetch.
+     */
+    orderBy?: payment_transactionsOrderByWithRelationInput | payment_transactionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for payment_transactions.
+     */
+    cursor?: payment_transactionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` payment_transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` payment_transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of payment_transactions.
+     */
+    distinct?: Payment_transactionsScalarFieldEnum | Payment_transactionsScalarFieldEnum[]
+  }
+
+  /**
+   * payment_transactions findFirstOrThrow
+   */
+  export type payment_transactionsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+    /**
+     * Filter, which payment_transactions to fetch.
+     */
+    where?: payment_transactionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of payment_transactions to fetch.
+     */
+    orderBy?: payment_transactionsOrderByWithRelationInput | payment_transactionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for payment_transactions.
+     */
+    cursor?: payment_transactionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` payment_transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` payment_transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of payment_transactions.
+     */
+    distinct?: Payment_transactionsScalarFieldEnum | Payment_transactionsScalarFieldEnum[]
+  }
+
+  /**
+   * payment_transactions findMany
+   */
+  export type payment_transactionsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+    /**
+     * Filter, which payment_transactions to fetch.
+     */
+    where?: payment_transactionsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of payment_transactions to fetch.
+     */
+    orderBy?: payment_transactionsOrderByWithRelationInput | payment_transactionsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing payment_transactions.
+     */
+    cursor?: payment_transactionsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` payment_transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` payment_transactions.
+     */
+    skip?: number
+    distinct?: Payment_transactionsScalarFieldEnum | Payment_transactionsScalarFieldEnum[]
+  }
+
+  /**
+   * payment_transactions create
+   */
+  export type payment_transactionsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+    /**
+     * The data needed to create a payment_transactions.
+     */
+    data: XOR<payment_transactionsCreateInput, payment_transactionsUncheckedCreateInput>
+  }
+
+  /**
+   * payment_transactions createMany
+   */
+  export type payment_transactionsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many payment_transactions.
+     */
+    data: payment_transactionsCreateManyInput | payment_transactionsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * payment_transactions update
+   */
+  export type payment_transactionsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+    /**
+     * The data needed to update a payment_transactions.
+     */
+    data: XOR<payment_transactionsUpdateInput, payment_transactionsUncheckedUpdateInput>
+    /**
+     * Choose, which payment_transactions to update.
+     */
+    where: payment_transactionsWhereUniqueInput
+  }
+
+  /**
+   * payment_transactions updateMany
+   */
+  export type payment_transactionsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update payment_transactions.
+     */
+    data: XOR<payment_transactionsUpdateManyMutationInput, payment_transactionsUncheckedUpdateManyInput>
+    /**
+     * Filter which payment_transactions to update
+     */
+    where?: payment_transactionsWhereInput
+  }
+
+  /**
+   * payment_transactions upsert
+   */
+  export type payment_transactionsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+    /**
+     * The filter to search for the payment_transactions to update in case it exists.
+     */
+    where: payment_transactionsWhereUniqueInput
+    /**
+     * In case the payment_transactions found by the `where` argument doesn't exist, create a new payment_transactions with this data.
+     */
+    create: XOR<payment_transactionsCreateInput, payment_transactionsUncheckedCreateInput>
+    /**
+     * In case the payment_transactions was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<payment_transactionsUpdateInput, payment_transactionsUncheckedUpdateInput>
+  }
+
+  /**
+   * payment_transactions delete
+   */
+  export type payment_transactionsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+    /**
+     * Filter which payment_transactions to delete.
+     */
+    where: payment_transactionsWhereUniqueInput
+  }
+
+  /**
+   * payment_transactions deleteMany
+   */
+  export type payment_transactionsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which payment_transactions to delete
+     */
+    where?: payment_transactionsWhereInput
+  }
+
+  /**
+   * payment_transactions without action
+   */
+  export type payment_transactionsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the payment_transactions
+     */
+    select?: payment_transactionsSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -27229,6 +28251,23 @@ export namespace Prisma {
   };
 
   export type Expert_review_requestsScalarFieldEnum = (typeof Expert_review_requestsScalarFieldEnum)[keyof typeof Expert_review_requestsScalarFieldEnum]
+
+
+  export const Payment_transactionsScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    transaction_id: 'transaction_id',
+    amount: 'amount',
+    currency: 'currency',
+    item: 'item',
+    payment_status: 'payment_status',
+    payment_method: 'payment_method',
+    swichnow_response: 'swichnow_response',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type Payment_transactionsScalarFieldEnum = (typeof Payment_transactionsScalarFieldEnum)[keyof typeof Payment_transactionsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -29266,6 +30305,90 @@ export namespace Prisma {
     admin_notes?: StringNullableWithAggregatesFilter<"expert_review_requests"> | string | null
     created_at?: DateTimeNullableWithAggregatesFilter<"expert_review_requests"> | Date | string | null
     updated_at?: DateTimeNullableWithAggregatesFilter<"expert_review_requests"> | Date | string | null
+  }
+
+  export type payment_transactionsWhereInput = {
+    AND?: payment_transactionsWhereInput | payment_transactionsWhereInput[]
+    OR?: payment_transactionsWhereInput[]
+    NOT?: payment_transactionsWhereInput | payment_transactionsWhereInput[]
+    id?: BigIntFilter<"payment_transactions"> | bigint | number
+    user_id?: BigIntFilter<"payment_transactions"> | bigint | number
+    transaction_id?: StringFilter<"payment_transactions"> | string
+    amount?: DecimalFilter<"payment_transactions"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"payment_transactions"> | string
+    item?: StringFilter<"payment_transactions"> | string
+    payment_status?: StringFilter<"payment_transactions"> | string
+    payment_method?: StringNullableFilter<"payment_transactions"> | string | null
+    swichnow_response?: StringNullableFilter<"payment_transactions"> | string | null
+    created_at?: DateTimeNullableFilter<"payment_transactions"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"payment_transactions"> | Date | string | null
+  }
+
+  export type payment_transactionsOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    transaction_id?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    item?: SortOrder
+    payment_status?: SortOrder
+    payment_method?: SortOrderInput | SortOrder
+    swichnow_response?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+  }
+
+  export type payment_transactionsWhereUniqueInput = Prisma.AtLeast<{
+    id?: bigint | number
+    transaction_id?: string
+    AND?: payment_transactionsWhereInput | payment_transactionsWhereInput[]
+    OR?: payment_transactionsWhereInput[]
+    NOT?: payment_transactionsWhereInput | payment_transactionsWhereInput[]
+    user_id?: BigIntFilter<"payment_transactions"> | bigint | number
+    amount?: DecimalFilter<"payment_transactions"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"payment_transactions"> | string
+    item?: StringFilter<"payment_transactions"> | string
+    payment_status?: StringFilter<"payment_transactions"> | string
+    payment_method?: StringNullableFilter<"payment_transactions"> | string | null
+    swichnow_response?: StringNullableFilter<"payment_transactions"> | string | null
+    created_at?: DateTimeNullableFilter<"payment_transactions"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"payment_transactions"> | Date | string | null
+  }, "id" | "transaction_id">
+
+  export type payment_transactionsOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    transaction_id?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    item?: SortOrder
+    payment_status?: SortOrder
+    payment_method?: SortOrderInput | SortOrder
+    swichnow_response?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    _count?: payment_transactionsCountOrderByAggregateInput
+    _avg?: payment_transactionsAvgOrderByAggregateInput
+    _max?: payment_transactionsMaxOrderByAggregateInput
+    _min?: payment_transactionsMinOrderByAggregateInput
+    _sum?: payment_transactionsSumOrderByAggregateInput
+  }
+
+  export type payment_transactionsScalarWhereWithAggregatesInput = {
+    AND?: payment_transactionsScalarWhereWithAggregatesInput | payment_transactionsScalarWhereWithAggregatesInput[]
+    OR?: payment_transactionsScalarWhereWithAggregatesInput[]
+    NOT?: payment_transactionsScalarWhereWithAggregatesInput | payment_transactionsScalarWhereWithAggregatesInput[]
+    id?: BigIntWithAggregatesFilter<"payment_transactions"> | bigint | number
+    user_id?: BigIntWithAggregatesFilter<"payment_transactions"> | bigint | number
+    transaction_id?: StringWithAggregatesFilter<"payment_transactions"> | string
+    amount?: DecimalWithAggregatesFilter<"payment_transactions"> | Decimal | DecimalJsLike | number | string
+    currency?: StringWithAggregatesFilter<"payment_transactions"> | string
+    item?: StringWithAggregatesFilter<"payment_transactions"> | string
+    payment_status?: StringWithAggregatesFilter<"payment_transactions"> | string
+    payment_method?: StringNullableWithAggregatesFilter<"payment_transactions"> | string | null
+    swichnow_response?: StringNullableWithAggregatesFilter<"payment_transactions"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"payment_transactions"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"payment_transactions"> | Date | string | null
   }
 
   export type countriesCreateInput = {
@@ -31470,6 +32593,104 @@ export namespace Prisma {
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type payment_transactionsCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    transaction_id: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    item: string
+    payment_status?: string
+    payment_method?: string | null
+    swichnow_response?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type payment_transactionsUncheckedCreateInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    transaction_id: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    item: string
+    payment_status?: string
+    payment_method?: string | null
+    swichnow_response?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type payment_transactionsUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    transaction_id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    item?: StringFieldUpdateOperationsInput | string
+    payment_status?: StringFieldUpdateOperationsInput | string
+    payment_method?: NullableStringFieldUpdateOperationsInput | string | null
+    swichnow_response?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type payment_transactionsUncheckedUpdateInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    transaction_id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    item?: StringFieldUpdateOperationsInput | string
+    payment_status?: StringFieldUpdateOperationsInput | string
+    payment_method?: NullableStringFieldUpdateOperationsInput | string | null
+    swichnow_response?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type payment_transactionsCreateManyInput = {
+    id?: bigint | number
+    user_id: bigint | number
+    transaction_id: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    item: string
+    payment_status?: string
+    payment_method?: string | null
+    swichnow_response?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
+  }
+
+  export type payment_transactionsUpdateManyMutationInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    transaction_id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    item?: StringFieldUpdateOperationsInput | string
+    payment_status?: StringFieldUpdateOperationsInput | string
+    payment_method?: NullableStringFieldUpdateOperationsInput | string | null
+    swichnow_response?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type payment_transactionsUncheckedUpdateManyInput = {
+    id?: BigIntFieldUpdateOperationsInput | bigint | number
+    user_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    transaction_id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    item?: StringFieldUpdateOperationsInput | string
+    payment_status?: StringFieldUpdateOperationsInput | string
+    payment_method?: NullableStringFieldUpdateOperationsInput | string | null
+    swichnow_response?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type BigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[]
@@ -33119,6 +34340,87 @@ export namespace Prisma {
     user_id?: SortOrder
   }
 
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type payment_transactionsCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    transaction_id?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    item?: SortOrder
+    payment_status?: SortOrder
+    payment_method?: SortOrder
+    swichnow_response?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type payment_transactionsAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type payment_transactionsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    transaction_id?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    item?: SortOrder
+    payment_status?: SortOrder
+    payment_method?: SortOrder
+    swichnow_response?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type payment_transactionsMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    transaction_id?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    item?: SortOrder
+    payment_status?: SortOrder
+    payment_method?: SortOrder
+    swichnow_response?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type payment_transactionsSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
   export type BigIntFieldUpdateOperationsInput = {
     set?: bigint | number
     increment?: bigint | number
@@ -33683,6 +34985,14 @@ export namespace Prisma {
     update?: XOR<XOR<writing_submissionsUpdateToOneWithWhereWithoutExpert_review_requestsInput, writing_submissionsUpdateWithoutExpert_review_requestsInput>, writing_submissionsUncheckedUpdateWithoutExpert_review_requestsInput>
   }
 
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
   export type NestedBigIntFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     in?: bigint[] | number[]
@@ -33979,6 +35289,33 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type permissionsCreateWithoutModel_has_permissionsInput = {
@@ -35683,6 +37020,10 @@ export namespace Prisma {
      * @deprecated Use expert_review_requestsDefaultArgs instead
      */
     export type expert_review_requestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = expert_review_requestsDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use payment_transactionsDefaultArgs instead
+     */
+    export type payment_transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = payment_transactionsDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

@@ -5,9 +5,10 @@ import {
   getWritingTestDetails,
   submitWritingTest,
   getUserSubmissions,
-  getSubmissionDetails
+  getSubmissionDetails,
+  getSubmissionMeta
 } from "../../controllers/takeTest/writingTestController.js";
-import { authenticate, optionalAuth } from "../../middleware/auth.js";
+import { authenticate, optionalAuth, requirePaidForPaidTests } from "../../middleware/auth.js";
 
 const router = express.Router();
 
@@ -16,9 +17,10 @@ router.get("/academic-writing-test", optionalAuth, getAcademicWritingTests);
 router.get("/general-training-writing-test", optionalAuth, getGeneralTrainingWritingTests);
 
 // Protected routes (require authentication) - MUST come before /:testId wildcard
-router.post("/submit", authenticate, submitWritingTest);
+router.post("/submit", authenticate, requirePaidForPaidTests, submitWritingTest);
 router.get("/submissions", authenticate, getUserSubmissions);
 router.get("/submission/:submissionId", authenticate, getSubmissionDetails);
+router.get("/submission/:submissionId/meta", getSubmissionMeta);
 
 // Wildcard route - MUST be last
 router.get("/:testId", getWritingTestDetails);

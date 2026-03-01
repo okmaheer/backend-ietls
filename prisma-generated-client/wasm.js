@@ -433,6 +433,20 @@ exports.Prisma.Expert_review_requestsScalarFieldEnum = {
   updated_at: 'updated_at'
 };
 
+exports.Prisma.Payment_transactionsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  transaction_id: 'transaction_id',
+  amount: 'amount',
+  currency: 'currency',
+  item: 'item',
+  payment_status: 'payment_status',
+  payment_method: 'payment_method',
+  swichnow_response: 'swichnow_response',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -469,7 +483,8 @@ exports.Prisma.ModelName = {
   migrations: 'migrations',
   writing_questions: 'writing_questions',
   writing_submissions: 'writing_submissions',
-  expert_review_requests: 'expert_review_requests'
+  expert_review_requests: 'expert_review_requests',
+  payment_transactions: 'payment_transactions'
 };
 
 /**

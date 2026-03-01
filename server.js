@@ -10,6 +10,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import takeWritingTestRoutes from "./src/routes/takeTest/takeWritingTestRoutes.js";
 import expertReviewRoutes from "./src/routes/takeTest/expertReviewRoutes.js";
 import dashboardRoutes from "./src/routes/dashboardRoutes.js";
+import paymentRoutes from "./src/routes/paymentRoutes.js";
 
 dotenv.config();
 
@@ -83,6 +84,9 @@ app.use("/api/expert-review", expertReviewRoutes);
 
 // Dashboard routes
 app.use("/api/dashboard", dashboardRoutes);
+
+// Payment routes
+app.use("/api/payment", paymentRoutes);
 
 // Health check
 app.get("/", (req, res) => {
