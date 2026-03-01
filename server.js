@@ -11,6 +11,7 @@ import takeWritingTestRoutes from "./src/routes/takeTest/takeWritingTestRoutes.j
 import expertReviewRoutes from "./src/routes/takeTest/expertReviewRoutes.js";
 import dashboardRoutes from "./src/routes/dashboardRoutes.js";
 import paymentRoutes from "./src/routes/paymentRoutes.js";
+import emailRoutes from "./src/routes/emailRoutes.js";
 
 dotenv.config();
 
@@ -87,6 +88,9 @@ app.use("/api/dashboard", dashboardRoutes);
 
 // Payment routes
 app.use("/api/payment", paymentRoutes);
+
+// Email service routes (standalone — also usable by third parties via API key)
+app.use("/api/email", emailRoutes);
 
 // Health check
 app.get("/", (req, res) => {

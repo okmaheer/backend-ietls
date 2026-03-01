@@ -6,6 +6,33 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { ROLES, USER_MODEL_TYPE, getUserRoles } from "../utils/roleHelper.js";
 import { logError, logInfo, logDebug } from "../utils/logger.js";
+import { sendEmail } from "../services/emailService.js";
+
+/**
+ * Send a welcome / login-notification email — fire-and-forget.
+ * Failures are logged but never block the login response.
+ */
+function sendWelcomeEmail(user) {
+  const firstName = (user.name || "there").split(" ")[0];
+  const dashboardUrl = `${process.env.FRONTEND_URL}/dashboard`;
+
+  sendEmail({
+    to: user.email,
+    subject: "Welcome back to IELTS Prep & Practice!",
+    title: "Welcome Back!",
+    previewText: `Hi ${firstName}, you've just signed in to your IELTS Prep & Practice account.`,
+    body: `
+      <p style="margin:0 0 16px 0;">Hi <strong>${firstName}</strong>,</p>
+      <p style="margin:0 0 16px 0;">
+        You've successfully signed in to your <strong>IELTS Prep &amp; Practice</strong> account.
+        Head to your dashboard to continue your preparation journey.
+      </p>
+      <p style="margin:0;">Good luck with your studies!</p>
+    `,
+    button: { text: "Go to Dashboard", url: dashboardUrl },
+    footerNote: "If you did not sign in, please contact us immediately.",
+  }).catch((err) => logError("Welcome email failed", err, { email: user.email }));
+}
 
 // 🔄 Generic OAuth Callback Handler (DRY principle)
 const handleOAuthCallback = async (req, res, provider) => {
@@ -174,6 +201,8 @@ const handleOAuthCallback = async (req, res, provider) => {
       roles
     });
 
+    sendWelcomeEmail(user);
+
     // Build redirect URL safely
     const redirectUrl = new URL('/auth/callback', process.env.FRONTEND_URL);
     redirectUrl.searchParams.set('token', token);
@@ -320,6 +349,8 @@ export const adminLogin = async (req, res) => {
       email: user.email,
       roles
     });
+
+    sendWelcomeEmail(user);
 
     // Return success response
     return success(
