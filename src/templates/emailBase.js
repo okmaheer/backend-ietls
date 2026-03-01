@@ -49,7 +49,7 @@ export function buildEmailHtml({ previewText = "", title = "", body = "", button
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
   <meta name="x-apple-disable-message-reformatting">
-  <title>${title || "IELTS Pro"}</title>
+  <title>${title || "IELTS Prep & Practice"}</title>
   <!--[if mso]>
   <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
   <![endif]-->
@@ -104,7 +104,7 @@ ${previewSnippet}
                   </svg>
                 </td>
                 <td style="vertical-align:middle;">
-                  <span style="font-family:'Outfit',Arial,sans-serif;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-0.2px;">IELTS Pro</span>
+                  <span style="font-family:'Outfit',Arial,sans-serif;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-0.2px;">IELTS Prep & Practice</span>
                 </td>
               </tr>
             </table>
@@ -135,7 +135,7 @@ ${previewSnippet}
         <tr>
           <td style="background:#f9fafb;padding:24px 40px;text-align:center;">
             <p style="margin:0;font-family:'Outfit',Arial,sans-serif;font-size:13px;color:#667085;line-height:1.6;">
-              &copy; ${year} <strong style="color:#344054;">IELTS Pro</strong>. All rights reserved.
+              &copy; ${year} <strong style="color:#344054;">IELTS Prep & Practice</strong>. All rights reserved.
             </p>
             ${footerNoteBlock}
           </td>
