@@ -76,7 +76,64 @@ Response format MUST be valid JSON with criterion_details for each assessment cr
 If only one task is submitted, omit the other task from JSON and set average_band to that task's overall_band.`;
 
 /**
+ * Build question text content (cached part - no student answers)
+ * @param {Object} submissionData - Contains questions and answers
+ * @returns {string} Formatted question text
+ */
+function buildQuestionText(submissionData) {
+  let textContent = '';
+
+  if (submissionData.task1) {
+    textContent += `TASK 1 (Academic/General Training Writing):\n`;
+    textContent += `Question: ${submissionData.task1.question}\n`;
+
+    // Add note if image is provided
+    if (submissionData.task1.imageUrl) {
+      textContent += `[Chart/Graph/Diagram provided - see image]\n`;
+    }
+  }
+
+  if (submissionData.task2) {
+    if (textContent) textContent += '\n';
+    textContent += `TASK 2 (Essay Writing):\n`;
+    textContent += `Question: ${submissionData.task2.question}\n`;
+
+    // Add note if image is provided
+    if (submissionData.task2.imageUrl) {
+      textContent += `[Related image provided - see image]\n`;
+    }
+  }
+
+  return textContent;
+}
+
+/**
+ * Build student answer text content (not cached - varies per submission)
+ * @param {Object} submissionData - Contains questions and answers
+ * @returns {string} Formatted student answers text
+ */
+function buildStudentAnswerText(submissionData) {
+  let textContent = '';
+
+  if (submissionData.task1) {
+    textContent += `\nStudent's Answer to Task 1 (${submissionData.task1.wordCount} words):\n${submissionData.task1.answer}\n`;
+  }
+
+  if (submissionData.task2) {
+    textContent += `\nStudent's Answer to Task 2 (${submissionData.task2.wordCount} words):\n${submissionData.task2.answer}\n`;
+  }
+
+  textContent += `\nProvide evaluation as JSON only.`;
+
+  return textContent;
+}
+
+/**
  * Evaluate IELTS Writing Test using GPT-4o-mini with vision support
+ * Cache is used for: system prompt, evaluation instructions, questions, and images
+ * Cache is NOT used for: student answers (which vary per submission)
+ * 
+ * Cache benefits: 90% discount on cached token reads, improves performance, reduces costs
  * @param {Object} submissionData - Contains questions and answers
  * @param {Object} submissionData.task1 - Task 1 data (optional)
  * @param {string} submissionData.task1.question - Task 1 question
@@ -93,46 +150,20 @@ If only one task is submitted, omit the other task from JSON and set average_ban
 export async function evaluateWritingTest(submissionData) {
   try {
     // Build user message content array (supports both text and images)
-    const userMessageContent = [];
-
-    // Build text content
-    let textContent = '';
-
-    if (submissionData.task1) {
-      textContent += `TASK 1 (Academic/General Training Writing):\n`;
-      textContent += `Question: ${submissionData.task1.question}\n`;
-
-      // Add note if image is provided
-      if (submissionData.task1.imageUrl) {
-        textContent += `[Chart/Graph/Diagram provided - see image]\n`;
-      }
-
-      textContent += `\nStudent's Answer (${submissionData.task1.wordCount} words):\n${submissionData.task1.answer}\n\n`;
-    }
-
-    if (submissionData.task2) {
-      textContent += `TASK 2 (Essay Writing):\n`;
-      textContent += `Question: ${submissionData.task2.question}\n`;
-
-      // Add note if image is provided
-      if (submissionData.task2.imageUrl) {
-        textContent += `[Related image provided - see image]\n`;
-      }
-
-      textContent += `\nStudent's Answer (${submissionData.task2.wordCount} words):\n${submissionData.task2.answer}\n\n`;
-    }
-
-    textContent += `\nProvide evaluation as JSON only.`;
-
-    // Add text content
-    userMessageContent.push({
+    // Separate into cached (questions, images) and non-cached (student answers) parts
+    const cachedMessageContent = [];
+    
+    // Add cached questions text
+    const questionText = buildQuestionText(submissionData);
+    cachedMessageContent.push({
       type: 'text',
-      text: textContent
+      text: questionText
     });
 
     // Add Task 1 image if exists (usually charts, graphs, diagrams for Academic Writing)
+    // Images are cached for cost savings and performance
     if (submissionData.task1?.imageUrl) {
-      userMessageContent.push({
+      cachedMessageContent.push({
         type: 'image_url',
         image_url: {
           url: submissionData.task1.imageUrl,
@@ -143,7 +174,7 @@ export async function evaluateWritingTest(submissionData) {
 
     // Add Task 2 image if exists (rare, but support it)
     if (submissionData.task2?.imageUrl) {
-      userMessageContent.push({
+      cachedMessageContent.push({
         type: 'image_url',
         image_url: {
           url: submissionData.task2.imageUrl,
@@ -155,11 +186,39 @@ export async function evaluateWritingTest(submissionData) {
     // Call OpenAI API with GPT-4o-mini (supports vision)
     // Vision pricing: ~$0.15/1M input tokens, ~$0.60/1M output tokens
     // Images consume additional tokens based on resolution (high detail ~765 tokens for 512x512)
+    // Cache usage: System prompt, questions, and images are cached (not student answers)
+    // Cache pricing: 90% discount on read, 25% cost increase on write for cached tokens
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: userMessageContent }
+        { 
+          role: 'system', 
+          content: [
+            {
+              type: 'text',
+              text: SYSTEM_PROMPT,
+              cache_control: { type: 'ephemeral' } // Cache the system prompt
+            }
+          ]
+        },
+        { 
+          role: 'user', 
+          content: [
+            // Add cached questions and images
+            ...cachedMessageContent.map((item) => {
+              return {
+                ...item,
+                ...(item.type === 'text' && { cache_control: { type: 'ephemeral' } }),
+                ...(item.type === 'image_url' && { cache_control: { type: 'ephemeral' } })
+              };
+            }),
+            // Add student's answer separately WITHOUT cache control (it changes per submission)
+            {
+              type: 'text',
+              text: buildStudentAnswerText(submissionData)
+            }
+          ]
+        }
       ],
       response_format: { type: 'json_object' }, // Force JSON output
       temperature: 0.3, // Lower temperature for consistent evaluation
@@ -202,12 +261,38 @@ export async function evaluateWritingTest(submissionData) {
       };
     }
 
-    // Add metadata
+    // Add metadata with cache usage statistics
     evaluation.tokens_used = response.usage.total_tokens;
-    evaluation.estimated_cost = (
-      (response.usage.prompt_tokens / 1000000) * 0.15 +
-      (response.usage.completion_tokens / 1000000) * 0.60
-    ).toFixed(6);
+    
+    // Cache statistics (if available in response)
+    // NOTE: OpenAI's prompt_tokens already excludes cached tokens
+    // cache_creation_input_tokens + cache_read_input_tokens + prompt_tokens = total input tokens
+    const cacheCreationInputTokens = response.usage.cache_creation_input_tokens || 0;
+    const cacheReadInputTokens = response.usage.cache_read_input_tokens || 0;
+    
+    evaluation.cache_stats = {
+      cache_creation_input_tokens: cacheCreationInputTokens,
+      cache_read_input_tokens: cacheReadInputTokens,
+      regular_input_tokens: response.usage.prompt_tokens  // prompt_tokens are the new (non-cached) input tokens
+    };
+    
+    // Calculate cost with cache savings
+    // Standard pricing: input $0.15/1M, output $0.60/1M
+    // Cache write (creation): 25% of input token cost
+    // Cache read: 90% discount = 10% of input token cost
+    const regularInputCost = (evaluation.cache_stats.regular_input_tokens / 1000000) * 0.15;
+    const cacheCreationCost = (cacheCreationInputTokens / 1000000) * 0.15 * 0.25;
+    const cacheReadCost = (cacheReadInputTokens / 1000000) * 0.15 * 0.10;
+    const outputCost = (response.usage.completion_tokens / 1000000) * 0.60;
+    
+    evaluation.estimated_cost = (regularInputCost + cacheCreationCost + cacheReadCost + outputCost).toFixed(6);
+    evaluation.cost_breakdown = {
+      regular_input_cost: regularInputCost.toFixed(8),
+      cache_creation_cost: cacheCreationCost.toFixed(8),
+      cache_read_cost: cacheReadCost.toFixed(8),
+      completion_cost: outputCost.toFixed(8),
+      total_cost: evaluation.estimated_cost
+    };
 
     return {
       success: true,
