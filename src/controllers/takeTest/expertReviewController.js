@@ -2,6 +2,7 @@ import { prisma } from "../../config/prismaClient.js";
 import { success, error } from "../../utils/response.js";
 import { evaluateWritingTest } from "../../services/openaiService.js";
 import { logError, logInfo, logDebug } from "../../utils/logger.js";
+import { sendEmail } from "../../services/emailService.js";
 
 // 📝 Request expert review for a submission
 export const requestExpertReview = async (req, res) => {
@@ -19,7 +20,17 @@ export const requestExpertReview = async (req, res) => {
 
     // Check if submission exists and belongs to user
     const submission = await prisma.writing_submissions.findUnique({
-      where: { id: BigInt(submission_id) }
+      where: { id: BigInt(submission_id) },
+      include: {
+        tests: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            category: true
+          }
+        }
+      }
     });
 
     if (!submission) {
@@ -39,6 +50,11 @@ export const requestExpertReview = async (req, res) => {
       return error(res, "Expert review already requested for this test", 409);
     }
 
+    // Fetch user details for email
+    const user = await prisma.users.findUnique({
+      where: { id: BigInt(userId) }
+    });
+
     // Create expert review request
     const reviewRequest = await prisma.expert_review_requests.create({
       data: {
@@ -51,10 +67,127 @@ export const requestExpertReview = async (req, res) => {
       }
     });
 
-    logInfo('Expert review requested successfully', {
+    // 📧 Send email to USER confirming request
+    const userFirstName = (user?.name || "there").split(" ")[0];
+    const testName = submission.tests?.name || "Writing Test";
+    const aiScore = submission.overall_band_score || 0;
+    const resultsUrl = `${process.env.FRONTEND_URL}/writing-test-results/${submission_id}`;
+    const myReviewsUrl = `${process.env.FRONTEND_URL}/my-expert-reviews`;
+
+    sendEmail({
+      to: user?.email,
+      subject: `Expert Review Requested - ${testName}`,
+      title: "Expert Review Requested ✓",
+      previewText: `Your expert review request for ${testName} has been submitted.`,
+      body: `
+        <p style="margin:0 0 16px 0;">Hi <strong>${userFirstName}</strong>,</p>
+        <p style="margin:0 0 16px 0;">
+          Thank you for requesting an expert review. We've received your request and our expert reviewers are reviewing your submission.
+        </p>
+
+        <div style="background:#f3fafb;border-left:4px solid #06bbcc;padding:16px;margin:20px 0;border-radius:4px;">
+          <p style="margin:0 0 12px 0;font-weight:600;color:#101828;"><strong>📝 Test Details</strong></p>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr>
+              <td style="padding:8px 0;color:#667085;">Test Name:</td>
+              <td style="padding:8px 0;color:#101828;font-weight:600;">${testName}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#667085;">AI Score:</td>
+              <td style="padding:8px 0;color:#06bbcc;font-weight:600;font-size:16px;">${aiScore.toFixed(1)}/9.0</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#667085;">Submission Date:</td>
+              <td style="padding:8px 0;color:#101828;">${new Date(submission.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#667085;">Status:</td>
+              <td style="padding:8px 0;"><span style="background:#fff3cd;color:#856404;padding:4px 8px;border-radius:4px;font-weight:600;font-size:12px;">⏳ Pending Review</span></td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="margin:0 0 16px 0;color:#667085;">
+          Our expert reviewers typically review submissions within <strong>24-48 hours</strong>. You'll receive an email notification as soon as your review is complete.
+        </p>
+
+        <p style="margin:0;color:#667085;">
+          In the meantime, you can track your review status in your dashboard.
+        </p>
+      `,
+      button: { text: "View My Reviews", url: myReviewsUrl },
+      footerNote: "You'll be notified by email when your expert review is complete.",
+    }).catch((err) => logError("User notification email failed", err, { userId, submissionId: submission_id }));
+
+    // 📧 Send email to ADMIN with review request details
+    const adminEmail = process.env.ADMIN_EMAIL;
+    
+    if (adminEmail) {
+      const adminUrl = `${process.env.FRONTEND_URL}/admin/expert-reviews/${reviewRequest.id}`;
+      
+      sendEmail({
+        to: adminEmail,
+        subject: `New Expert Review Request - ${testName} by ${user?.name}`,
+        title: "New Expert Review Request 📋",
+        previewText: `A new expert review request has been submitted for ${testName}.`,
+        body: `
+          <p style="margin:0 0 16px 0;">Hello Admin,</p>
+          <p style="margin:0 0 16px 0;">
+            A new expert review request has been submitted and requires your attention.
+          </p>
+
+          <div style="background:#e7f5ff;border-left:4px solid #06bbcc;padding:16px;margin:20px 0;border-radius:4px;">
+            <p style="margin:0 0 12px 0;font-weight:600;color:#101828;"><strong>👤 Student Information</strong></p>
+            <table style="width:100%;border-collapse:collapse;">
+              <tr>
+                <td style="padding:8px 0;color:#667085;">Student Name:</td>
+                <td style="padding:8px 0;color:#101828;font-weight:600;">${user?.name || "Unknown"}</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0;color:#667085;">Email:</td>
+                <td style="padding:8px 0;color:#101828;">${user?.email || "N/A"}</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0;color:#667085;">Test Name:</td>
+                <td style="padding:8px 0;color:#101828;font-weight:600;">${testName}</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0;color:#667085;">AI Evaluation Score:</td>
+                <td style="padding:8px 0;color:#06bbcc;font-weight:600;font-size:16px;">${aiScore.toFixed(1)}/9.0</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0;color:#667085;">Request Time:</td>
+                <td style="padding:8px 0;color:#101828;">${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+              </tr>
+            </table>
+          </div>
+
+          <div style="background:#f0f9ff;border-left:4px solid #0891b2;padding:16px;margin:20px 0;border-radius:4px;">
+            <p style="margin:0 0 12px 0;font-weight:600;color:#101828;"><strong>📄 What You Need to Do</strong></p>
+            <ol style="margin:0;padding-left:20px;color:#667085;">
+              <li style="margin:8px 0;">Review the student's writing submission</li>
+              <li style="margin:8px 0;">Evaluate grammar, structure, vocabulary, and fluency</li>
+              <li style="margin:8px 0;">Assign an expert band score (0-9)</li>
+              <li style="margin:8px 0;">Provide detailed feedback and recommendations</li>
+              <li style="margin:8px 0;">Submit your review in the system</li>
+            </ol>
+          </div>
+
+          <p style="margin:0 0 16px 0;color:#667085;">
+            Click the button below to view the complete submission and start your review.
+          </p>
+        `,
+        button: { text: "Review Submission", url: adminUrl },
+        footerNote: "This review request is awaiting your expert evaluation.",
+      }).catch((err) => logError("Admin notification email failed", err, { submissionId: submission_id, adminEmail }));
+    }
+
+    logInfo('Expert review requested successfully with emails sent', {
       userId,
       submissionId: submission_id,
-      reviewRequestId: reviewRequest.id.toString()
+      reviewRequestId: reviewRequest.id.toString(),
+      userEmailSent: true,
+      adminEmailSent: !!adminEmail
     });
 
     success(res, {
@@ -439,14 +572,32 @@ export const submitExpertReview = async (req, res) => {
       return error(res, "Expert evaluation and overall score are required", 400);
     }
 
-    // Find review request
+    // Find review request with related data
     const reviewRequest = await prisma.expert_review_requests.findUnique({
-      where: { id: BigInt(requestId) }
+      where: { id: BigInt(requestId) },
+      include: {
+        writing_submissions: {
+          include: {
+            tests: {
+              select: {
+                id: true,
+                name: true,
+                type: true
+              }
+            }
+          }
+        }
+      }
     });
 
     if (!reviewRequest) {
       return error(res, "Review request not found", 404);
     }
+
+    // Fetch user details for email
+    const user = await prisma.users.findUnique({
+      where: { id: reviewRequest.user_id }
+    });
 
     // Update submission with expert review
     await prisma.writing_submissions.update({
@@ -470,9 +621,89 @@ export const submitExpertReview = async (req, res) => {
       }
     });
 
-    logInfo('Expert review submitted successfully', {
+    // 📧 Send completion email to USER
+    const userFirstName = (user?.name || "there").split(" ")[0];
+    const testName = reviewRequest.writing_submissions.tests?.name || "Writing Test";
+    const aiScore = reviewRequest.writing_submissions.overall_band_score || 0;
+    const expertScore = parseFloat(expert_overall_score);
+    const resultUrl = `${process.env.FRONTEND_URL}/writing-test-results/${reviewRequest.submission_id}`;
+    
+    // Extract feedback text from expert_evaluation
+    let feedbackSummary = "";
+    if (typeof expert_evaluation === 'object') {
+      feedbackSummary = expert_evaluation.overall_feedback || expert_evaluation.summary || "See detailed feedback in your results.";
+    } else {
+      feedbackSummary = String(expert_evaluation);
+    }
+
+    const scoreDifference = (expertScore - aiScore).toFixed(1);
+    const scoreComparison = expertScore > aiScore ? `Higher than AI score (${scoreDifference} points)` : expertScore < aiScore ? `Lower than AI score (${scoreDifference} points)` : "Matches AI score";
+
+    sendEmail({
+      to: user?.email,
+      subject: `Expert Review Complete - ${testName}`,
+      title: "Your Expert Review is Ready! 🎉",
+      previewText: `Your expert review for ${testName} has been completed. Your expert score: ${expertScore}/9.0`,
+      body: `
+        <p style="margin:0 0 16px 0;">Hi <strong>${userFirstName}</strong>,</p>
+        <p style="margin:0 0 16px 0;">
+          Great news! Your expert review has been completed by our IELTS expert. See your detailed evaluation below.
+        </p>
+
+        <div style="background:#f0fdf4;border-left:4px solid #22c55e;padding:16px;margin:20px 0;border-radius:4px;">
+          <p style="margin:0 0 12px 0;font-weight:600;color:#101828;"><strong>✅ Review Complete</strong></p>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr>
+              <td style="padding:10px 0;color:#667085;">Test Name:</td>
+              <td style="padding:10px 0;color:#101828;font-weight:600;">${testName}</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 0;color:#667085;">AI Score:</td>
+              <td style="padding:10px 0;color:#06bbcc;font-weight:600;">${aiScore.toFixed(1)}/9.0</td>
+            </tr>
+            <tr>
+              <td style="padding:10px 0;color:#667085;"><strong>Expert Score:</strong></td>
+              <td style="padding:10px 0;color:#22c55e;font-weight:700;font-size:18px;"><strong>${expertScore}/9.0</strong></td>
+            </tr>
+            <tr>
+              <td style="padding:10px 0;color:#667085;">Score Comparison:</td>
+              <td style="padding:10px 0;color:#101828;"><span style="background:#f3e8ff;color:#6b21a8;padding:4px 8px;border-radius:4px;font-weight:600;font-size:12px;">${scoreComparison}</span></td>
+            </tr>
+            <tr>
+              <td style="padding:10px 0;color:#667085;">Review Date:</td>
+              <td style="padding:10px 0;color:#101828;">${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="background:#fef3c7;border-left:4px solid #f59e0b;padding:16px;margin:20px 0;border-radius:4px;">
+          <p style="margin:0 0 12px 0;font-weight:600;color:#101828;"><strong>📝 Expert Feedback Summary</strong></p>
+          <p style="margin:0;color:#667085;line-height:1.6;">${feedbackSummary}</p>
+        </div>
+
+        <p style="margin:0 0 16px 0;color:#667085;">
+          Click the button below to view your complete expert evaluation with detailed feedback on grammar, vocabulary, task achievement, and coherence.
+        </p>
+
+        <div style="background:#f9fafb;padding:16px;border-radius:4px;margin:20px 0;">
+          <p style="margin:0 0 8px 0;font-weight:600;color:#101828;">💡 Next Steps:</p>
+          <ul style="margin:0;padding-left:20px;color:#667085;">
+            <li style="margin:6px 0;">Review the expert feedback thoroughly</li>
+            <li style="margin:6px 0;">Note areas for improvement</li>
+            <li style="margin:6px 0;">Practice with focus on weak areas</li>
+            <li style="margin:6px 0;">Take another practice test</li>
+          </ul>
+        </div>
+      `,
+      button: { text: "View Full Review", url: resultUrl },
+      footerNote: "Keep practicing! You're making great progress.",
+    }).catch((err) => logError("User completion email failed", err, { userId: reviewRequest.user_id, submissionId: reviewRequest.submission_id }));
+
+    logInfo('Expert review submitted successfully with completion email sent', {
       requestId,
-      status: status || 'completed'
+      status: status || 'completed',
+      userEmail: user?.email,
+      expertScore
     });
 
     success(res, {
