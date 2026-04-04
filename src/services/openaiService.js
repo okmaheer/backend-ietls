@@ -130,10 +130,9 @@ function buildStudentAnswerText(submissionData) {
 
 /**
  * Evaluate IELTS Writing Test using GPT-4o-mini with vision support
- * Cache is used for: system prompt, evaluation instructions, questions, and images
- * Cache is NOT used for: student answers (which vary per submission)
- * 
- * Cache benefits: 90% discount on cached token reads, improves performance, reduces costs
+ * OpenAI automatically caches repeated prompt prefixes of 1024+ tokens (50% discount)
+ * The system prompt + questions + images are the stable prefix that gets cached
+ * Student answers are appended last and are NOT cached (they vary per submission)
  * @param {Object} submissionData - Contains questions and answers
  * @param {Object} submissionData.task1 - Task 1 data (optional)
  * @param {string} submissionData.task1.question - Task 1 question
@@ -186,33 +185,21 @@ export async function evaluateWritingTest(submissionData) {
     // Call OpenAI API with GPT-4o-mini (supports vision)
     // Vision pricing: ~$0.15/1M input tokens, ~$0.60/1M output tokens
     // Images consume additional tokens based on resolution (high detail ~765 tokens for 512x512)
-    // Cache usage: System prompt, questions, and images are cached (not student answers)
-    // Cache pricing: 90% discount on read, 25% cost increase on write for cached tokens
+    // Cache usage: OpenAI caches automatically - no cache_control needed (that's Anthropic's API)
+    // OpenAI caches repeated prompt prefixes of 1024+ tokens automatically (50% discount)
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
-        { 
-          role: 'system', 
-          content: [
-            {
-              type: 'text',
-              text: SYSTEM_PROMPT,
-              cache_control: { type: 'ephemeral' } // Cache the system prompt
-            }
-          ]
+        {
+          role: 'system',
+          content: SYSTEM_PROMPT
         },
-        { 
-          role: 'user', 
+        {
+          role: 'user',
           content: [
-            // Add cached questions and images
-            ...cachedMessageContent.map((item) => {
-              return {
-                ...item,
-                ...(item.type === 'text' && { cache_control: { type: 'ephemeral' } }),
-                ...(item.type === 'image_url' && { cache_control: { type: 'ephemeral' } })
-              };
-            }),
-            // Add student's answer separately WITHOUT cache control (it changes per submission)
+            // Questions and images (repeated across submissions - OpenAI auto-caches these)
+            ...cachedMessageContent,
+            // Student's answer (unique per submission - not cached)
             {
               type: 'text',
               text: buildStudentAnswerText(submissionData)
@@ -263,33 +250,28 @@ export async function evaluateWritingTest(submissionData) {
 
     // Add metadata with cache usage statistics
     evaluation.tokens_used = response.usage.total_tokens;
-    
-    // Cache statistics (if available in response)
-    // NOTE: OpenAI's prompt_tokens already excludes cached tokens
-    // cache_creation_input_tokens + cache_read_input_tokens + prompt_tokens = total input tokens
-    const cacheCreationInputTokens = response.usage.cache_creation_input_tokens || 0;
-    const cacheReadInputTokens = response.usage.cache_read_input_tokens || 0;
-    
+
+    // OpenAI cache stats are in usage.prompt_tokens_details.cached_tokens
+    const cachedTokens = response.usage.prompt_tokens_details?.cached_tokens || 0;
+    const uncachedTokens = response.usage.prompt_tokens - cachedTokens;
+
     evaluation.cache_stats = {
-      cache_creation_input_tokens: cacheCreationInputTokens,
-      cache_read_input_tokens: cacheReadInputTokens,
-      regular_input_tokens: response.usage.prompt_tokens  // prompt_tokens are the new (non-cached) input tokens
+      cached_tokens: cachedTokens,
+      uncached_tokens: uncachedTokens,
+      total_input_tokens: response.usage.prompt_tokens
     };
-    
+
     // Calculate cost with cache savings
     // Standard pricing: input $0.15/1M, output $0.60/1M
-    // Cache write (creation): 25% of input token cost
-    // Cache read: 90% discount = 10% of input token cost
-    const regularInputCost = (evaluation.cache_stats.regular_input_tokens / 1000000) * 0.15;
-    const cacheCreationCost = (cacheCreationInputTokens / 1000000) * 0.15 * 0.25;
-    const cacheReadCost = (cacheReadInputTokens / 1000000) * 0.15 * 0.10;
+    // OpenAI cache read: 50% discount = 50% of input token cost
+    const uncachedInputCost = (uncachedTokens / 1000000) * 0.15;
+    const cachedReadCost = (cachedTokens / 1000000) * 0.15 * 0.50;
     const outputCost = (response.usage.completion_tokens / 1000000) * 0.60;
-    
-    evaluation.estimated_cost = (regularInputCost + cacheCreationCost + cacheReadCost + outputCost).toFixed(6);
+
+    evaluation.estimated_cost = (uncachedInputCost + cachedReadCost + outputCost).toFixed(6);
     evaluation.cost_breakdown = {
-      regular_input_cost: regularInputCost.toFixed(8),
-      cache_creation_cost: cacheCreationCost.toFixed(8),
-      cache_read_cost: cacheReadCost.toFixed(8),
+      uncached_input_cost: uncachedInputCost.toFixed(8),
+      cached_read_cost: cachedReadCost.toFixed(8),
       completion_cost: outputCost.toFixed(8),
       total_cost: evaluation.estimated_cost
     };
