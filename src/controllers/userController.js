@@ -106,7 +106,8 @@ export const store = async (req, res) => {
         phone,
         country,
         duration,
-        status: String(status), // Convert to string
+        status: String(status),
+        is_user_paid: true,
         created_at: new Date(),
         updated_at: new Date(),
       },
