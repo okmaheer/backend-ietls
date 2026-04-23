@@ -36,13 +36,15 @@ export const index = async (req, res) => {
     });
 
     // Get paginated users
-    const users = await prisma.users.findMany({
+    const rawUsers = await prisma.users.findMany({
       where: whereClause,
       include: { user_details: true },
       orderBy: { [sortBy]: sortOrder },
       skip: skip,
       take: perPage,
     });
+
+    const users = rawUsers.map(u => ({ ...u, isUserPaid: u.is_user_paid }));
 
     // Calculate pagination metadata
     const lastPage = Math.ceil(total / perPage);
