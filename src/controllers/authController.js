@@ -75,11 +75,13 @@ const handleOAuthCallback = async (req, res, provider) => {
     });
 
     if (!user) {
-      // Check if user exists with this email but different auth provider
+      // Check if user exists with this email but not yet linked to this provider.
+      // Require google_id to be null so we only match unlinked accounts.
       const existingEmailUser = await prisma.users.findFirst({
         where: {
           email,
-          auth_provider: { not: provider.toLowerCase() }
+          [dbProviderField]: null,
+          auth_provider: { not: provider.toLowerCase() },
         },
       });
 
@@ -140,11 +142,26 @@ const handleOAuthCallback = async (req, res, provider) => {
       }
     } else {
       logDebug(`Updating existing ${provider} user profile`, { userId: user.id.toString() });
-      // Update existing user's profile picture
+
+      // Sync is_user_paid: if this Google-linked record is unpaid but admin
+      // created a paid account with the same email, propagate the paid status.
+      // This happens when a user tries Google login before the admin grants access.
+      let syncedPaid = user.is_user_paid;
+      if (!user.is_user_paid && user.email) {
+        const paidAccount = await prisma.users.findFirst({
+          where: { email: user.email, is_user_paid: true, id: { not: user.id } },
+        });
+        if (paidAccount) {
+          syncedPaid = true;
+          logInfo('Syncing is_user_paid from admin-created account', { userId: user.id.toString(), email: user.email });
+        }
+      }
+
       user = await prisma.users.update({
         where: { id: user.id },
         data: {
           profile_picture: picture,
+          is_user_paid: syncedPaid,
           updated_at: new Date()
         },
       });
