@@ -248,6 +248,7 @@ model users {
   duration          String?        @db.VarChar(255)
   is_user_paid      Boolean        @default(false)
   status            String?        @db.VarChar(255)
+  access_given_at   DateTime?      @db.Timestamp(0)
   email_verified_at DateTime?      @db.Timestamp(0)
   remember_token    String?        @db.VarChar(100)
   created_at        DateTime?      @db.Timestamp(0)

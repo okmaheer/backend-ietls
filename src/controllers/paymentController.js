@@ -131,13 +131,19 @@ export const paymentCallback = async (req, res) => {
       paymentMethod: paymentMethod || 'N/A',
     });
 
-    // If payment is successful, update user's is_user_paid
+    // If payment is successful, activate user with 30-day access
     if (isPaymentSuccessful(status)) {
       await prisma.users.update({
         where: { id: transaction.user_id },
-        data: { is_user_paid: true, updated_at: new Date() },
+        data: {
+          is_user_paid:    true,
+          status:          '1',
+          access_given_at: new Date(),
+          duration:        '2', // 30 days (matches Laravel duration map)
+          updated_at:      new Date(),
+        },
       });
-      logInfo('User upgraded to premium', {
+      logInfo('User activated with 30-day premium access', {
         userId: transaction.user_id.toString(),
         transactionId
       });

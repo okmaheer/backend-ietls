@@ -19102,6 +19102,7 @@ export namespace Prisma {
     duration: string | null
     is_user_paid: boolean | null
     status: string | null
+    access_given_at: Date | null
     email_verified_at: Date | null
     remember_token: string | null
     created_at: Date | null
@@ -19125,6 +19126,7 @@ export namespace Prisma {
     duration: string | null
     is_user_paid: boolean | null
     status: string | null
+    access_given_at: Date | null
     email_verified_at: Date | null
     remember_token: string | null
     created_at: Date | null
@@ -19148,6 +19150,7 @@ export namespace Prisma {
     duration: number
     is_user_paid: number
     status: number
+    access_given_at: number
     email_verified_at: number
     remember_token: number
     created_at: number
@@ -19187,6 +19190,7 @@ export namespace Prisma {
     duration?: true
     is_user_paid?: true
     status?: true
+    access_given_at?: true
     email_verified_at?: true
     remember_token?: true
     created_at?: true
@@ -19210,6 +19214,7 @@ export namespace Prisma {
     duration?: true
     is_user_paid?: true
     status?: true
+    access_given_at?: true
     email_verified_at?: true
     remember_token?: true
     created_at?: true
@@ -19233,6 +19238,7 @@ export namespace Prisma {
     duration?: true
     is_user_paid?: true
     status?: true
+    access_given_at?: true
     email_verified_at?: true
     remember_token?: true
     created_at?: true
@@ -19343,6 +19349,7 @@ export namespace Prisma {
     duration: string | null
     is_user_paid: boolean
     status: string | null
+    access_given_at: Date | null
     email_verified_at: Date | null
     remember_token: string | null
     created_at: Date | null
@@ -19385,6 +19392,7 @@ export namespace Prisma {
     duration?: boolean
     is_user_paid?: boolean
     status?: boolean
+    access_given_at?: boolean
     email_verified_at?: boolean
     remember_token?: boolean
     created_at?: boolean
@@ -19411,6 +19419,7 @@ export namespace Prisma {
     duration?: boolean
     is_user_paid?: boolean
     status?: boolean
+    access_given_at?: boolean
     email_verified_at?: boolean
     remember_token?: boolean
     created_at?: boolean
@@ -19444,6 +19453,7 @@ export namespace Prisma {
       duration: string | null
       is_user_paid: boolean
       status: string | null
+      access_given_at: Date | null
       email_verified_at: Date | null
       remember_token: string | null
       created_at: Date | null
@@ -19834,6 +19844,7 @@ export namespace Prisma {
     readonly duration: FieldRef<"users", 'String'>
     readonly is_user_paid: FieldRef<"users", 'Boolean'>
     readonly status: FieldRef<"users", 'String'>
+    readonly access_given_at: FieldRef<"users", 'DateTime'>
     readonly email_verified_at: FieldRef<"users", 'DateTime'>
     readonly remember_token: FieldRef<"users", 'String'>
     readonly created_at: FieldRef<"users", 'DateTime'>
@@ -28127,6 +28138,7 @@ export namespace Prisma {
     duration: 'duration',
     is_user_paid: 'is_user_paid',
     status: 'status',
+    access_given_at: 'access_given_at',
     email_verified_at: 'email_verified_at',
     remember_token: 'remember_token',
     created_at: 'created_at',
@@ -29605,6 +29617,7 @@ export namespace Prisma {
     duration?: StringNullableFilter<"users"> | string | null
     is_user_paid?: BoolFilter<"users"> | boolean
     status?: StringNullableFilter<"users"> | string | null
+    access_given_at?: DateTimeNullableFilter<"users"> | Date | string | null
     email_verified_at?: DateTimeNullableFilter<"users"> | Date | string | null
     remember_token?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
@@ -29629,6 +29642,7 @@ export namespace Prisma {
     duration?: SortOrderInput | SortOrder
     is_user_paid?: SortOrder
     status?: SortOrderInput | SortOrder
+    access_given_at?: SortOrderInput | SortOrder
     email_verified_at?: SortOrderInput | SortOrder
     remember_token?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
@@ -29656,6 +29670,7 @@ export namespace Prisma {
     duration?: StringNullableFilter<"users"> | string | null
     is_user_paid?: BoolFilter<"users"> | boolean
     status?: StringNullableFilter<"users"> | string | null
+    access_given_at?: DateTimeNullableFilter<"users"> | Date | string | null
     email_verified_at?: DateTimeNullableFilter<"users"> | Date | string | null
     remember_token?: StringNullableFilter<"users"> | string | null
     created_at?: DateTimeNullableFilter<"users"> | Date | string | null
@@ -29680,6 +29695,7 @@ export namespace Prisma {
     duration?: SortOrderInput | SortOrder
     is_user_paid?: SortOrder
     status?: SortOrderInput | SortOrder
+    access_given_at?: SortOrderInput | SortOrder
     email_verified_at?: SortOrderInput | SortOrder
     remember_token?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
@@ -29711,6 +29727,7 @@ export namespace Prisma {
     duration?: StringNullableWithAggregatesFilter<"users"> | string | null
     is_user_paid?: BoolWithAggregatesFilter<"users"> | boolean
     status?: StringNullableWithAggregatesFilter<"users"> | string | null
+    access_given_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     email_verified_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     remember_token?: StringNullableWithAggregatesFilter<"users"> | string | null
     created_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
@@ -31775,6 +31792,7 @@ export namespace Prisma {
     duration?: string | null
     is_user_paid?: boolean
     status?: string | null
+    access_given_at?: Date | string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
     created_at?: Date | string | null
@@ -31799,6 +31817,7 @@ export namespace Prisma {
     duration?: string | null
     is_user_paid?: boolean
     status?: string | null
+    access_given_at?: Date | string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
     created_at?: Date | string | null
@@ -31823,6 +31842,7 @@ export namespace Prisma {
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     is_user_paid?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    access_given_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31847,6 +31867,7 @@ export namespace Prisma {
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     is_user_paid?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    access_given_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31871,6 +31892,7 @@ export namespace Prisma {
     duration?: string | null
     is_user_paid?: boolean
     status?: string | null
+    access_given_at?: Date | string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
     created_at?: Date | string | null
@@ -31894,6 +31916,7 @@ export namespace Prisma {
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     is_user_paid?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    access_given_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -31917,6 +31940,7 @@ export namespace Prisma {
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     is_user_paid?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    access_given_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -33788,6 +33812,7 @@ export namespace Prisma {
     duration?: SortOrder
     is_user_paid?: SortOrder
     status?: SortOrder
+    access_given_at?: SortOrder
     email_verified_at?: SortOrder
     remember_token?: SortOrder
     created_at?: SortOrder
@@ -33818,6 +33843,7 @@ export namespace Prisma {
     duration?: SortOrder
     is_user_paid?: SortOrder
     status?: SortOrder
+    access_given_at?: SortOrder
     email_verified_at?: SortOrder
     remember_token?: SortOrder
     created_at?: SortOrder
@@ -33841,6 +33867,7 @@ export namespace Prisma {
     duration?: SortOrder
     is_user_paid?: SortOrder
     status?: SortOrder
+    access_given_at?: SortOrder
     email_verified_at?: SortOrder
     remember_token?: SortOrder
     created_at?: SortOrder
@@ -35978,6 +36005,7 @@ export namespace Prisma {
     duration?: string | null
     is_user_paid?: boolean
     status?: string | null
+    access_given_at?: Date | string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
     created_at?: Date | string | null
@@ -36001,6 +36029,7 @@ export namespace Prisma {
     duration?: string | null
     is_user_paid?: boolean
     status?: string | null
+    access_given_at?: Date | string | null
     email_verified_at?: Date | string | null
     remember_token?: string | null
     created_at?: Date | string | null
@@ -36040,6 +36069,7 @@ export namespace Prisma {
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     is_user_paid?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    access_given_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36063,6 +36093,7 @@ export namespace Prisma {
     duration?: NullableStringFieldUpdateOperationsInput | string | null
     is_user_paid?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    access_given_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     email_verified_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     remember_token?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

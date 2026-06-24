@@ -331,6 +331,7 @@ exports.Prisma.UsersScalarFieldEnum = {
   duration: 'duration',
   is_user_paid: 'is_user_paid',
   status: 'status',
+  access_given_at: 'access_given_at',
   email_verified_at: 'email_verified_at',
   remember_token: 'remember_token',
   created_at: 'created_at',

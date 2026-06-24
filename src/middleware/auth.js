@@ -59,6 +59,24 @@ export const authenticate = async (req, res, next) => {
       status: user.status
     });
 
+    // Auto-expire: check if access_given_at + duration has passed
+    if (user.access_given_at && user.duration) {
+      const durationDays = { '1': 15, '2': 30, '3': 60, '4': 90 };
+      const days = durationDays[user.duration];
+      if (days) {
+        const expiresAt = new Date(user.access_given_at);
+        expiresAt.setDate(expiresAt.getDate() + days);
+        if (new Date() > expiresAt) {
+          await prisma.users.update({
+            where: { id: user.id },
+            data: { status: '0', is_user_paid: false, updated_at: new Date() },
+          });
+          console.error('❌ Auth Middleware - Subscription expired');
+          return error(res, new Error("Your subscription has expired. Please renew to continue."), 403);
+        }
+      }
+    }
+
     if (user.status !== "1") {
       console.error('❌ Auth Middleware - User account inactive');
       return error(res, new Error("User account is inactive"), 403);
