@@ -67,10 +67,11 @@ export const authenticate = async (req, res, next) => {
         const expiresAt = new Date(user.access_given_at);
         expiresAt.setDate(expiresAt.getDate() + days);
         if (new Date() > expiresAt) {
-          await prisma.users.update({
+          // Best-effort deactivation — don't block the 403 if DB update fails
+          prisma.users.update({
             where: { id: user.id },
             data: { status: '0', is_user_paid: false, updated_at: new Date() },
-          });
+          }).catch(e => console.error('❌ Auth Middleware - Failed to deactivate expired user:', e.message));
           console.error('❌ Auth Middleware - Subscription expired');
           return error(res, new Error("Your subscription has expired. Please renew to continue."), 403);
         }
