@@ -9,6 +9,19 @@ import { logError, logInfo, logDebug } from "../utils/logger.js";
 import { sendEmail } from "../services/emailService.js";
 
 /**
+ * Verify a plaintext password against a stored hash, transparently handling
+ * Laravel's `$2y$` bcrypt prefix (CBT/Laravel-created hashes) alongside the
+ * `$2a$`/`$2b$` hashes bcrypt itself produces.
+ */
+async function verifyPassword(plaintext, storedHash) {
+  if (!storedHash) return false;
+  const normalized = storedHash.startsWith("$2y$")
+    ? storedHash.replace(/^\$2y\$/, "$2a$")
+    : storedHash;
+  return bcrypt.compare(plaintext, normalized);
+}
+
+/**
  * Send a welcome / login-notification email — fire-and-forget.
  * Failures are logged but never block the login response.
  */
@@ -204,6 +217,7 @@ const handleOAuthCallback = async (req, res, provider) => {
         email: user.email,
         name: user.name,
         authProvider: user.auth_provider,
+        loginMethod: provider.toLowerCase(),
         roles,
         isAdmin,
         isUserPaid: user.is_user_paid,
@@ -228,6 +242,7 @@ const handleOAuthCallback = async (req, res, provider) => {
       name: user.name,
       email: user.email,
       authProvider: user.auth_provider,
+      loginMethod: provider.toLowerCase(),
       profilePicture: user.profile_picture,
       roles,
       isAdmin,
@@ -313,14 +328,8 @@ export const adminLogin = async (req, res) => {
       return error(res, new Error("This account uses OAuth login. Please use Google sign-in"), 401);
     }
 
-    let passwordHash = user.password;
-    if (passwordHash.startsWith('$2y$')) {
-      logDebug('Converting Laravel hash format for compatibility');
-      passwordHash = passwordHash.replace(/^\$2y\$/, '$2a$');
-    }
-
     // Verify password
-    const isPasswordValid = await bcrypt.compare(password, passwordHash);
+    const isPasswordValid = await verifyPassword(password, user.password);
 
     if (!isPasswordValid) {
       logDebug('Admin login failed - invalid password', { email });
@@ -351,6 +360,7 @@ export const adminLogin = async (req, res) => {
         email: user.email,
         name: user.name,
         authProvider: user.auth_provider,
+        loginMethod: 'email',
         roles,
         isAdmin,
         isUserPaid: user.is_user_paid,
@@ -393,6 +403,117 @@ export const adminLogin = async (req, res) => {
       method: req.method,
       url: req.originalUrl
     });
+    return error(res, err, 500);
+  }
+};
+
+// 🔐 Email & Password Login (any user with a password set — this is the
+// login required to access premium tests; free users normally sign in
+// with Google instead, see googleAuthCallback/facebookAuthCallback).
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    logDebug('Email login attempt', { email });
+
+    if (!email || !password) {
+      return error(res, new Error("Email and password are required"), 400);
+    }
+
+    const user = await prisma.users.findFirst({ where: { email } });
+
+    if (!user) {
+      return error(res, new Error("Invalid email or password"), 401);
+    }
+
+    if (user.status !== "1") {
+      return error(res, new Error("Account is inactive"), 403);
+    }
+
+    if (!user.password) {
+      return error(res, new Error("This account has no password set yet. Sign in with Google, then set a password from your account settings."), 401);
+    }
+
+    const isPasswordValid = await verifyPassword(password, user.password);
+    if (!isPasswordValid) {
+      return error(res, new Error("Invalid email or password"), 401);
+    }
+
+    const roles = await getUserRoles(user.id);
+    const isAdmin = roles.includes(ROLES.ADMIN);
+
+    const token = jwt.sign(
+      {
+        id: user.id.toString(),
+        email: user.email,
+        name: user.name,
+        authProvider: user.auth_provider,
+        loginMethod: 'email',
+        roles,
+        isAdmin,
+        isUserPaid: user.is_user_paid,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    logInfo('Email login successful', { userId: user.id.toString(), email: user.email });
+
+    sendWelcomeEmail(user);
+
+    return success(
+      res,
+      {
+        token,
+        user: {
+          id: user.id.toString(),
+          name: user.name,
+          email: user.email,
+          authProvider: user.auth_provider,
+          loginMethod: 'email',
+          profilePicture: user.profile_picture,
+          roles,
+          isAdmin,
+          isUserPaid: user.is_user_paid,
+        },
+      },
+      "Login successful"
+    );
+  } catch (err) {
+    logError("Email login failed", err, { email: req.body?.email });
+    return error(res, err, 500);
+  }
+};
+
+// 🔑 Let the current (Google/Facebook-authenticated) user set a password so
+// they can also log in with email + password — required for premium test
+// access. Setting a password does NOT grant premium by itself; it just
+// enables the login method premium access is gated on.
+export const setPassword = async (req, res) => {
+  const currentUserId = req.user?.id;
+
+  try {
+    if (!currentUserId) {
+      return error(res, new Error("Authentication required"), 401);
+    }
+
+    const { password } = req.body;
+    if (!password || password.length < 8) {
+      return error(res, new Error("Password must be at least 8 characters"), 400);
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    await prisma.users.update({
+      where: { id: currentUserId },
+      data: { password: hashed, updated_at: new Date() },
+    });
+
+    logInfo("Password set for premium login", { userId: currentUserId.toString() });
+
+    return success(res, null, "Password set. You can now log in with your email and password to access premium tests (once your account is upgraded).");
+  } catch (err) {
+    logError("Set password failed", err, { userId: currentUserId?.toString() });
     return error(res, err, 500);
   }
 };

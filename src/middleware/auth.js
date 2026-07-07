@@ -98,12 +98,16 @@ export const authenticate = async (req, res, next) => {
     const roles = userRoles.map((mhr) => mhr.roles.name);
     console.log('✅ Auth Middleware - Roles fetched:', roles);
 
-    // Attach user with roles to request
+    // Attach user with roles to request. loginMethod reflects how THIS
+    // session was authenticated (from the signed JWT, not the account's
+    // stored auth_provider, which can change if they also link Google) —
+    // premium test access is gated on this being 'email'.
     req.user = {
       id: user.id,
       email: user.email,
       name: user.name,
       authProvider: user.auth_provider,
+      loginMethod: decoded.loginMethod,
       roles,
       isAdmin: roles.includes("admin"),
       isUserPaid: user.is_user_paid,
@@ -311,6 +315,10 @@ export const requirePaidForPaidTests = async (req, res, next) => {
 
     // type=1 is free, type=2 is paid
     if (test.type === 2) {
+      if (req.user.loginMethod !== 'email') {
+        return error(res, new Error("Please log in with your email and password to access premium tests."), 403);
+      }
+
       const user = await prisma.users.findUnique({
         where: { id: req.user.id },
         select: { is_user_paid: true }

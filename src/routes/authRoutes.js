@@ -5,9 +5,19 @@ import {
   facebookAuthCallback,
   oauthFailure,
   adminLogin,
+  login,
+  setPassword,
 } from "../controllers/authController.js";
+import { authenticate } from "../middleware/auth.js";
+import { rateLimit } from "../middleware/rateLimit.js";
 
 const router = express.Router();
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  keyFn: (req) => `${req.ip}:${req.body?.email || ""}`,
+});
 
 /**
  * POST /api/auth/admin/login
@@ -15,6 +25,22 @@ const router = express.Router();
  * Body: { email, password }
  */
 router.post("/admin/login", adminLogin);
+
+/**
+ * POST /api/auth/login
+ * Email & password login for any user with a password set — this is the
+ * login premium test access is gated on.
+ * Body: { email, password }
+ */
+router.post("/login", loginLimiter, login);
+
+/**
+ * POST /api/auth/set-password
+ * Let the current (Google/Facebook) session set a password on their
+ * account, so they can also log in with email + password later.
+ * Body: { password }
+ */
+router.post("/set-password", authenticate, setPassword);
 
 /**
  * GET /api/auth/google
