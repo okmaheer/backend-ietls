@@ -315,7 +315,12 @@ export const requirePaidForPaidTests = async (req, res, next) => {
 
     // type=1 is free, type=2 is paid
     if (test.type === 2) {
-      if (req.user.loginMethod !== 'email') {
+      // TEMPORARY: the email+password login requirement for premium tests is
+      // disabled via REQUIRE_EMAIL_LOGIN_FOR_PREMIUM until existing paid
+      // customers (who so far only ever signed in with Google) have been
+      // given a password by admin. Set REQUIRE_EMAIL_LOGIN_FOR_PREMIUM=true
+      // once that migration is done to re-enable the stricter rule.
+      if (process.env.REQUIRE_EMAIL_LOGIN_FOR_PREMIUM === 'true' && req.user.loginMethod !== 'email') {
         return error(res, new Error("Please log in with your email and password to access premium tests."), 403);
       }
 
